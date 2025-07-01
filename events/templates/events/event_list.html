@@ -140,14 +140,12 @@
         color: #fff;
         border-color: #007bff;
     }
+    .section{
+        margin-top: 20px;
+    }
 </style>
 <div class="section">
-    <div class="top-actions">
-        {% if user.is_superuser %}
-            <a href="{% url 'event_create' %}" class="cta">+ Create Event</a>
-        {% endif %}
-        <a href="{% url 'event_calendar' %}">View Calendar</a>
-    </div>
+    
     <form class="search-bar" method="get" action="">
         <input type="text" name="q" placeholder="Search events by name or location..." value="{{ q }}">
         {% if selected_type %}
