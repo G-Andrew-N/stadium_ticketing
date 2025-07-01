@@ -20,7 +20,28 @@ class TicketPurchaseForm(forms.ModelForm):
 
     class Meta:
         model = Ticket
-        fields = ['seat', 'tickettype']  # Do NOT add 'phone' here, since it's not in the model
+        fields = ['seat', 'tickettype']
+
+    def __init__(self, *args, **kwargs):
+        self.user = kwargs.pop('user', None)
+        self.event = kwargs.pop('event', None)
+        super().__init__(*args, **kwargs)
+
+    def clean_seat(self):
+        seat = self.cleaned_data['seat']
+        tickettype = self.cleaned_data.get('tickettype')
+        if self.user and self.event and tickettype:
+            # Check if this user already has a ticket for this seat and event
+            exists = Ticket.objects.filter(
+                user=self.user,
+                event=self.event,
+                seat=seat,
+                tickettype=tickettype,
+                status='Active'
+            ).exists()
+            if exists:
+                raise forms.ValidationError("You have already purchased this seat for this event.")
+        return seat
 
 # def get_mpesa_access_token():
 #     consumer_key = settings.MPESA_CONSUMER_KEY
@@ -64,7 +85,7 @@ def ticket_purchase(request, event_id, tickettype_id):
         ticket_types.append(ttype)
 
     if request.method == 'POST':
-        form = TicketPurchaseForm(request.POST)
+        form = TicketPurchaseForm(request.POST, event=event_obj, user=request.user)
         form.fields['tickettype'].queryset = event_obj.ticket_types.all()
         if form.is_valid():
             ticket = form.save(commit=False)
@@ -74,7 +95,7 @@ def ticket_purchase(request, event_id, tickettype_id):
             ticket.save()
             return redirect('ticket_confirm', pk=ticket.pk)
     else:
-        form = TicketPurchaseForm()
+        form = TicketPurchaseForm(event=event_obj, user=request.user)
         form.fields['tickettype'].queryset = event_obj.ticket_types.all()
 
     return render(request, 'tickets/ticket_purchase.html', {
