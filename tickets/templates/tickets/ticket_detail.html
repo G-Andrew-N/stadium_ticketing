@@ -1,0 +1,137 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}Ticket Details | Stadium Ticketing{% endblock %}
+
+{% block content %}
+<style>
+    .ticket-detail-section {
+        max-width: 540px;
+        margin: 2.5rem auto;
+        background: #fff;
+        padding: 2rem;
+        border-radius: 12px;
+        box-shadow: 0 2px 12px rgba(0,0,0,0.07);
+        display: flex;
+        gap: 1.5rem;
+        align-items: flex-start;
+    }
+    .ticket-event-thumb {
+        width: 140px;
+        min-width: 100px;
+        max-width: 160px;
+        height: 140px;
+        object-fit: cover;
+        border-radius: 10px;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+        background: #f4f4f4;
+        margin-right: 1.5rem;
+    }
+    .ticket-detail-main {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+    }
+    .ticket-detail-section h2 {
+        color: #0052cc;
+        margin-bottom: 1.2rem;
+        text-align: left;
+    }
+    .ticket-info {
+        margin-bottom: 1.5rem;
+    }
+    .ticket-info label {
+        font-weight: 500;
+        color: #007bff;
+    }
+    .ticket-status-valid {
+        color: #28a745;
+        font-weight: bold;
+    }
+    .ticket-status-expired {
+        color: #dc3545;
+        font-weight: bold;
+    }
+    .ticket-status-cancelled {
+        color: #888;
+        font-weight: bold;
+    }
+    .ticket-actions {
+        text-align: left;
+        margin-top: 1.5rem;
+    }
+    .ticket-actions a {
+        margin: 0 1rem 0 0;
+        color: #007bff;
+        text-decoration: underline;
+    }
+    .ticket-actions a.cancel {
+        color: #dc3545;
+    }
+    .qr-code {
+        display: block;
+        margin: 1.5rem 0 0 0;
+        max-width: 180px;
+        border: 1px solid #e5e5e5;
+        border-radius: 8px;
+        background: #f9f9f9;
+        padding: 0.5rem;
+    }
+    @media (max-width: 700px) {
+        .ticket-detail-section {
+            flex-direction: column;
+            align-items: center;
+            padding: 1.2rem;
+        }
+        .ticket-event-thumb {
+            margin: 0 0 1.2rem 0;
+            width: 100%;
+            max-width: 100%;
+            height: 140px;
+        }
+        .ticket-detail-main {
+            width: 100%;
+        }
+        .ticket-actions {
+            text-align: center;
+        }
+    }
+</style>
+<div class="ticket-detail-section">
+    {% if ticket.event.thumbnail %}
+        <img src="{{ ticket.event.thumbnail.url }}" alt="{{ ticket.event.name }} thumbnail" class="ticket-event-thumb">
+    {% else %}
+        <img src="{% static 'images/default_event_thumb.png' %}" alt="No thumbnail" class="ticket-event-thumb">
+    {% endif %}
+    <div class="ticket-detail-main">
+        <h2>Ticket for {{ ticket.event.name }}</h2>
+        <div class="ticket-info">
+            <p><label>Event:</label> {{ ticket.event.name }}</p>
+            <p><label>Date & Time:</label> {{ ticket.event.date|date:"F j, Y, g:i a" }}</p>
+            <p><label>Location:</label> {{ ticket.event.location }}</p>
+            <p><label>Seat:</label> {{ ticket.seat }}</p>
+            <p><label>Status:</label>
+                {% if ticket.status == 'Cancelled' %}
+                    <span class="ticket-status-cancelled">Cancelled</span>
+                {% elif ticket.event.date < now %}
+                    <span class="ticket-status-expired">Expired</span>
+                {% else %}
+                    <span class="ticket-status-valid">Valid</span>
+                {% endif %}
+            </p>
+            <p><label>Purchase Date:</label> {{ ticket.purchase_date|date:"F j, Y" }}</p>
+            {% if ticket.qr_code_image %}
+                <img src="{{ ticket.qr_code_image.url }}" alt="QR Code" class="qr-code">
+            {% else %}
+                <div class="qr-code" style="text-align:center; color:#bbb;">No QR Code</div>
+            {% endif %}
+        </div>
+        <div class="ticket-actions">
+            <a href="{% url 'ticket_list' %}">&larr; Back to My Tickets</a>
+            {% if ticket.status != 'Cancelled' %}
+                <a href="{% url 'ticket_cancel' ticket.pk %}" class="cancel">Cancel Ticket</a>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}

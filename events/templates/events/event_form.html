@@ -1,0 +1,192 @@
+{% extends "base.html" %}
+{% load static %}
+{% load dict_extras %}
+{% block title %}Create Event | Stadium Ticketing{% endblock %}
+
+{% block content %}
+<style>
+    .event-form-section {
+        max-width: 650px;
+        margin: 2.5rem auto;
+        background: #fff;
+        padding: 2.5rem 2rem 2rem 2rem;
+        border-radius: 14px;
+        box-shadow: 0 4px 24px rgba(0,123,255,0.10);
+    }
+    .event-form-section h2 {
+        color: #0052cc;
+        margin-bottom: 1.5rem;
+        text-align: center;
+    }
+    .event-form-section form label {
+        display: block;
+        margin-top: 1rem;
+        font-weight: 500;
+    }
+    .event-form-section form input,
+    .event-form-section form textarea,
+    .event-form-section form select {
+        width: 100%;
+        padding: 0.7rem;
+        margin-top: 0.3rem;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        font-size: 1rem;
+    }
+    .event-form-section form textarea {
+        min-height: 80px;
+        resize: vertical;
+    }
+    .event-form-section form button {
+        margin-top: 1.5rem;
+        background: #007bff;
+        color: #fff;
+        border: none;
+        padding: 0.8rem 2rem;
+        border-radius: 5px;
+        font-size: 1.1rem;
+        cursor: pointer;
+        width: 100%;
+    }
+    .event-form-section form button:hover {
+        background: #0052cc;
+    }
+    .event-form-section .thumb-preview {
+        margin-bottom: 1rem;
+        max-width: 220px;
+        max-height: 140px;
+        border-radius: 8px;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+        display: block;
+    }
+    .ticket-type-row {
+        margin-bottom: 1rem;
+        padding: 0.7rem 1rem;
+        background: #f4f8fb;
+        border-radius: 6px;
+        display: flex;
+        align-items: center;
+        gap: 1.2rem;
+    }
+    .ticket-type-row label {
+        margin-right: 0.7rem;
+        min-width: 120px;
+    }
+    .ticket-type-row input[type="number"] {
+        width: 100px;
+    }
+    .ticket-type-row input[type="checkbox"] {
+        transform: scale(1.2);
+        margin-right: 0.5rem;
+    }
+    .ticket-type-row .disabled {
+        opacity: 0.5;
+    }
+    @media (max-width: 700px) {
+        .event-form-section {
+            padding: 1.2rem;
+        }
+        .ticket-type-row {
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 0.5rem;
+        }
+    }
+</style>
+<div class="event-form-section">
+    <h2>Create Event</h2>
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        <label for="id_name">Event Name</label>
+        {{ form.name.errors }}
+        {{ form.name }}
+
+        <label for="id_event_type">Category</label>
+        {{ form.event_type.errors }}
+        {{ form.event_type }}
+
+        <label for="id_date">Date & Time</label>
+        {{ form.date.errors }}
+        {{ form.date }}
+
+        <label for="id_location">Location</label>
+        {{ form.location.errors }}
+        {{ form.location }}
+
+        <label for="id_description">Description</label>
+        {{ form.description.errors }}
+        {{ form.description }}
+
+        <label for="id_thumbnail">Event Thumbnail</label>
+        {{ form.thumbnail.errors }}
+        {{ form.thumbnail }}
+        <img id="thumbPreview" class="thumb-preview" style="display:none;" alt="Thumbnail preview">
+
+        <h3 style="margin-top:2rem;">Available Ticket Types & Pricing</h3>
+        <div>
+            {% for key, label in TICKET_TYPE_CHOICES %}
+                {% with saved=saved_ticket_types|get_item:key %}
+                <div class="ticket-type-row">
+                    <input type="checkbox" id="ttype_{{ key }}" name="ticket_types"
+                           value="{{ key }}"
+                           {% if saved %}checked{% endif %}>
+                    <label for="ttype_{{ key }}">{{ label }}</label>
+                    <label>Price:</label>
+                    <input type="number" step="0.01" min="0" name="price_{{ key }}"
+                           placeholder="0.00"
+                           value="{% if saved %}{{ saved.price }}{% endif %}" {% if not saved %}disabled class="disabled"{% endif %}>
+                    <label>Quantity:</label>
+                    <input type="number" min="0" name="qty_{{ key }}" placeholder="0"
+                           value="{% if saved %}{{ saved.quantity }}{% endif %}" {% if not saved %}disabled class="disabled"{% endif %}>
+                </div>
+                {% endwith %}
+            {% endfor %}
+        </div>
+        <button type="submit" class="cta">Create Event</button>
+        <a href="{% url 'event_list' %}" style="margin-left:1.5rem;">Cancel</a>
+    </form>
+</div>
+<script>
+    // Enable/disable price and qty fields based on checkbox
+    document.addEventListener('DOMContentLoaded', function() {
+        document.querySelectorAll('input[type="checkbox"][name="ticket_types"]').forEach(function(cb) {
+            cb.addEventListener('change', function() {
+                var key = cb.value;
+                var priceInput = document.querySelector('input[name="price_' + key + '"]');
+                var qtyInput = document.querySelector('input[name="qty_' + key + '"]');
+                if (cb.checked) {
+                    priceInput.disabled = false;
+                    qtyInput.disabled = false;
+                    priceInput.classList.remove('disabled');
+                    qtyInput.classList.remove('disabled');
+                } else {
+                    priceInput.disabled = true;
+                    qtyInput.disabled = true;
+                    priceInput.classList.add('disabled');
+                    qtyInput.classList.add('disabled');
+                    priceInput.value = '';
+                    qtyInput.value = '';
+                }
+            });
+        });
+
+        // Thumbnail preview
+        var thumbInput = document.getElementById('id_thumbnail');
+        var thumbPreview = document.getElementById('thumbPreview');
+        if (thumbInput) {
+            thumbInput.addEventListener('change', function(event) {
+                if (thumbInput.files && thumbInput.files[0]) {
+                    var reader = new FileReader();
+                    reader.onload = function(e) {
+                        thumbPreview.src = e.target.result;
+                        thumbPreview.style.display = 'block';
+                    }
+                    reader.readAsDataURL(thumbInput.files[0]);
+                } else {
+                    thumbPreview.style.display = 'none';
+                }
+            });
+        }
+    });
+</script>
+{% endblock %}

@@ -1,0 +1,102 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}Register | Stadium Ticketing{% endblock %}
+
+{% block content %}
+<style>
+    .register-section {
+        max-width: 450px;
+        margin: 2.5rem auto;
+        background: #fff;
+        padding: 2rem;
+        border-radius: 12px;
+        box-shadow: 0 4px 24px rgba(0,123,255,0.10);
+    }
+    .register-section h2 {
+        color: #0052cc;
+        margin-bottom: 1.5rem;
+        text-align: center;
+    }
+    .register-section form label {
+        display: block;
+        margin-top: 1rem;
+        font-weight: 500;
+    }
+    .register-section form input {
+        width: 100%;
+        padding: 0.7rem;
+        margin-top: 0.3rem;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        font-size: 1rem;
+    }
+    .register-section form button {
+        margin-top: 1.5rem;
+        background: #007bff;
+        color: #fff;
+        border: none;
+        padding: 0.8rem 2rem;
+        border-radius: 5px;
+        font-size: 1.1rem;
+        cursor: pointer;
+        width: 100%;
+    }
+    .register-section form button:hover {
+        background: #0052cc;
+    }
+    .register-section .links {
+        margin-top: 1.5rem;
+        text-align: center;
+    }
+    .register-section .links a {
+        color: #007bff;
+        text-decoration: underline;
+        margin: 0 0.5rem;
+    }
+</style>
+<div class="register-section">
+    <h2>Register</h2>
+    <form method="post" enctype="multipart/form-data" action="">
+        {% csrf_token %}
+        {% if form.errors %}
+            <div style="color: #dc3545; margin-bottom: 1rem;">
+                Please correct the errors below.
+            </div>
+        {% endif %}
+        {{ form.non_field_errors }}
+
+        <label for="id_username">Username</label>
+        {{ form.username }}
+        {{ form.username.errors }}
+
+        <label for="id_email">Email</label>
+        {{ form.email }}
+        {{ form.email.errors }}
+
+        <label for="id_first_name">First Name</label>
+        {{ form.first_name }}
+        {{ form.first_name.errors }}
+
+        <label for="id_last_name">Last Name</label>
+        {{ form.last_name }}
+        {{ form.last_name.errors }}
+
+        <label for="id_photo">Profile Photo</label>
+        {{ form.photo }}
+        {{ form.photo.errors }}
+
+        <label for="id_password1">Password</label>
+        {{ form.password1 }}
+        {{ form.password1.errors }}
+
+        <label for="id_password2">Confirm Password</label>
+        {{ form.password2 }}
+        {{ form.password2.errors }}
+
+        <button type="submit">Register</button>
+    </form>
+    <div class="links">
+        <a href="{% url 'login' %}">Already have an account? Login</a>
+    </div>
+</div>
+{% endblock %}

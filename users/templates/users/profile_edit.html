@@ -1,0 +1,134 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}Edit Profile | Stadium Ticketing{% endblock %}
+
+{% block content %}
+<style>
+    .profile-edit-section {
+        max-width: 500px;
+        margin: 2.5rem auto;
+        background: #fff;
+        padding: 2rem;
+        border-radius: 10px;
+        box-shadow: 0 2px 12px rgba(0,0,0,0.07);
+    }
+    .profile-edit-section h2 {
+        color: #0052cc;
+        margin-bottom: 1.5rem;
+        text-align: center;
+    }
+    .profile-photo-preview {
+        width: 110px;
+        height: 110px;
+        border-radius: 50%;
+        object-fit: cover;
+        box-shadow: 0 2px 12px rgba(0,123,255,0.13);
+        margin: 0 auto 1.2rem auto;
+        background: #f4f4f4;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 3rem;
+        color: #007bff;
+    }
+    .profile-edit-section form label {
+        display: block;
+        margin-top: 1rem;
+        font-weight: 500;
+    }
+    .profile-edit-section form input {
+        width: 100%;
+        padding: 0.7rem;
+        margin-top: 0.3rem;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        font-size: 1rem;
+    }
+    .profile-edit-section form button {
+        margin-top: 1.5rem;
+        background: #007bff;
+        color: #fff;
+        border: none;
+        padding: 0.8rem 2rem;
+        border-radius: 5px;
+        font-size: 1.1rem;
+        cursor: pointer;
+        width: 100%;
+    }
+    .profile-edit-section form button:hover {
+        background: #0052cc;
+    }
+    .profile-edit-section .links {
+        margin-top: 1.5rem;
+        text-align: center;
+    }
+    .profile-edit-section .links a {
+        color: #007bff;
+        text-decoration: underline;
+        margin: 0 0.5rem;
+    }
+</style>
+<div class="profile-edit-section">
+    <h2>Edit Profile</h2>
+    {% if user.profile.photo %}
+        <img id="currentPhoto" src="{{ user.profile.photo.url }}" alt="Profile Photo" class="profile-photo-preview">
+    {% else %}
+        <div id="currentPhoto" class="profile-photo-preview" title="No profile photo">🙍‍♂️</div>
+    {% endif %}
+    <form method="post" enctype="multipart/form-data" action="">
+        {% csrf_token %}
+        {% if user_form.errors or profile_form.errors %}
+            <div style="color: #dc3545; margin-bottom: 1rem;">
+                Please correct the errors below.
+            </div>
+        {% endif %}
+        <label for="id_first_name">First Name</label>
+        {{ user_form.first_name }}
+        {{ user_form.first_name.errors }}
+
+        <label for="id_last_name">Last Name</label>
+        {{ user_form.last_name }}
+        {{ user_form.last_name.errors }}
+
+        <label for="id_email">Email</label>
+        {{ user_form.email }}
+        {{ user_form.email.errors }}
+
+        <label for="id_photo">Change Profile Photo</label>
+        {{ profile_form.photo }}
+        {{ profile_form.photo.errors }}
+
+        <button type="submit">Save Changes</button>
+    </form>
+    <div class="links">
+        <a href="{% url 'profile' %}">Back to Profile</a>
+    </div>
+</div>
+<script>
+    // Optional: Preview new profile photo before upload
+    document.addEventListener('DOMContentLoaded', function() {
+        var photoInput = document.getElementById('id_photo');
+        var currentPhoto = document.getElementById('currentPhoto');
+        if (photoInput) {
+            photoInput.addEventListener('change', function(event) {
+                if (photoInput.files && photoInput.files[0]) {
+                    var reader = new FileReader();
+                    reader.onload = function(e) {
+                        if (currentPhoto.tagName === 'IMG') {
+                            currentPhoto.src = e.target.result;
+                        } else {
+                            // Replace the div with an img if no photo existed before
+                            var img = document.createElement('img');
+                            img.src = e.target.result;
+                            img.className = 'profile-photo-preview';
+                            img.alt = 'Profile Photo';
+                            currentPhoto.parentNode.replaceChild(img, currentPhoto);
+                        }
+                    }
+                    reader.readAsDataURL(photoInput.files[0]);
+                }
+            });
+        }
+    });
+</script>
+{% endblock %}

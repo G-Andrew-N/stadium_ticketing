@@ -1,0 +1,144 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}My Profile | Stadium Ticketing{% endblock %}
+
+{% block content %}
+<style>
+    .profile-section {
+        max-width: 600px;
+        margin: 2.5rem auto;
+        background: #fff;
+        padding: 2.5rem 2rem 2rem 2rem;
+        border-radius: 14px;
+        box-shadow: 0 4px 24px rgba(0,123,255,0.10);
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+    .profile-photo {
+        width: 110px;
+        height: 110px;
+        border-radius: 50%;
+        object-fit: cover;
+        box-shadow: 0 2px 12px rgba(0,123,255,0.13);
+        margin-bottom: 1.2rem;
+        background: #f4f4f4;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 3rem;
+        color: #007bff;
+    }
+    .profile-section h2 {
+        color: #0052cc;
+        margin-bottom: 1.2rem;
+        text-align: center;
+    }
+    .profile-info {
+        margin-bottom: 2rem;
+        width: 100%;
+    }
+    .profile-info label {
+        font-weight: 500;
+        color: #007bff;
+        min-width: 110px;
+        display: inline-block;
+    }
+    .profile-info p {
+        margin: 0.5rem 0;
+        font-size: 1.08rem;
+    }
+    .profile-actions {
+        text-align: center;
+        margin-top: 1.2rem;
+    }
+    .profile-actions a {
+        margin: 0 1rem;
+        color: #007bff;
+        text-decoration: underline;
+        font-size: 1.05rem;
+    }
+    .profile-actions a.logout {
+        color: #dc3545;
+    }
+    .tickets-table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 2rem;
+    }
+    .tickets-table th, .tickets-table td {
+        border: 1px solid #e5e5e5;
+        padding: 0.7rem;
+        text-align: left;
+        font-size: 0.98rem;
+    }
+    .tickets-table th {
+        background: #f4f8fb;
+        color: #0052cc;
+    }
+    .ticket-status-valid {
+        color: #28a745;
+        font-weight: bold;
+    }
+    .ticket-status-expired {
+        color: #dc3545;
+        font-weight: bold;
+    }
+</style>
+<div class="profile-section">
+    {% if user.profile.photo %}
+        <img src="{{ user.profile.photo.url }}" alt="Profile Photo" class="profile-photo">
+    {% else %}
+        <img src="{% static 'images/default_profile.png' %}" alt="Default Profile Photo" class="profile-photo">
+    {% endif %}
+    <h2>Welcome, {{ user.username }}!</h2>
+    <div class="profile-info">
+        <p><label>Username:</label> {{ user.username }}</p>
+        <p><label>Email:</label> {{ user.email }}</p>
+        <p><label>First Name:</label> {{ user.first_name }}</p>
+        <p><label>Last Name:</label> {{ user.last_name }}</p>
+        <p><label>Date Joined:</label> {{ user.date_joined|date:"F j, Y" }}</p>
+    </div>
+    <div class="profile-actions">
+        <a href="{% url 'profile_edit' %}">Edit Profile</a>
+        <a href="{% url 'password_change' %}">Change Password</a>
+        <a href="{% url 'logout' %}" class="logout">Logout</a>
+    </div>
+
+    <h3 style="margin-top:2.5rem; color:#0052cc;">My Tickets</h3>
+    {% if tickets %}
+    <table class="tickets-table">
+        <thead>
+            <tr>
+                <th>Event</th>
+                <th>Date & Time</th>
+                <th>Seat</th>
+                <th>Status</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for ticket in tickets %}
+            <tr>
+                <td>{{ ticket.event.name }}</td>
+                <td>{{ ticket.event.date|date:"F j, Y, g:i a" }}</td>
+                <td>{{ ticket.seat }}</td>
+                <td>
+                    {% if ticket.event.date < now %}
+                        <span class="ticket-status-expired">Expired</span>
+                    {% else %}
+                        <span class="ticket-status-valid">Valid</span>
+                    {% endif %}
+                </td>
+                <td>
+                    <a href="{% url 'ticket_detail' ticket.pk %}">View</a>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    {% else %}
+        <p style="margin-top:1.5rem;">You have not purchased any tickets yet.</p>
+    {% endif %}
+</div>
+{% endblock %}

@@ -1,0 +1,152 @@
+/* Reset some defaults */
+body, h1, h2, h3, h4, h5, h6, p, ul, ol, li, a {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Segoe UI', Arial, sans-serif;
+    background: #f7f9fb;
+    color: #222;
+    line-height: 1.6;
+}
+
+header {
+    background: linear-gradient(90deg, #0052cc 0%, #007bff 100%);
+    color: #fff;
+    padding: 2rem 0 1rem 0;
+    text-align: center;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+}
+
+header h1 {
+    font-size: 2.5rem;
+    margin-bottom: 0.5rem;
+    letter-spacing: 1px;
+}
+
+header p {
+    font-size: 1.1rem;
+    color: #e0e0e0;
+}
+
+nav {
+    background: #fff;
+    border-bottom: 1px solid #e5e5e5;
+    padding: 0.75rem 0;
+    text-align: center;
+}
+
+nav a {
+    color: #0052cc;
+    margin: 0 1.2rem;
+    text-decoration: none;
+    font-weight: 500;
+    transition: color 0.2s;
+    font-size: 1.05rem;
+}
+
+nav a:hover, nav a.active {
+    color: #007bff;
+    border-bottom: 2px solid #007bff;
+    padding-bottom: 0.2rem;
+}
+
+.container {
+    max-width: 950px;
+    margin: 2.5rem auto;
+    background: #fff;
+    padding: 2.5rem 2rem;
+    border-radius: 10px;
+    box-shadow: 0 4px 24px rgba(0,0,0,0.07);
+}
+
+.section {
+    margin-bottom: 2.5rem;
+}
+
+.section h2 {
+    color: #0052cc;
+    margin-bottom: 1rem;
+    font-size: 1.5rem;
+    border-left: 4px solid #007bff;
+    padding-left: 0.5rem;
+}
+
+.events-list {
+    list-style: none;
+    padding: 0;
+}
+
+.events-list li {
+    margin-bottom: 1.7rem;
+    padding-bottom: 1.2rem;
+    border-bottom: 1px solid #f0f0f0;
+}
+
+.events-list strong {
+    font-size: 1.15rem;
+    color: #222;
+}
+
+.events-list a {
+    color: #007bff;
+    text-decoration: none;
+    font-weight: 500;
+    margin-top: 0.3rem;
+    display: inline-block;
+}
+
+.events-list a:hover {
+    text-decoration: underline;
+}
+
+.cta {
+    display: inline-block;
+    background: #007bff;
+    color: #fff;
+    padding: 0.9rem 2.2rem;
+    border-radius: 5px;
+    text-decoration: none;
+    font-size: 1.1rem;
+    font-weight: 600;
+    margin-top: 1rem;
+    box-shadow: 0 2px 8px rgba(0,123,255,0.08);
+    transition: background 0.2s;
+}
+
+.cta:hover {
+    background: #0052cc;
+}
+
+ul {
+    margin-left: 1.2rem;
+}
+
+footer {
+    text-align: center;
+    color: #888;
+    padding: 1.5rem 0 1rem 0;
+    margin-top: 2.5rem;
+    font-size: 0.98rem;
+    background: #f4f8fb;
+    border-top: 1px solid #e5e5e5;
+}
+
+
+@media (max-width: 700px) {
+    .container {
+        padding: 1.2rem 0.5rem;
+    }
+    header h1 {
+        font-size: 2rem;
+    }
+    nav a {
+        margin: 0 0.5rem;
+        font-size: 1rem;
+    }
+    .section h2 {
+        font-size: 1.15rem;
+    }
+}

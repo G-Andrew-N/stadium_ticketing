@@ -1,0 +1,36 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Delete Event | Stadium Ticketing</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+</head>
+<body>
+    <header>
+        <h1>Stadium Ticketing</h1>
+        <p>Delete Event</p>
+    </header>
+    <nav>
+        <a href="{% url 'home' %}">Home</a>
+        <a href="{% url 'event_list' %}">Events</a>
+        <a href="/admin/">Admin</a>
+        <a href="#">Login</a>
+        <a href="#">Register</a>
+    </nav>
+    <div class="container">
+        <div class="section">
+            <h2>Confirm Delete</h2>
+            <p>Are you sure you want to delete the event <strong>{{ event.name }}</strong> scheduled for {{ event.date|date:"F j, Y, g:i a" }} at {{ event.location }}?</p>
+            <form method="post">
+                {% csrf_token %}
+                <button type="submit" class="cta" style="background:#dc3545;">Yes, Delete</button>
+                <a href="{% url 'event_list' %}" style="margin-left:1.5rem;">Cancel</a>
+            </form>
+        </div>
+    </div>
+    <footer>
+        &copy; {{ year|default:2025 }} Stadium Ticketing. All rights reserved.
+    </footer>
+</body>

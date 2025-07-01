@@ -1,0 +1,57 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>About | Stadium Ticketing</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+</head>
+<body>
+    <header>
+        <h1>About Stadium Ticketing</h1>
+        <p>Learn more about our platform and mission</p>
+    </header>
+    <nav>
+        <a href="{% url 'home' %}">Home</a>
+        <a href="{% url 'event_list' %}">Events</a>
+        <a href="{% url 'event_calendar' %}">Calendar</a>
+        <a href="/admin/">Admin</a>
+        <a href="#">Login</a>
+        <a href="#">Register</a>
+    </nav>
+    <div class="container">
+        <div class="section">
+            <h2>Who We Are</h2>
+            <p>
+                Stadium Ticketing is a modern web platform designed to make discovering, booking, and managing tickets for stadium events simple and secure. 
+                Whether you’re a sports fan, concert-goer, or event organizer, our platform is built to provide a seamless experience for everyone.
+            </p>
+        </div>
+        <div class="section">
+            <h2>Our Mission</h2>
+            <p>
+                Our mission is to connect people with unforgettable experiences by providing easy access to stadium events, ensuring secure transactions, and delivering excellent customer support.
+            </p>
+        </div>
+        <div class="section">
+            <h2>What We Offer</h2>
+            <ul>
+                <li>Comprehensive event listings for sports, concerts, and more</li>
+                <li>Easy and secure online ticket booking</li>
+                <li>Real-time event updates and notifications</li>
+                <li>User-friendly dashboard for managing your bookings</li>
+                <li>Dedicated support for both attendees and organizers</li>
+            </ul>
+        </div>
+        <div class="section">
+            <h2>Contact Us</h2>
+            <p>
+                Have questions or need help? Visit our <a href="{% url 'contact' %}">Contact</a> page or email us at <a href="mailto:support@stadiumticketing.com">support@stadiumticketing.com</a>.
+            </p>
+        </div>
+    </div>
+    <footer>
+        &copy; {{ year|default:2025 }} Stadium Ticketing. All rights reserved.
+    </footer>
+</body>

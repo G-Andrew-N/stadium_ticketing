@@ -1,0 +1,83 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}Purchase Ticket | Stadium Ticketing{% endblock %}
+
+{% block content %}
+<style>
+    .purchase-section {
+        max-width: 500px;
+        margin: 2.5rem auto;
+        background: #fff;
+        padding: 2rem;
+        border-radius: 10px;
+        box-shadow: 0 2px 12px rgba(0,0,0,0.07);
+    }
+    .purchase-section h2 {
+        color: #0052cc;
+        margin-bottom: 1.5rem;
+        text-align: center;
+    }
+    .event-summary {
+        background: #f4f8fb;
+        border-radius: 8px;
+        padding: 1rem 1.5rem;
+        margin-bottom: 1.5rem;
+    }
+    .purchase-section form label {
+        display: block;
+        margin-top: 1rem;
+        font-weight: 500;
+    }
+    .purchase-section form input,
+    .purchase-section form select {
+        width: 100%;
+        padding: 0.7rem;
+        margin-top: 0.3rem;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        font-size: 1rem;
+    }
+    .purchase-section form button {
+        margin-top: 1.5rem;
+        background: #007bff;
+        color: #fff;
+        border: none;
+        padding: 0.8rem 2rem;
+        border-radius: 5px;
+        font-size: 1.1rem;
+        cursor: pointer;
+        width: 100%;
+    }
+    .purchase-section form button:hover {
+        background: #0052cc;
+    }
+    .purchase-section .links {
+        margin-top: 1.5rem;
+        text-align: center;
+    }
+    .purchase-section .links a {
+        color: #007bff;
+        text-decoration: underline;
+        margin: 0 0.5rem;
+    }
+</style>
+<div class="purchase-section">
+    <h2>Purchase Ticket</h2>
+    <div class="event-summary">
+        <p><strong>Event:</strong> {{ event.name }}</p>
+        <p><strong>Date & Time:</strong> {{ event.date|date:"F j, Y, g:i a" }}</p>
+        <p><strong>Location:</strong> {{ event.location }}</p>
+    </div>
+    <form method="post" action="">
+        {% csrf_token %}
+        {{ form.non_field_errors }}
+        {{ form.tickettype.label_tag }} {{ form.tickettype }} {{ form.tickettype.errors }}
+        {{ form.seat.label_tag }} {{ form.seat }} {{ form.seat.errors }}
+        {{ form.phone.label_tag }} {{ form.phone }} {{ form.phone.errors }}
+        <button type="submit">Purchase Ticket</button>
+    </form>
+    <div class="links">
+        <a href="{% url 'event_detail' event.pk %}">&larr; Back to Event Details</a>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,243 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %}Stadium Ticketing{% endblock %}</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+    <link rel="icon" href="{% static 'images/favicon.ico' %}" type="image/x-icon">
+    <style>
+        html, body {
+            height: 100%;
+            min-height: 100%;
+            margin: 0;
+            padding: 0;
+        }
+        body {
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+            font-family: 'Segoe UI', Arial, sans-serif;
+            background: #007bff; /* Solid blue background */
+        }
+        header {
+            background: rgba(255,255,255,0.98);
+            border-radius: 0 0 18px 18px;
+            text-align: left;
+            padding: 1.2rem 2rem 1.2rem 2rem;
+            margin-bottom: 1.5rem;
+            box-shadow: 0 4px 24px rgba(0,123,255,0.10);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        .logo-title {
+            display: flex;
+            align-items: center;
+            gap: 1.2rem;
+        }
+        .logo-title img {
+            height: 54px;
+            width: auto;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0,123,255,0.10);
+            background: #f4f4f4;
+        }
+        .logo-title .app-name {
+            font-size: 2.1rem;
+            font-weight: bold;
+            color: #0052cc;
+            letter-spacing: 1px;
+        }
+        .tagline {
+            font-size: 1.1rem;
+            color: #007bff;
+            margin-top: 0.2rem;
+        }
+        nav {
+            text-align: center;
+            margin-bottom: 2rem;
+            background: rgba(255,255,255,0.93);
+            border-radius: 8px;
+            box-shadow: 0 2px 12px rgba(0,123,255,0.08);
+            padding: 0.7rem 0;
+            display: flex;
+            justify-content: center;
+            gap: 1.2rem;
+        }
+        nav a {
+            margin: 0 0.5rem;
+            color: #007bff;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 1.08rem;
+            padding: 0.5rem 1.1rem;
+            border-radius: 6px;
+            transition: background 0.18s, color 0.18s;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.4rem;
+        }
+        nav a.active, nav a:hover {
+            background: #007bff;
+            color: #fff;
+            text-decoration: none;
+        }
+        .container {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 0 1.5rem;
+            flex: 1 0 auto;
+        }
+        footer {
+            margin-top: 2rem;
+            font-size: 1rem;
+            background: rgba(255,255,255,0.97);
+            border-radius: 10px 10px 0 0;
+            text-align: center;
+            padding: 1.2rem 0 0.7rem 0;
+            box-shadow: 0 -2px 12px rgba(0,123,255,0.07);
+            color: #0052cc;
+            flex-shrink: 0;
+        }
+        .nav-profile-dropdown {
+            position: relative;
+            display: flex;
+            align-items: center;
+            margin-left: auto;
+        }
+        .profile-pic-wrapper {
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+        }
+        .nav-profile-pic {
+            width: 38px;
+            height: 38px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid #007bff;
+            box-shadow: 0 2px 8px rgba(0,123,255,0.10);
+            background: #f4f4f4;
+            transition: box-shadow 0.2s;
+        }
+        .nav-profile-pic:hover {
+            box-shadow: 0 4px 16px rgba(0,123,255,0.18);
+        }
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            top: 48px;
+            right: 0;
+            background: #fff;
+            min-width: 140px;
+            box-shadow: 0 4px 16px rgba(0,0,0,0.13);
+            border-radius: 8px;
+            z-index: 10;
+            text-align: left;
+            padding: 0.5rem 0;
+        }
+        .dropdown-content a {
+            color: #007bff;
+            padding: 0.7rem 1.2rem;
+            text-decoration: none;
+            display: block;
+            font-size: 1rem;
+            border-radius: 6px;
+            transition: background 0.18s, color 0.18s;
+        }
+        .dropdown-content a:hover {
+            background: #f4f8fb;
+            color: #0052cc;
+        }
+       
+        @media (max-width: 700px) {
+            header {
+                flex-direction: column;
+                align-items: flex-start;
+                padding: 1.2rem 1rem 1.2rem 1rem;
+            }
+            .logo-title .app-name {
+                font-size: 1.3rem;
+            }
+            nav {
+                flex-direction: column;
+                gap: 0.5rem;
+                padding: 0.7rem 0.2rem;
+            }
+        }
+    </style>
+    {% block extra_head %}{% endblock %}
+</head>
+<body>
+    {% block header %}
+        <!-- Default: empty. Home page will override this block. -->
+    {% endblock %}
+    <nav>
+        <a href="{% url 'event_list' %}">🎟️ Events</a>
+        <a href="{% url 'event_calendar' %}">🗓️ Calendar</a>
+        {% if user.is_superuser %}
+            <a href="{% url 'event_create' %}">➕ Create Event</a>
+            
+            
+        {% else %}
+            
+            <a href="{% url 'user_dashboard' %}">👤 User Dashboard</a>
+        {% endif %}
+        
+        {% if user.is_authenticated %}
+            <div class="nav-profile-dropdown">
+                <div class="profile-pic-wrapper">
+                    {% if user.profile.photo %}
+                        <img src="{{ user.profile.photo.url }}" alt="Profile" class="nav-profile-pic">
+                    {% else %}
+                        <img src="{% static 'images/default_profile.png' %}" alt="Profile" class="nav-profile-pic">
+                    {% endif %}
+                </div>
+                <div class="dropdown-content">
+                    <a href="{% url 'profile' %}">🙍‍♂️ Profile</a>
+                    <a href="{% url 'logout' %}">🚪 Logout</a>
+                </div>
+            </div>
+        {% else %}
+            <a href="{% url 'login' %}">🔑 Login</a>
+            <a href="{% url 'register' %}">📝 Register</a>
+        {% endif %}
+    </nav>
+    <div class="container">
+        {% block content %}{% endblock %}
+    </div>
+    <footer>
+        &copy; {{ year|default:2025 }} ArenaX. All rights reserved.
+    </footer>
+    <script>
+document.addEventListener('DOMContentLoaded', function() {
+    var dropdown = document.querySelector('.nav-profile-dropdown');
+    var dropdownContent = dropdown ? dropdown.querySelector('.dropdown-content') : null;
+    var hideTimeout;
+
+    if (dropdown && dropdownContent) {
+        dropdown.addEventListener('mouseenter', function() {
+            clearTimeout(hideTimeout);
+            dropdownContent.style.display = 'block';
+        });
+        dropdown.addEventListener('mouseleave', function() {
+            hideTimeout = setTimeout(function() {
+                dropdownContent.style.display = 'none';
+            }, 220); // 220ms delay before hiding
+        });
+        dropdownContent.addEventListener('mouseenter', function() {
+            clearTimeout(hideTimeout);
+            dropdownContent.style.display = 'block';
+        });
+        dropdownContent.addEventListener('mouseleave', function() {
+            hideTimeout = setTimeout(function() {
+                dropdownContent.style.display = 'none';
+            }, 220);
+        });
+    }
+});
+</script>
+</body>
+</html>

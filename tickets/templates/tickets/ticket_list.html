@@ -1,0 +1,106 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}My Tickets | Stadium Ticketing{% endblock %}
+
+{% block content %}
+<style>
+    .tickets-section {
+        max-width: 900px;
+        margin: 2.5rem auto;
+        background: #fff;
+        padding: 2rem;
+        border-radius: 10px;
+        box-shadow: 0 2px 12px rgba(0,0,0,0.07);
+    }
+    .tickets-section h2 {
+        color: #0052cc;
+        margin-bottom: 1.5rem;
+        text-align: center;
+    }
+    .ticket-table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-bottom: 2rem;
+    }
+    .ticket-table th, .ticket-table td {
+        border: 1px solid #e5e5e5;
+        padding: 1rem;
+        text-align: left;
+    }
+    .ticket-table th {
+        background: #f4f8fb;
+        color: #0052cc;
+    }
+    .ticket-status-valid {
+        color: #28a745;
+        font-weight: bold;
+    }
+    .ticket-status-expired {
+        color: #dc3545;
+        font-weight: bold;
+    }
+    .ticket-status-cancelled {
+        color: #888;
+        font-weight: bold;
+    }
+    .ticket-actions a {
+        color: #007bff;
+        text-decoration: underline;
+        margin-right: 1rem;
+    }
+    .ticket-actions a.cancel {
+        color: #dc3545;
+    }
+    @media (max-width: 700px) {
+        .ticket-table, .ticket-table th, .ticket-table td {
+            font-size: 0.95rem;
+            padding: 0.5rem;
+        }
+    }
+</style>
+<div class="tickets-section">
+    <h2>My Tickets</h2>
+    {% if tickets %}
+    <table class="ticket-table">
+        <thead>
+            <tr>
+                <th>Event</th>
+                <th>Date & Time</th>
+                <th>Seat</th>
+                <th>Purchase Date</th>
+                <th>Status</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for ticket in tickets %}
+            <tr>
+                <td>{{ ticket.event.name }}</td>
+                <td>{{ ticket.event.date|date:"F j, Y, g:i a" }}</td>
+                <td>{{ ticket.seat }}</td>
+                <td>{{ ticket.purchase_date|date:"F j, Y" }}</td>
+                <td>
+                    {% if ticket.status == 'Cancelled' %}
+                        <span class="ticket-status-cancelled">Cancelled</span>
+                    {% elif ticket.event.date < now %}
+                        <span class="ticket-status-expired">Expired</span>
+                    {% else %}
+                        <span class="ticket-status-valid">Valid</span>
+                    {% endif %}
+                </td>
+                <td class="ticket-actions">
+                    <a href="{% url 'ticket_detail' ticket.pk %}">View</a>
+                    {% if ticket.status != 'Cancelled' %}
+                        <a href="{% url 'ticket_cancel' ticket.pk %}" class="cancel">Cancel</a>
+                    {% endif %}
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    {% else %}
+        <p>You have not purchased any tickets yet.</p>
+    {% endif %}
+    <a href="{% url 'event_list' %}" class="cta">Browse Events</a>
+</div>
+{% endblock %}

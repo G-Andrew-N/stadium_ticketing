@@ -1,0 +1,43 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Page Not Found | Stadium Ticketing</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+    <style>
+        .error-container {
+            text-align: center;
+            padding: 4rem 1rem;
+        }
+        .error-code {
+            font-size: 5rem;
+            color: #007bff;
+            margin-bottom: 1rem;
+        }
+        .error-message {
+            font-size: 1.5rem;
+            margin-bottom: 2rem;
+        }
+        .cta {
+            display: inline-block;
+            margin-top: 1.5rem;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Stadium Ticketing</h1>
+    </header>
+    <div class="container error-container">
+        <div class="error-code">404</div>
+        <div class="error-message">Oops! The page you are looking for does not exist.</div>
+        <a href="{% url 'home' %}" class="cta">Go to Homepage</a>
+        <div style="margin-top:2rem;">
+            <a href="{% url 'event_list' %}">Browse Events</a> |
+            <a href="{% url 'contact' %}">Contact Support</a>
+        </div>
+    </div>
+    <footer>
+        &copy; {{ year|default:2025 }} Stadium Ticketing. All rights reserved.

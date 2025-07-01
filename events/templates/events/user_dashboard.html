@@ -1,0 +1,190 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}User Dashboard | ArenaX{% endblock %}
+
+{% block content %}
+<style>
+    .dashboard-section {
+        max-width: 900px;
+        margin: 2.5rem auto;
+        background: #fff;
+        padding: 2.5rem 2rem 2rem 2rem;
+        border-radius: 14px;
+        box-shadow: 0 4px 24px rgba(0,123,255,0.10);
+    }
+    .dashboard-header {
+        display: flex;
+        align-items: center;
+        gap: 1.2rem;
+        margin-bottom: 1.5rem;
+    }
+    .dashboard-header img {
+        width: 60px;
+        height: 60px;
+        border-radius: 50%;
+        object-fit: cover;
+        background: #f4f4f4;
+    }
+    .dashboard-header .welcome {
+        font-size: 1.3rem;
+        color: #0052cc;
+        font-weight: 600;
+    }
+    .dashboard-links {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 1.5rem;
+        margin: 2rem 0 2.5rem 0;
+        justify-content: center;
+    }
+    .dashboard-link {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        background: #f4f8fb;
+        border-radius: 10px;
+        padding: 1.2rem 2rem;
+        min-width: 180px;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+        text-decoration: none;
+        color: #0052cc;
+        font-weight: 500;
+        transition: background 0.2s;
+    }
+    .dashboard-link:hover {
+        background: #e3edfa;
+        color: #007bff;
+    }
+    .dashboard-link .icon {
+        font-size: 2.2rem;
+        margin-bottom: 0.7rem;
+    }
+    .dashboard-tickets {
+        margin-top: 2rem;
+    }
+    .dashboard-tickets table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 1rem;
+    }
+    .dashboard-tickets th, .dashboard-tickets td {
+        border: 1px solid #e5e5e5;
+        padding: 0.7rem;
+        text-align: left;
+        font-size: 0.98rem;
+    }
+    .dashboard-tickets th {
+        background: #f4f8fb;
+        color: #0052cc;
+    }
+    .ticket-status-valid {
+        color: #28a745;
+        font-weight: bold;
+    }
+    .ticket-status-expired {
+        color: #dc3545;
+        font-weight: bold;
+    }
+    .ticket-status-cancelled {
+        color: #888;
+        font-weight: bold;
+    }
+    @media (max-width: 700px) {
+        .dashboard-section {
+            padding: 1.2rem;
+        }
+        .dashboard-links {
+            flex-direction: column;
+            gap: 1rem;
+        }
+    }
+</style>
+<div class="dashboard-section">
+    <div class="dashboard-header">
+        {% if user.profile.photo %}
+            <img src="{{ user.profile.photo.url }}" alt="Profile Photo">
+        {% else %}
+            <img src="{% static 'images/default_profile.png' %}" alt="Profile Photo">
+        {% endif %}
+        <div>
+            <div class="welcome">Welcome, {{ user.first_name|default:user.username }}!</div>
+            <div style="color:#888;">Member since {{ user.date_joined|date:"F Y" }}</div>
+        </div>
+    </div>
+    <div class="dashboard-links">
+        <a href="{% url 'profile' %}" class="dashboard-link">
+            <span class="icon">🙍‍♂️</span>
+            My Profile
+        </a>
+        <a href="{% url 'ticket_list' %}" class="dashboard-link">
+            <span class="icon">🎫</span>
+            My Tickets
+        </a>
+        <a href="{% url 'event_list' %}" class="dashboard-link">
+            <span class="icon">🎟️</span>
+            Browse Events
+        </a>
+        <a href="{% url 'event_calendar' %}" class="dashboard-link">
+            <span class="icon">🗓️</span>
+            Event Calendar
+        </a>
+        <a href="{% url 'profile_edit' %}" class="dashboard-link">
+            <span class="icon">✏️</span>
+            Edit Profile
+        </a>
+        <a href="{% url 'password_change' %}" class="dashboard-link">
+            <span class="icon">🔒</span>
+            Change Password
+        </a>
+        <a href="{% url 'logout' %}" class="dashboard-link" style="color:#dc3545;">
+            <span class="icon">🚪</span>
+            Logout
+        </a>
+    </div>
+    <div class="dashboard-tickets">
+        <h3 style="color:#0052cc;">Recent Tickets</h3>
+        {% if tickets %}
+        <table>
+            <thead>
+                <tr>
+                    <th>Event</th>
+                    <th>Date & Time</th>
+                    <th>Seat</th>
+                    <th>Status</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for ticket in tickets|slice:":5" %}
+                <tr>
+                    <td>{{ ticket.event.name }}</td>
+                    <td>{{ ticket.event.date|date:"F j, Y, g:i a" }}</td>
+                    <td>{{ ticket.seat }}</td>
+                    <td>
+                        {% if ticket.status == 'Cancelled' %}
+                            <span class="ticket-status-cancelled">Cancelled</span>
+                        {% elif ticket.event.date < now %}
+                            <span class="ticket-status-expired">Expired</span>
+                        {% else %}
+                            <span class="ticket-status-valid">Valid</span>
+                        {% endif %}
+                    </td>
+                    <td>
+                        <a href="{% url 'ticket_detail' ticket.pk %}">View</a>
+                        {% if ticket.status != 'Cancelled' %}
+                            <a href="{% url 'ticket_cancel' ticket.pk %}" class="ticket-status-cancelled">Cancel</a>
+                        {% endif %}
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        <div style="margin-top:1rem;">
+            <a href="{% url 'ticket_list' %}" class="dashboard-link" style="display:inline-block;">View All Tickets</a>
+        </div>
+        {% else %}
+            <p style="margin-top:1rem;">You have not purchased any tickets yet. <a href="{% url 'event_list' %}">Browse events</a></p>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

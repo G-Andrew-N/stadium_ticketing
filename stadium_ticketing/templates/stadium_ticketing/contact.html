@@ -1,0 +1,100 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Contact | Stadium Ticketing</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+    <style>
+        .contact-section {
+            max-width: 600px;
+            margin: 2rem auto;
+            background: #fff;
+            padding: 2rem;
+            border-radius: 10px;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.07);
+        }
+        .contact-section h2 {
+            color: #0052cc;
+            margin-bottom: 1rem;
+        }
+        .contact-section form label {
+            display: block;
+            margin-top: 1rem;
+            font-weight: 500;
+        }
+        .contact-section form input,
+        .contact-section form textarea {
+            width: 100%;
+            padding: 0.7rem;
+            margin-top: 0.3rem;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 1rem;
+        }
+        .contact-section form textarea {
+            min-height: 100px;
+        }
+        .contact-section form button {
+            margin-top: 1.2rem;
+            background: #007bff;
+            color: #fff;
+            border: none;
+            padding: 0.8rem 2rem;
+            border-radius: 5px;
+            font-size: 1.1rem;
+            cursor: pointer;
+        }
+        .contact-section form button:hover {
+            background: #0052cc;
+        }
+        .contact-info {
+            margin-top: 2rem;
+            font-size: 1.05rem;
+        }
+        .contact-info a {
+            color: #007bff;
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Contact Us</h1>
+        <p>We're here to help you with all your stadium ticketing needs.</p>
+    </header>
+    <nav>
+        <a href="{% url 'home' %}">Home</a>
+        <a href="{% url 'event_list' %}">Events</a>
+        <a href="{% url 'event_calendar' %}">Calendar</a>
+        <a href="/admin/">Admin</a>
+        <a href="#">Login</a>
+        <a href="#">Register</a>
+    </nav>
+    <div class="container">
+        <div class="contact-section">
+            <h2>Contact Support</h2>
+            <form method="post" action="">
+                {% csrf_token %}
+                <label for="name">Your Name</label>
+                <input type="text" id="name" name="name" required>
+
+                <label for="email">Your Email</label>
+                <input type="email" id="email" name="email" required>
+
+                <label for="message">Message</label>
+                <textarea id="message" name="message" required></textarea>
+
+                <button type="submit">Send Message</button>
+            </form>
+            <div class="contact-info">
+                <p>Or reach us directly at <a href="mailto:support@stadiumticketing.com">support@stadiumticketing.com</a></p>
+                <p>Phone: +1 (800) 123-4567</p>
+                <p>Address: 123 Stadium Ave, City, Country</p>
+            </div>
+        </div>
+    </div>
+    <footer>
+        &copy; {{ year|default:2025 }} Stadium Ticketing. All rights reserved.
+    </footer>

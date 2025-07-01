@@ -1,0 +1,13 @@
+Django>=5.1,<6.0
+pytz
+sqlparse
+asgiref
+# If using Pillow for ImageField support
+Pillow
+# If using a database other than SQLite, uncomment the relevant line:
+# psycopg2-binary  # For PostgreSQL
+# mysqlclient      # For MySQL
+# If using crispy forms (optional, remove if not used)
+# django-crispy-forms
+# If using django-widget-tweaks (optional, remove if not used)
+# django-widget-tweaks

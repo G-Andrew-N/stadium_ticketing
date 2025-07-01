@@ -1,0 +1,196 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}Upcoming Events | Stadium Ticketing{% endblock %}
+
+{% block content %}
+<style>
+    .card-list {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 2rem;
+        justify-content: flex-start;
+    }
+    .event-card {
+        background: #fff;
+        border-radius: 10px;
+        box-shadow: 0 2px 12px rgba(0,0,0,0.07);
+        padding: 1.5rem 1.2rem;
+        width: 320px;
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-start;
+        align-items: center;
+        transition: box-shadow 0.2s;
+        margin-bottom: 1rem;
+    }
+    .event-card:hover {
+        box-shadow: 0 6px 24px rgba(0,123,255,0.13);
+    }
+    .event-thumbnail {
+        width: 100%;
+        max-width: 270px;
+        height: 150px;
+        object-fit: cover;
+        border-radius: 8px;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+        background: #f4f4f4;
+        margin-bottom: 1rem;
+    }
+    .event-card strong {
+        font-size: 1.25rem;
+        color: #0052cc;
+        margin-bottom: 0.5rem;
+        display: block;
+        text-align: center;
+    }
+    .event-card .event-date {
+        color: #555;
+        font-size: 0.98rem;
+        margin-bottom: 0.5rem;
+        text-align: center;
+    }
+    .event-card .event-location {
+        color: #007bff;
+        font-size: 0.98rem;
+        margin-bottom: 0.7rem;
+        text-align: center;
+    }
+    .event-card .event-description {
+        color: #333;
+        font-size: 0.97rem;
+        margin-bottom: 1.1rem;
+        min-height: 48px;
+        text-align: center;
+    }
+    .event-card .cta {
+        align-self: center;
+        margin-bottom: 0.5rem;
+    }
+    .event-actions {
+        margin-top: 0.7rem;
+        text-align: center;
+    }
+    .event-actions a {
+        margin-right: 1rem;
+        font-size: 0.97rem;
+        color: #0052cc;
+        text-decoration: underline;
+    }
+    .event-actions a.delete-link {
+        color: #dc3545;
+    }
+    @media (max-width: 900px) {
+        .card-list {
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+        .event-card {
+            width: 100%;
+        }
+    }
+    .top-actions {
+        margin-bottom: 1.5rem;
+    }
+    .top-actions a {
+        margin-right: 1.2rem;
+        font-size: 1rem;
+        color: #007bff;
+        text-decoration: underline;
+    }
+    .search-bar {
+        margin-bottom: 2rem;
+        display: flex;
+        gap: 1rem;
+    }
+    .search-bar input[type="text"] {
+        padding: 0.5rem;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        width: 250px;
+    }
+    .search-bar button {
+        padding: 0.5rem 1.2rem;
+        border: none;
+        background: #007bff;
+        color: #fff;
+        border-radius: 4px;
+        cursor: pointer;
+    }
+    .search-bar button:hover {
+        background: #0052cc;
+    }
+    .category-filter {
+        margin-bottom: 2rem;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 1rem;
+    }
+    .category-filter a, .category-filter span {
+        padding: 0.5rem 1.2rem;
+        border-radius: 20px;
+        background: #f4f8fb;
+        color: #0052cc;
+        text-decoration: none;
+        font-weight: 500;
+        border: 1px solid #e5e5e5;
+        transition: background 0.2s, color 0.2s;
+    }
+    .category-filter a.active, .category-filter span.active {
+        background: #007bff;
+        color: #fff;
+        border-color: #007bff;
+    }
+</style>
+<div class="section">
+    <div class="top-actions">
+        {% if user.is_superuser %}
+            <a href="{% url 'event_create' %}" class="cta">+ Create Event</a>
+        {% endif %}
+        <a href="{% url 'event_calendar' %}">View Calendar</a>
+    </div>
+    <form class="search-bar" method="get" action="">
+        <input type="text" name="q" placeholder="Search events by name or location..." value="{{ q }}">
+        {% if selected_type %}
+            <input type="hidden" name="type" value="{{ selected_type }}">
+        {% endif %}
+        <button type="submit">Search</button>
+    </form>
+    <div class="category-filter">
+        <a href="{% url 'event_list' %}" class="{% if not selected_type %}active{% endif %}">All</a>
+        {% for key, label in event_type_choices %}
+            <a href="?type={{ key }}{% if q %}&q={{ q }}{% endif %}" class="{% if selected_type == key %}active{% endif %}">
+                {{ label }}
+            </a>
+        {% endfor %}
+    </div>
+    {% for category, events in grouped_events.items %}
+        {% if events %}
+            <h2>{{ category }}</h2>
+            <div class="card-list">
+                {% for event in events %}
+                <div class="event-card">
+                    {% if event.thumbnail %}
+                        <img src="{{ event.thumbnail.url }}" alt="{{ event.name }} thumbnail" class="event-thumbnail">
+                    {% else %}
+                        <img src="{% static 'images/default_event_thumb.png' %}" alt="No thumbnail" class="event-thumbnail">
+                    {% endif %}
+                    <strong>{{ event.name }}</strong>
+                    <div class="event-date">{{ event.date|date:"F j, Y, g:i a" }}</div>
+                    <div class="event-location">{{ event.location }}</div>
+                    <div class="event-description">{{ event.description|linebreaksbr|truncatewords:30 }}</div>
+                    <a href="{% url 'event_detail' event.pk %}" class="cta">View Details</a>
+                    {% if user.is_superuser %}
+                    <div class="event-actions">
+                        <a href="{% url 'event_edit' event.pk %}">Edit</a>
+                        <a href="{% url 'event_confirm_delete' event.pk %}" class="delete-link">Delete</a>
+                    </div>
+                    {% endif %}
+                </div>
+                {% endfor %}
+            </div>
+        {% endif %}
+    {% empty %}
+        <div>No events available at the moment. Please check back soon!</div>
+    {% endfor %}
+</div>
+{% endblock %}

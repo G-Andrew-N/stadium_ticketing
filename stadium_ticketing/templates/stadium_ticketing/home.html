@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>ArenaX | Home</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+    <link rel="icon" href="{% static 'images/favicon.ico' %}" type="image/x-icon">
+    <style>
+        body {
+            min-height: 100vh;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Arial, sans-serif;
+            background: url("{% static 'images/stadium.webp' %}") no-repeat center center fixed;
+            background-size: cover;
+            display: flex;
+            flex-direction: column;
+        }
+        .overlay {
+            background: rgba(0, 0, 0, 0.55);
+            min-height: 100vh;
+            width: 100vw;
+            position: absolute;
+            top: 0; left: 0;
+            z-index: 0;
+        }
+        .main-content {
+            position: relative;
+            z-index: 1;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+        .hero {
+            background: rgba(255,255,255,0.97);
+            color: #0052cc;
+            padding: 3rem 2rem 2rem 2rem;
+            border-radius: 14px;
+            text-align: center;
+            margin-bottom: 2.5rem;
+            box-shadow: 0 2px 16px rgba(0,0,0,0.13);
+            max-width: 480px;
+            width: 95%;
+        }
+        .hero h2 {
+            font-size: 2.3rem;
+            margin-bottom: 1rem;
+            color: #0052cc;
+            letter-spacing: 1px;
+        }
+        .hero p {
+            font-size: 1.18rem;
+            margin-bottom: 2rem;
+            color: #222;
+        }
+        .action-links {
+            margin: 2rem 0 0 0;
+        }
+        .action-links a {
+            background: #007bff;
+            color: #fff;
+            font-weight: bold;
+            padding: 0.9rem 2.2rem;
+            border-radius: 5px;
+            text-decoration: none;
+            font-size: 1.1rem;
+            box-shadow: 0 2px 8px rgba(0,123,255,0.08);
+            margin: 0.5rem;
+            display: inline-block;
+            transition: background 0.2s;
+        }
+        .action-links a.register {
+            background: #28a745;
+            box-shadow: 0 2px 8px rgba(40,167,69,0.08);
+        }
+        .action-links a:hover {
+            background: #0052cc;
+        }
+        .action-links a.register:hover {
+            background: #218838;
+        }
+        .about-section {
+            background: rgba(245,245,245,0.97);
+            border-radius: 10px;
+            padding: 2rem 2rem 1.5rem 2rem;
+            margin-top: 2.5rem;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+            max-width: 480px;
+            width: 95%;
+        }
+        .about-section h2 {
+            color: #0052cc;
+            margin-bottom: 1rem;
+        }
+        .about-section ul {
+            text-align: left;
+            margin-left: 1.2rem;
+            color: #222;
+            font-size: 1.08rem;
+        }
+
+        @media (max-width: 600px) {
+            .hero, .about-section {
+                padding: 1.2rem;
+            }
+            .hero h2 {
+                font-size: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="overlay"></div>
+    <div class="main-content">
+        <div class="hero">
+            <h2>Welcome to ArenaX</h2>
+            <p>
+                Experience the thrill of live sports, concerts, and entertainment.<br>
+                Book your stadium tickets quickly, securely, and hassle-free!
+            </p>
+            <div class="action-links">
+                <a href="{% url 'login' %}">Login</a>
+                <a href="{% url 'register' %}" class="register">Register</a>
+            </div>
+        </div>
+        <div class="about-section">
+            <h2>Why Choose ArenaX?</h2>
+            <ul>
+                <li>Effortless online ticket booking for all major stadium events</li>
+                <li>Secure payments and instant ticket confirmation</li>
+                <li>Real-time event updates and notifications</li>
+                <li>Easy-to-use dashboard for managing your bookings</li>
+                <li>24/7 customer support for all your needs</li>
+            </ul>
+        </div>
+    </div>
+    
+</body>
+</html>

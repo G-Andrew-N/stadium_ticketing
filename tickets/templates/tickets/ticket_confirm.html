@@ -1,0 +1,79 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Ticket Purchase Confirmation | Stadium Ticketing</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+    <style>
+        .confirm-section {
+            max-width: 500px;
+            margin: 2.5rem auto;
+            background: #fff;
+            padding: 2rem;
+            border-radius: 10px;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.07);
+            text-align: center;
+        }
+        .confirm-section h2 {
+            color: #28a745;
+            margin-bottom: 1.5rem;
+        }
+        .ticket-summary {
+            background: #f4f8fb;
+            border-radius: 8px;
+            padding: 1rem 1.5rem;
+            margin-bottom: 1.5rem;
+            text-align: left;
+        }
+        .confirm-section .cta {
+            background: #007bff;
+            color: #fff;
+            font-weight: bold;
+            padding: 0.8rem 2rem;
+            border-radius: 5px;
+            text-decoration: none;
+            font-size: 1.1rem;
+            margin: 0.5rem;
+            display: inline-block;
+            transition: background 0.2s;
+        }
+        .confirm-section .cta:hover {
+            background: #0052cc;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Stadium Ticketing</h1>
+        <p>Ticket Purchase Confirmation</p>
+    </header>
+    <nav>
+        <a href="{% url 'home' %}">Home</a>
+        <a href="{% url 'event_list' %}">Events</a>
+        <a href="{% url 'event_calendar' %}">Calendar</a>
+        <a href="/admin/">Admin</a>
+        <a href="{% url 'profile' %}">Profile</a>
+        <a href="{% url 'logout' %}">Logout</a>
+    </nav>
+    <div class="container">
+        <div class="confirm-section">
+            <h2>Thank You! Your Ticket Has Been Purchased.</h2>
+            <div class="ticket-summary">
+                <p><strong>Event:</strong> {{ ticket.event.name }}</p>
+                <p><strong>Date & Time:</strong> {{ ticket.event.date|date:"F j, Y, g:i a" }}</p>
+                <p><strong>Location:</strong> {{ ticket.event.location }}</p>
+                <p><strong>Seat:</strong> {{ ticket.seat }}</p>
+                <p><strong>Status:</strong> {{ ticket.status }}</p>
+                <p><strong>Purchase Date:</strong> {{ ticket.purchase_date|date:"F j, Y" }}</p>
+            </div>
+            <a href="{% url 'ticket_detail' ticket.pk %}" class="cta">View Ticket</a>
+            <a href="{% url 'ticket_list' %}" class="cta">My Tickets</a>
+            <a href="{% url 'event_list' %}" class="cta">Browse More Events</a>
+        </div>
+    </div>
+    <footer>
+        &copy; {{ year|default:2025 }} Stadium Ticketing. All rights reserved.
+    </footer>
+</body>
