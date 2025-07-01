@@ -1,91 +1,111 @@
+{% extends "base.html" %}
+{% block navbar %}{% endblock %}
 {% load static %}
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Login | Stadium Ticketing</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
-    <style>
+
+{% block header %}
+<div style="width:100%;text-align:center;margin-top:2.5rem;margin-bottom:1.5rem;">
+    
+    <div style="font-size:2rem;font-weight:bold;color:#050505;letter-spacing:1px;margin-top:0.5rem;">ArenaX</div>
+    <div style="color:#0b0b0b;font-size:1.08rem;margin-top:0.2rem;">log into your account</div>
+</div>
+{% endblock %}
+
+{% block content %}
+<style>
+    .login-section {
+        max-width: 400px;
+        margin: 3rem auto 2rem auto;
+        background: rgba(255,255,255,0.92);
+        padding: 2.2rem 2rem 1.5rem 2rem;
+        border-radius: 12px;
+        box-shadow: 0 2px 16px rgba(0,0,0,0.10);
+    }
+    .login-section h2 {
+        color: #0052cc;
+        margin-bottom: 1.5rem;
+        text-align: center;
+        letter-spacing: 1px;
+    }
+    .login-section form label {
+        display: block;
+        margin-top: 1.1rem;
+        font-weight: 500;
+        color: #0052cc;
+    }
+    .login-section form input {
+        width: 100%;
+        padding: 0.7rem;
+        margin-top: 0.3rem;
+        border: 1px solid #b3c6e0;
+        border-radius: 6px;
+        font-size: 1rem;
+        background: #f7faff;
+        transition: border 0.2s;
+    }
+    .login-section form input:focus {
+        border: 1.5px solid #007bff;
+        outline: none;
+        background: #fff;
+    }
+    .login-section form button {
+        margin-top: 1.7rem;
+        background: #007bff;
+        color: #fff;
+        border: none;
+        padding: 0.85rem 2rem;
+        border-radius: 6px;
+        font-size: 1.1rem;
+        cursor: pointer;
+        width: 100%;
+        font-weight: bold;
+        box-shadow: 0 2px 8px rgba(0,123,255,0.08);
+        transition: background 0.18s;
+    }
+    .login-section form button:hover {
+        background: #0052cc;
+    }
+    .login-section .links {
+        margin-top: 1.5rem;
+        text-align: center;
+    }
+    .login-section .links a {
+        color: #007bff;
+        text-decoration: underline;
+        margin: 0 0.5rem;
+        font-size: 1rem;
+        transition: color 0.18s;
+    }
+    .login-section .links a:hover {
+        color: #0052cc;
+    }
+    @media (max-width: 600px) {
         .login-section {
-            max-width: 400px;
-            margin: 2.5rem auto;
-            background: #fff;
-            padding: 2rem;
-            border-radius: 10px;
-            box-shadow: 0 2px 12px rgba(0,0,0,0.07);
+            padding: 1.2rem 0.7rem 1rem 0.7rem;
         }
-        .login-section h2 {
-            color: #0052cc;
-            margin-bottom: 1.5rem;
-            text-align: center;
-        }
-        .login-section form label {
-            display: block;
-            margin-top: 1rem;
-            font-weight: 500;
-        }
-        .login-section form input {
-            width: 100%;
-            padding: 0.7rem;
-            margin-top: 0.3rem;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-            font-size: 1rem;
-        }
-        .login-section form button {
-            margin-top: 1.5rem;
-            background: #007bff;
-            color: #fff;
-            border: none;
-            padding: 0.8rem 2rem;
-            border-radius: 5px;
-            font-size: 1.1rem;
-            cursor: pointer;
-            width: 100%;
-        }
-        .login-section form button:hover {
-            background: #0052cc;
-        }
-        .login-section .links {
-            margin-top: 1.5rem;
-            text-align: center;
-        }
-        .login-section .links a {
-            color: #007bff;
-            text-decoration: underline;
-            margin: 0 0.5rem;
-        }
-    </style>
-</head>
-<body>
-    
-    
-    <div class="container">
-        <div class="login-section">
-            <h2>Login</h2>
-            <form method="post" action="">
-                {% csrf_token %}
-                {% if form.errors %}
-                    <div style="color: #dc3545; margin-bottom: 1rem;">
-                        Please enter a correct username and password.
-                    </div>
-                {% endif %}
-                <label for="id_username">Username</label>
-                <input type="text" name="username" id="id_username" required autofocus>
+    }
+</style>
+<div class="container">
+    <div class="login-section">
+        <h2>Login</h2>
+        <form method="post" action="">
+            {% csrf_token %}
+            {% if form.errors %}
+                <div style="color: #dc3545; margin-bottom: 1rem;">
+                    Please enter a correct username and password.
+                </div>
+            {% endif %}
+            <label for="id_username">Username</label>
+            <input type="text" name="username" id="id_username" required autofocus>
 
-                <label for="id_password">Password</label>
-                <input type="password" name="password" id="id_password" required>
+            <label for="id_password">Password</label>
+            <input type="password" name="password" id="id_password" required>
 
-                <button type="submit">Login</button>
-            </form>
-            <div class="links">
-                <a href="{% url 'password_reset' %}">Forgot password?</a> |
-                <a href="{% url 'register' %}">Create an account</a>
-            </div>
+            <button type="submit">Login</button>
+        </form>
+        <div class="links">
+            <a href="{% url 'password_reset' %}">Forgot password?</a> |
+            <a href="{% url 'register' %}">Create an account</a>
         </div>
     </div>
-    <footer>
-        &copy; {{ year|default:2025 }} Stadium Ticketing. All rights reserved.
-    </footer>
-</body>
+</div>
+{% endblock %}

@@ -1,12 +1,19 @@
 {% extends "base.html" %}
+{% block navbar %}
+<div style="width:100%;text-align:center;margin-top:2.5rem;margin-bottom:1.5rem;">
+    
+    <div style="font-size:2rem;font-weight:bold;color:#050505;letter-spacing:1px;margin-top:0.5rem;">ArenaX</div>
+    <div style="color:#0b0b0b;font-size:1.08rem;margin-top:0.2rem;">create your account</div>
+</div>{% endblock %}
 {% load static %}
 {% block title %}Register | Stadium Ticketing{% endblock %}
 
 {% block content %}
 <style>
     .register-section {
+
         max-width: 450px;
-        margin: 2.5rem auto;
+        margin-top: 20px;
         background: #fff;
         padding: 2rem;
         border-radius: 12px;

@@ -20,6 +20,7 @@
             min-height: 100vh;
             font-family: 'Segoe UI', Arial, sans-serif;
             background: #007bff; /* Solid blue background */
+            
         }
         header {
             background: rgba(255,255,255,0.98);
@@ -31,6 +32,7 @@
             display: flex;
             align-items: center;
             justify-content: space-between;
+            
         }
         .logo-title {
             display: flex;
@@ -174,6 +176,7 @@
     {% block header %}
         <!-- Default: empty. Home page will override this block. -->
     {% endblock %}
+    {% block navbar %}
     <nav>
         <a href="{% url 'event_list' %}">🎟️ Events</a>
         <a href="{% url 'event_calendar' %}">🗓️ Calendar</a>
@@ -205,6 +208,7 @@
             <a href="{% url 'register' %}">📝 Register</a>
         {% endif %}
     </nav>
+    {% endblock %}
     <div class="container">
         {% block content %}{% endblock %}
     </div>
