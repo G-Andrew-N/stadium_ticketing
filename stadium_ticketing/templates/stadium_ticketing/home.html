@@ -6,96 +6,59 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     {% load static %}
     <link rel="stylesheet" href="{% static 'css/styles.css' %}">
-    <link rel="icon" href="{% static 'images/favicon.ico' %}" type="image/x-icon">
+    
     <style>
         body {
             min-height: 100vh;
             margin: 0;
             padding: 0;
             font-family: 'Segoe UI', Arial, sans-serif;
-            background: url("{% static 'images/stadium.webp' %}") no-repeat center center fixed;
-            background-size: cover;
+            background: #f4f8fb; /* Light neutral background, no image */
             display: flex;
             flex-direction: column;
         }
-        .overlay {
-            background: rgba(0, 0, 0, 0.55);
-            min-height: 100vh;
-            width: 100vw;
-            position: fixed;
-            top: 0; left: 0;
-            z-index: 0;
-        }
-        header.site-header {
-            position: relative;
-            z-index: 2;
-            width: 100%;
-            padding: 2rem 0 1rem 0;
+        .home-section {
+            max-width: 500px;
+            margin: 3rem auto 2rem auto;
+            background: #fff;
+            padding: 2.5rem 2rem 2rem 2rem;
+            border-radius: 16px;
+            box-shadow: 0 2px 16px rgba(0,0,0,0.09);
             text-align: center;
+            font-family: 'Segoe UI', 'Roboto', Arial, sans-serif;
         }
-        .site-logo {
-            width: 60px;
-            height: 60px;
+        .home-logo {
+            width: 64px;
+            height: 64px;
             border-radius: 50%;
             object-fit: cover;
             box-shadow: 0 2px 8px rgba(0,123,255,0.13);
-            margin-bottom: 0.5rem;
             background: #fff;
-        }
-        .site-title {
-            font-size: 2.5rem;
-            font-weight: bold;
-            color: #fff;
-            letter-spacing: 2px;
-            text-shadow: 0 2px 16px rgba(0,0,0,0.25);
-            margin: 0.2rem 0 0.5rem 0;
-        }
-        .site-tagline {
-            color: #e0e6f7;
-            font-size: 1.15rem;
-            margin-bottom: 0.5rem;
-            text-shadow: 0 1px 8px rgba(0,0,0,0.18);
-        }
-        .main-content {
-            position: relative;
-            z-index: 2;
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-        }
-        .hero {
-            background: rgba(255,255,255,0.18);
-            color: #fff;
-            padding: 2.5rem 2rem 1.5rem 2rem;
-            border-radius: 18px;
-            text-align: center;
-            margin-bottom: 2.5rem;
-            margin-top: 20px;
-            box-shadow: 0 2px 24px rgba(0,0,0,0.18);
-            max-width: 480px;
-            width: 95%;
-            backdrop-filter: blur(2.5px);
-        }
-        .hero h2 {
-            font-size: 2.1rem;
             margin-bottom: 1rem;
-            color: #fff;
-            letter-spacing: 1px;
-            text-shadow: 0 2px 12px rgba(0,0,0,0.18);
         }
-        .hero p {
+        .home-title {
+            font-size: 2.2rem;
+            font-weight: bold;
+            color: #0052cc;
+            letter-spacing: 1px;
+            margin-bottom: 0.5rem;
+        }
+        .home-tagline {
+            color: #007bff;
             font-size: 1.15rem;
+            margin-bottom: 1.2rem;
+            font-weight: 500;
+        }
+        .home-hero {
+            font-size: 1.13rem;
+            color: #333;
             margin-bottom: 2rem;
-            color: #f3f6fa;
-            text-shadow: 0 1px 8px rgba(0,0,0,0.13);
         }
         .action-links {
             margin: 2rem 0 0 0;
         }
         .action-links a {
-            background: rgba(0,123,255,0.92);
+            background: #007bff;
             color: #fff;
             font-weight: bold;
             padding: 0.9rem 2.2rem;
@@ -108,7 +71,7 @@
             transition: background 0.2s, box-shadow 0.2s;
         }
         .action-links a.register {
-            background: rgba(40,167,69,0.93);
+            background: #28a745;
             box-shadow: 0 2px 8px rgba(40,167,69,0.10);
         }
         .action-links a:hover {
@@ -119,72 +82,67 @@
             background: #218838;
         }
         .about-section {
-            background: rgba(255,255,255,0.15);
-            border-radius: 14px;
+            background: #fff;
+            border-radius: 12px;
             padding: 2rem 2rem 1.5rem 2rem;
             margin-top: 2.5rem;
-            box-shadow: 0 2px 12px rgba(0,0,0,0.10);
+            box-shadow: 0 2px 12px rgba(0,0,0,0.07);
             max-width: 480px;
             width: 95%;
-            color: #f3f6fa;
-            text-shadow: 0 1px 8px rgba(0,0,0,0.13);
-            backdrop-filter: blur(2.5px);
+            color: #333;
+            font-size: 1.08rem;
+            text-align: left;
+            margin-left: auto;
+            margin-right: auto;
         }
         .about-section h2 {
-            color: #fff;
+            color: #0052cc;
             margin-bottom: 1rem;
-            text-shadow: 0 2px 12px rgba(0,0,0,0.18);
+            font-size: 1.25rem;
+            font-weight: 600;
         }
         .about-section ul {
-            text-align: left;
             margin-left: 1.2rem;
-            color: #f3f6fa;
-            font-size: 1.08rem;
+            margin-bottom: 0;
         }
         .about-section li {
             margin-bottom: 0.7rem;
         }
         @media (max-width: 600px) {
-            .hero, .about-section {
+            .home-section, .about-section {
                 padding: 1.2rem;
             }
-            .hero h2 {
+            .home-title {
                 font-size: 1.5rem;
             }
-            .site-title {
-                font-size: 1.5rem;
+            .about-section h2 {
+                font-size: 1.05rem;
             }
         }
     </style>
 </head>
 <body>
-    <div class="overlay"></div>
-    <header class="site-header">
+    <div class="home-section">
         
-        <div class="site-title">ArenaX</div>
-        <div class="site-tagline">Your Gateway to Live Stadium Events</div>
-    </header>
-    <div class="main-content">
-        <div class="hero">
-            <h2>Welcome to ArenaX</h2>
-            <p>
-                Experience the thrill of live sports, concerts, and entertainment.<br>
-                Book your stadium tickets quickly, securely, and hassle-free!
-            </p>
-            <div class="action-links">
-                <a href="{% url 'login' %}">Login</a>
-                <a href="{% url 'register' %}" class="register">Register</a>
-            </div>
+        <div class="home-title">Stadium Ticketing</div>
+        <div class="home-tagline">Your Gateway to Live Stadium Events</div>
+        <div class="home-hero">
+            Experience the thrill of live sports, concerts, and entertainment.<br>
+            Book your stadium tickets quickly, securely, and hassle-free!
         </div>
-        <div class="about-section">
-            <h2>Why Choose ArenaX?</h2>
-            <ul>
-                <li>Effortless online ticket booking for all major stadium events</li>
-                <li>Secure payments and instant ticket confirmation</li>
-                <li>Easy-to-use dashboard for managing your bookings</li>
-                <li>24/7 customer support for all your needs</li>
-            </ul>
+        <div class="action-links">
+            <a href="{% url 'login' %}">Login</a>
+            <a href="{% url 'register' %}" class="register">Register</a>
         </div>
+    </div>
+    <div class="about-section">
+        <h2>Why Choose Stadium Ticketing?</h2>
+        <ul>
+            <li>Effortless online ticket booking for all major stadium events</li>
+            <li>Secure payments and instant ticket confirmation</li>
+            <li>Easy-to-use dashboard for managing your bookings</li>
+            <li>24/7 customer support for all your needs</li>
+        </ul>
     </div>
 </body>
 </html>

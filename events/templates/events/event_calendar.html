@@ -42,6 +42,24 @@
     .calendar-event:hover {
         background: #0052cc;
     }
+    .calendar-nav {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 2rem;
+        margin-bottom: 1.5rem;
+    }
+    .calendar-nav a {
+        color: #007bff;
+        font-weight: 500;
+        text-decoration: underline;
+        font-size: 1.1rem;
+    }
+    .calendar-nav span {
+        font-size: 1.15rem;
+        font-weight: bold;
+        color: #0052cc;
+    }
     @media (max-width: 900px) {
         .calendar-table th, .calendar-table td {
             padding: 0.5rem;
@@ -52,10 +70,28 @@
         .calendar-container {
             min-width: 100vw;
         }
+        .calendar-nav {
+            gap: 1rem;
+        }
     }
 </style>
 <div class="section">
     <h2>Event Calendar for {{ month_name }} {{ year }}</h2>
+    <div class="calendar-nav">
+        {% with prev_month=month|add:"-1" next_month=month|add:"1" %}
+            {% if month == 1 %}
+                <a href="?month=12&year={{ year|add:"-1" }}">&larr; {{ "December" }}</a>
+            {% else %}
+                <a href="?month={{ month|add:"-1" }}&year={{ year }}">&larr; {{ calendar.month_name|slice:month|last }}</a>
+            {% endif %}
+            <span>{{ month_name }} {{ year }}</span>
+            {% if month == 12 %}
+                <a href="?month=1&year={{ year|add:"1" }}">{{ "January" }} &rarr;</a>
+            {% else %}
+                <a href="?month={{ month|add:"1" }}&year={{ year }}">{{ calendar.month_name|slice:next_month|last }} &rarr;</a>
+            {% endif %}
+        {% endwith %}
+    </div>
     <div class="calendar-container">
         <table class="calendar-table">
             <thead>

@@ -14,22 +14,48 @@ import json
 def event_list(request):
     event_type = request.GET.get('type')
     q = request.GET.get('q', '')
+    selected_sport_type = request.GET.get('sport_type', '')
+    selected_league = request.GET.get('league', '')
+
     events = Event.objects.all()
     if event_type:
         events = events.filter(event_type=event_type)
     if q:
         events = events.filter(name__icontains=q) | events.filter(location__icontains=q)
+    # Filter sports events by sport_type and league
+    if event_type == 'sports':
+        if selected_sport_type:
+            events = events.filter(sport_type=selected_sport_type)
+        if selected_league:
+            events = events.filter(league=selected_league)
+
     # Group events by type for display
     from collections import OrderedDict
     grouped_events = OrderedDict()
     for key, label in Event.EVENT_TYPE_CHOICES:
         grouped_events[label] = events.filter(event_type=key)
-    return render(request, 'events/event_list.html', {
+
+    # Only show sport types and leagues for sports events
+    sport_type_choices = Event.objects.filter(event_type='sports').values_list('sport_type', flat=True).distinct()
+    league_choices = Event.objects.filter(event_type='sports').values_list('league', flat=True).distinct()
+
+    # Convert to (key, label) tuples using model choices for display
+    sport_type_display = dict(Event.SPORTS_TYPE_CHOICES)
+    league_display = dict(Event.LEAGUE_CHOICES)
+    sport_type_choices = [(key, sport_type_display.get(key, key)) for key in sport_type_choices if key]
+    league_choices = [(key, league_display.get(key, key)) for key in league_choices if key]
+
+    context = {
         'grouped_events': grouped_events,
         'event_type_choices': Event.EVENT_TYPE_CHOICES,
         'selected_type': event_type,
+        'selected_sport_type': selected_sport_type,
+        'selected_league': selected_league,
         'q': q,
-    })
+        'sport_type_choices': sport_type_choices,
+        'league_choices': league_choices,
+    }
+    return render(request, 'events/event_list.html', context)
 
 def event_detail(request, pk):
     event_obj = get_object_or_404(Event, pk=pk)
@@ -124,14 +150,12 @@ def event_confirm_delete(request, pk):
     return render(request, 'events/event_confirm_delete.html', {'event': event_obj})
 
 def event_calendar(request):
-    # Get current month and year
     today = date.today()
     year = int(request.GET.get('year', today.year))
     month = int(request.GET.get('month', today.month))
     month_name = calendar.month_name[month]
     week_days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat']
 
-    # Build calendar matrix
     cal = calendar.Calendar()
     month_days = cal.monthdatescalendar(year, month)
     calendar_matrix = []
@@ -146,10 +170,12 @@ def event_calendar(request):
         calendar_matrix.append(week_list)
 
     context = {
+        'month': month,  # <-- Add this line
         'month_name': month_name,
         'year': year,
         'week_days': week_days,
         'calendar': calendar_matrix,
+        'calendar_module': calendar,  # If you want to use calendar.month_name in template
     }
     return render(request, 'events/event_calendar.html', context)
 

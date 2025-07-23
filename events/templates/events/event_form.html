@@ -101,9 +101,15 @@
         {{ form.name.errors }}
         {{ form.name }}
 
-        <label for="id_event_type">Category</label>
-        {{ form.event_type.errors }}
+        <label for="id_event_type">Event Type</label>
         {{ form.event_type }}
+
+        <div id="sports-fields" {% if form.instance.event_type != 'sports' %}style="display:none;"{% endif %}>
+            <label for="id_sport_type">Sport Type</label>
+            {{ form.sport_type }}
+            <label for="id_league">League</label>
+            {{ form.league }}
+        </div>
 
         <label for="id_date">Date & Time</label>
         {{ form.date.errors }}
@@ -184,6 +190,19 @@
                     reader.readAsDataURL(thumbInput.files[0]);
                 } else {
                     thumbPreview.style.display = 'none';
+                }
+            });
+        }
+
+        // Show/hide sports fields dynamically on event_type change
+        var eventType = document.getElementById('id_event_type');
+        var sportsFields = document.getElementById('sports-fields');
+        if(eventType){
+            eventType.addEventListener('change', function() {
+                if (eventType.value === 'sports') {
+                    sportsFields.style.display = '';
+                } else {
+                    sportsFields.style.display = 'none';
                 }
             });
         }

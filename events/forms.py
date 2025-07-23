@@ -8,4 +8,14 @@ class EventForm(forms.ModelForm):
     )
     class Meta:
         model = Event
-        fields = ['name', 'event_type', 'date', 'location', 'description', 'thumbnail']
+        fields = [
+            'name', 'date', 'location', 'description', 'thumbnail',
+            'event_type', 'sport_type', 'league'
+        ]
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        # Hide sport_type and league unless event_type is 'sports'
+        if self.instance and self.instance.event_type != 'sports':
+            self.fields['sport_type'].widget = forms.HiddenInput()
+            self.fields['league'].widget = forms.HiddenInput()

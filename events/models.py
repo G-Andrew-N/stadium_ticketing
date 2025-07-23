@@ -13,12 +13,28 @@ class Event(models.Model):
         ('recreational', 'Recreational and Community Events'),
         ('esports', 'E-sports and Virtual Events'),
     ]
+    SPORTS_TYPE_CHOICES = [
+        ('football', 'Football'),
+        ('basketball', 'Basketball'),
+        ('athletics', 'Athletics'),
+        ('rugby', 'Rugby'),
+        ('tennis', 'Tennis'),
+        # Add more as needed
+    ]
+    LEAGUE_CHOICES = [
+        ('premier_league', 'Premier League'),
+        ('national_league', 'National League'),
+        ('champions_league', 'Champions League'),
+        # Add more as needed
+    ]
     name = models.CharField(max_length=200)
     date = models.DateTimeField()
     location = models.CharField(max_length=200)
     description = models.TextField(blank=True)
-    thumbnail = models.ImageField(upload_to='event_thumbnails/', blank=True, null=True)  # <-- Added field
+    thumbnail = models.ImageField(upload_to='event_thumbnails/', blank=True, null=True)
     event_type = models.CharField(max_length=32, choices=EVENT_TYPE_CHOICES, default='sports')
+    sport_type = models.CharField(max_length=32, choices=SPORTS_TYPE_CHOICES, blank=True, null=True)
+    league = models.CharField(max_length=32, choices=LEAGUE_CHOICES, blank=True, null=True)
 
     def __str__(self):
         return self.name

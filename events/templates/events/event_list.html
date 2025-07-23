@@ -12,15 +12,14 @@
     }
     .event-card {
         background: #fff;
-        border-radius: 10px;
+        border-radius: 12px;
         box-shadow: 0 2px 12px rgba(0,0,0,0.07);
-        padding: 1.5rem 1.2rem;
+        padding: 1.7rem 1.3rem;
         width: 320px;
         display: flex;
         flex-direction: column;
-        justify-content: flex-start;
-        align-items: center;
-        transition: box-shadow 0.2s;
+        align-items: stretch;
+        font-family: 'Segoe UI', 'Roboto', Arial, sans-serif;
         margin-bottom: 1rem;
     }
     .event-card:hover {
@@ -36,35 +35,58 @@
         background: #f4f4f4;
         margin-bottom: 1rem;
     }
-    .event-card strong {
-        font-size: 1.25rem;
+    .event-title {
+        font-size: 1.35rem;
         color: #0052cc;
         margin-bottom: 0.5rem;
-        display: block;
+        font-weight: 600;
         text-align: center;
+        letter-spacing: 0.5px;
     }
-    .event-card .event-date {
+    .event-date, .event-location {
         color: #555;
-        font-size: 0.98rem;
-        margin-bottom: 0.5rem;
+        font-size: 1rem;
+        margin-bottom: 0.4rem;
         text-align: center;
+        font-family: 'Segoe UI', 'Roboto', Arial, sans-serif;
     }
-    .event-card .event-location {
+    .event-location {
         color: #007bff;
-        font-size: 0.98rem;
-        margin-bottom: 0.7rem;
-        text-align: center;
+        font-weight: 500;
     }
-    .event-card .event-description {
+    .event-description {
         color: #333;
         font-size: 0.97rem;
         margin-bottom: 1.1rem;
         min-height: 48px;
         text-align: center;
+        font-family: 'Segoe UI', 'Roboto', Arial, sans-serif;
     }
-    .event-card .cta {
-        align-self: center;
-        margin-bottom: 0.5rem;
+    .event-sport-type, .event-league {
+        font-size: 0.98rem;
+        color: #444;
+        margin-bottom: 0.3rem;
+        text-align: center;
+    }
+    .event-sport-type .label, .event-league .label {
+        color: #0052cc;
+        font-weight: 500;
+        margin-right: 0.3rem;
+    }
+    .cta {
+        display: inline-block;
+        background: #007bff;
+        color: #fff;
+        border-radius: 5px;
+        padding: 0.5rem 1.2rem;
+        text-decoration: none;
+        font-weight: 500;
+        margin: 0.7rem auto 0.3rem auto;
+        text-align: center;
+        transition: background 0.18s;
+    }
+    .cta:hover {
+        background: #0052cc;
     }
     .event-actions {
         margin-top: 0.7rem;
@@ -75,6 +97,7 @@
         font-size: 0.97rem;
         color: #0052cc;
         text-decoration: underline;
+        font-family: 'Segoe UI', 'Roboto', Arial, sans-serif;
     }
     .event-actions a.delete-link {
         color: #dc3545;
@@ -101,12 +124,14 @@
         margin-bottom: 2rem;
         display: flex;
         gap: 1rem;
+        flex-wrap: wrap;
     }
-    .search-bar input[type="text"] {
+    .search-bar input[type="text"], .search-bar select {
         padding: 0.5rem;
         border: 1px solid #ccc;
         border-radius: 4px;
         width: 250px;
+        margin-bottom: 0.5rem;
     }
     .search-bar button {
         padding: 0.5rem 1.2rem;
@@ -115,6 +140,7 @@
         color: #fff;
         border-radius: 4px;
         cursor: pointer;
+        margin-bottom: 0.5rem;
     }
     .search-bar button:hover {
         background: #0052cc;
@@ -145,12 +171,27 @@
     }
 </style>
 <div class="section">
-    
+
     <form class="search-bar" method="get" action="">
         <input type="text" name="q" placeholder="Search events by name or location..." value="{{ q }}">
-        {% if selected_type %}
-            <input type="hidden" name="type" value="{{ selected_type }}">
-        {% endif %}
+        <select name="type" id="event-type-select">
+            <option value="">All Categories</option>
+            {% for key, label in event_type_choices %}
+                <option value="{{ key }}" {% if selected_type == key %}selected{% endif %}>{{ label }}</option>
+            {% endfor %}
+        </select>
+        <select name="sport_type" id="sport-type-select" style="display:none;">
+            <option value="">Select Sport</option>
+            {% for key, label in sport_type_choices %}
+                <option value="{{ key }}" {% if selected_sport_type == key %}selected{% endif %}>{{ label }}</option>
+            {% endfor %}
+        </select>
+        <select name="league" id="league-select" style="display:none;">
+            <option value="">Select League</option>
+            {% for key, label in league_choices %}
+                <option value="{{ key }}" {% if selected_league == key %}selected{% endif %}>{{ label }}</option>
+            {% endfor %}
+        </select>
         <button type="submit">Search</button>
     </form>
     <div class="category-filter">
@@ -172,10 +213,14 @@
                     {% else %}
                         <img src="{% static 'images/default_event_thumb.png' %}" alt="No thumbnail" class="event-thumbnail">
                     {% endif %}
-                    <strong>{{ event.name }}</strong>
-                    <div class="event-date">{{ event.date|date:"F j, Y, g:i a" }}</div>
-                    <div class="event-location">{{ event.location }}</div>
+                    <strong class="event-title">{{ event.name }}</strong>
+                    <div class="event-date"><i class="fa fa-calendar"></i> {{ event.date|date:"F j, Y, g:i a" }}</div>
+                    <div class="event-location"><i class="fa fa-map-marker"></i> {{ event.location }}</div>
                     <div class="event-description">{{ event.description|linebreaksbr|truncatewords:30 }}</div>
+                    {% if event.event_type == 'sports' %}
+                        <div class="event-sport-type"><span class="label">Sport:</span> {{ event.get_sport_type_display }}</div>
+                        <div class="event-league"><span class="label">League:</span> {{ event.get_league_display }}</div>
+                    {% endif %}
                     <a href="{% url 'event_detail' event.pk %}" class="cta">View Details</a>
                     {% if user.is_superuser %}
                     <div class="event-actions">
@@ -191,4 +236,26 @@
         <div>No events available at the moment. Please check back soon!</div>
     {% endfor %}
 </div>
+<script>
+    // Show/hide sport type and league selects based on event type selection
+    document.addEventListener('DOMContentLoaded', function() {
+        var eventTypeSelect = document.getElementById('event-type-select');
+        var sportTypeSelect = document.getElementById('sport-type-select');
+        var leagueSelect = document.getElementById('league-select');
+
+        function updateFilters() {
+            if (eventTypeSelect.value === 'sports') {
+                sportTypeSelect.style.display = '';
+                leagueSelect.style.display = '';
+            } else {
+                sportTypeSelect.style.display = 'none';
+                leagueSelect.style.display = 'none';
+                sportTypeSelect.value = '';
+                leagueSelect.value = '';
+            }
+        }
+        eventTypeSelect.addEventListener('change', updateFilters);
+        updateFilters();
+    });
+</script>
 {% endblock %}
