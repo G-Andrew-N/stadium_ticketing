@@ -51,7 +51,16 @@ def user_register(request):
 
 @login_required
 def profile(request):
-    tickets = Ticket.objects.filter(user=request.user).select_related('event').order_by('-purchase_date')
+    # Only show user's tickets that are not cancelled, and show real status
+    tickets = (
+        Ticket.objects
+        .filter(user=request.user)
+        .exclude(status="cancelled")
+        .select_related('event')
+        .order_by('-event__date')
+    )
+    # Optionally, if you want to be extra sure, you can filter only tickets with status in allowed list:
+    # tickets = Ticket.objects.filter(user=request.user, status__in=["active", "pending"]).select_related('event').order_by('-event__date')
     return render(request, 'users/profile.html', {
         'tickets': tickets,
         'now': timezone.now(),

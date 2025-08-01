@@ -57,11 +57,14 @@ class Ticket(models.Model):
             super().save(update_fields=['qr_code_image'])
 
 class TicketType(models.Model):
-
     event = models.ForeignKey(Event, on_delete=models.CASCADE, related_name='ticket_types')
     name = models.CharField(max_length=50, choices=TICKET_TYPE_CHOICES)
     price = models.DecimalField(max_digits=8, decimal_places=2)
     total_available = models.PositiveIntegerField(default=0)
+    seats = models.CharField(max_length=500, blank=True, help_text="Comma-separated seat numbers, e.g. A1,A2,A3")
 
     def __str__(self):
         return f"{self.event.name} - {self.get_name_display()}"
+
+    def get_seat_list(self):
+        return [s.strip() for s in self.seats.split(',') if s.strip()]

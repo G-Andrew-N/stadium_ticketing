@@ -4,6 +4,9 @@
 
 {% block content %}
 <style>
+    .section {
+        margin-top: 20px;
+    }
     .card-list {
         display: flex;
         flex-wrap: wrap;
@@ -12,8 +15,8 @@
     }
     .event-card {
         background: #fff;
-        border-radius: 12px;
-        box-shadow: 0 2px 12px rgba(0,0,0,0.07);
+        border-radius: 16px;
+        box-shadow: 0 4px 18px rgba(0,123,255,0.10);
         padding: 1.7rem 1.3rem;
         width: 320px;
         display: flex;
@@ -21,27 +24,34 @@
         align-items: stretch;
         font-family: 'Segoe UI', 'Roboto', Arial, sans-serif;
         margin-bottom: 1rem;
+        transition: box-shadow 0.18s, transform 0.18s;
+        position: relative;
+        overflow: hidden;
     }
     .event-card:hover {
-        box-shadow: 0 6px 24px rgba(0,123,255,0.13);
+        box-shadow: 0 8px 32px rgba(0,123,255,0.18);
+        transform: translateY(-4px) scale(1.02);
     }
     .event-thumbnail {
         width: 100%;
         max-width: 270px;
         height: 150px;
         object-fit: cover;
-        border-radius: 8px;
+        border-radius: 10px;
         box-shadow: 0 2px 8px rgba(0,0,0,0.08);
         background: #f4f4f4;
         margin-bottom: 1rem;
+        align-self: center;
+        transition: width 0.2s, height 0.2s;
     }
     .event-title {
         font-size: 1.35rem;
         color: #0052cc;
         margin-bottom: 0.5rem;
-        font-weight: 600;
+        font-weight: 700;
         text-align: center;
         letter-spacing: 0.5px;
+        line-height: 1.2;
     }
     .event-date, .event-location {
         color: #555;
@@ -75,18 +85,21 @@
     }
     .cta {
         display: inline-block;
-        background: #007bff;
+        background: linear-gradient(90deg, #007bff 60%, #0052cc 100%);
         color: #fff;
-        border-radius: 5px;
-        padding: 0.5rem 1.2rem;
+        border-radius: 7px;
+        padding: 0.6rem 1.4rem;
         text-decoration: none;
-        font-weight: 500;
+        font-weight: 600;
         margin: 0.7rem auto 0.3rem auto;
         text-align: center;
-        transition: background 0.18s;
+        transition: background 0.18s, box-shadow 0.18s;
+        box-shadow: 0 2px 8px rgba(0,123,255,0.08);
+        font-size: 1.05rem;
     }
     .cta:hover {
-        background: #0052cc;
+        background: linear-gradient(90deg, #0052cc 60%, #007bff 100%);
+        box-shadow: 0 4px 16px rgba(0,123,255,0.13);
     }
     .event-actions {
         margin-top: 0.7rem;
@@ -102,15 +115,6 @@
     .event-actions a.delete-link {
         color: #dc3545;
     }
-    @media (max-width: 900px) {
-        .card-list {
-            flex-direction: column;
-            gap: 1.5rem;
-        }
-        .event-card {
-            width: 100%;
-        }
-    }
     .top-actions {
         margin-bottom: 1.5rem;
     }
@@ -125,13 +129,19 @@
         display: flex;
         gap: 1rem;
         flex-wrap: wrap;
+        align-items: center;
+        background: #f4f8fb;
+        border-radius: 10px;
+        padding: 1rem 1.2rem;
+        box-shadow: 0 1px 6px rgba(0,123,255,0.06);
     }
     .search-bar input[type="text"], .search-bar select {
         padding: 0.5rem;
         border: 1px solid #ccc;
         border-radius: 4px;
-        width: 250px;
+        width: 220px;
         margin-bottom: 0.5rem;
+        font-size: 1rem;
     }
     .search-bar button {
         padding: 0.5rem 1.2rem;
@@ -141,6 +151,9 @@
         border-radius: 4px;
         cursor: pointer;
         margin-bottom: 0.5rem;
+        font-weight: 600;
+        font-size: 1rem;
+        transition: background 0.18s;
     }
     .search-bar button:hover {
         background: #0052cc;
@@ -160,14 +173,86 @@
         font-weight: 500;
         border: 1px solid #e5e5e5;
         transition: background 0.2s, color 0.2s;
+        font-size: 1rem;
     }
     .category-filter a.active, .category-filter span.active {
         background: #007bff;
         color: #fff;
         border-color: #007bff;
     }
-    .section{
-        margin-top: 20px;
+    /* Responsive styles */
+    @media (max-width: 1100px) {
+        .card-list {
+            gap: 1.2rem;
+        }
+        .event-card {
+            width: 45vw;
+            min-width: 260px;
+            max-width: 100%;
+        }
+    }
+    @media (max-width: 900px) {
+        .card-list {
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+        .event-card {
+            width: 100%;
+            min-width: 0;
+        }
+    }
+    @media (max-width: 700px) {
+        .search-bar {
+            flex-direction: column;
+            gap: 0.7rem;
+            padding: 0.7rem 0.5rem;
+        }
+        .category-filter {
+            gap: 0.5rem;
+            padding: 0.3rem 0.2rem;
+        }
+        .event-card {
+            padding: 1rem 0.5rem;
+            width: 100%;
+            min-width: 0;
+        }
+        .event-thumbnail {
+            width: 100%;
+            max-width: 100%;
+            min-width: 0;
+            height: 110px;
+            margin-bottom: 0.7rem;
+            border-radius: 7px;
+        }
+        .event-title {
+            font-size: 1.08rem;
+        }
+        .event-date, .event-location, .event-description, .event-sport-type, .event-league {
+            font-size: 0.97rem;
+        }
+        .cta {
+            padding: 0.45rem 1rem;
+            font-size: 0.97rem;
+        }
+    }
+    @media (max-width: 500px) {
+        .event-card {
+            padding: 0.7rem 0.2rem;
+        }
+        .event-title {
+            font-size: 0.98rem;
+        }
+        .event-thumbnail {
+            height: 80px;
+        }
+        .search-bar input[type="text"], .search-bar select {
+            width: 100%;
+            font-size: 0.98rem;
+        }
+        .category-filter a, .category-filter span {
+            font-size: 0.97rem;
+            padding: 0.4rem 0.7rem;
+        }
     }
 </style>
 <div class="section">
@@ -204,7 +289,7 @@
     </div>
     {% for category, events in grouped_events.items %}
         {% if events %}
-            <h2>{{ category }}</h2>
+            <h2 style="color:#0052cc; margin-bottom:0.7rem; margin-top:2.2rem; font-size:1.3rem;">{{ category }}</h2>
             <div class="card-list">
                 {% for event in events %}
                 <div class="event-card">

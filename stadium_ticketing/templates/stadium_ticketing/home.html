@@ -6,14 +6,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     {% load static %}
     <link rel="stylesheet" href="{% static 'css/styles.css' %}">
-    
     <style>
         body {
             min-height: 100vh;
             margin: 0;
             padding: 0;
             font-family: 'Segoe UI', Arial, sans-serif;
-            background: #f4f8fb; /* Light neutral background, no image */
+            background: #f4f8fb;
             display: flex;
             flex-direction: column;
         }
@@ -28,13 +27,18 @@
             font-family: 'Segoe UI', 'Roboto', Arial, sans-serif;
         }
         .home-logo {
-            width: 64px;
-            height: 64px;
+            width: 120px;
+            height: 120px;
             border-radius: 50%;
-            object-fit: cover;
+            object-fit: contain;
             box-shadow: 0 2px 8px rgba(0,123,255,0.13);
             background: #fff;
-            margin-bottom: 1rem;
+            margin-bottom: 1.2rem;
+            margin-top: -3.5rem;
+            border: 3px solid #f4f8fb;
+            display: block;
+            margin-left: auto;
+            margin-right: auto;
         }
         .home-title {
             font-size: 2.2rem;
@@ -118,12 +122,17 @@
             .about-section h2 {
                 font-size: 1.05rem;
             }
+            .home-logo {
+                width: 80px;
+                height: 80px;
+                margin-top: -2rem;
+            }
         }
     </style>
 </head>
 <body>
     <div class="home-section">
-        
+        <img src="{% static 'images/Nyandarua logo.png' %}" alt="Arena Logo" class="home-logo">
         <div class="home-title">Nyandarua Stadium Ticketing</div>
         <div class="home-tagline">Your Gateway to Live Stadium Events</div>
         <div class="home-hero">

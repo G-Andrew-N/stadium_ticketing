@@ -19,8 +19,7 @@
             flex-direction: column;
             min-height: 100vh;
             font-family: 'Segoe UI', Arial, sans-serif;
-            background: #007bff; /* Solid blue background */
-            
+            background: #007bff;
         }
         header {
             background: rgba(255,255,255,0.98);
@@ -32,7 +31,7 @@
             display: flex;
             align-items: center;
             justify-content: space-between;
-            
+            position: relative;
         }
         .logo-title {
             display: flex;
@@ -67,6 +66,7 @@
             display: flex;
             justify-content: center;
             gap: 1.2rem;
+            flex-wrap: wrap;
         }
         nav a {
             margin: 0 0.5rem;
@@ -104,10 +104,12 @@
             flex-shrink: 0;
         }
         .nav-profile-dropdown {
-            position: relative;
+            position: absolute;
+            top: 1.2rem;
+            right: 2rem;
             display: flex;
             align-items: center;
-            margin-left: auto;
+            z-index: 1002;
         }
         .profile-pic-wrapper {
             cursor: pointer;
@@ -153,12 +155,26 @@
             background: #f4f8fb;
             color: #0052cc;
         }
-       
+        /* --- Mobile Responsive Styles --- */
+        @media (max-width: 900px) {
+            .container {
+                max-width: 98vw;
+                padding: 0 0.5rem;
+            }
+            header {
+                padding: 1.2rem 1rem 1.2rem 1rem;
+            }
+            .nav-profile-dropdown {
+                right: 1rem;
+            }
+        }
         @media (max-width: 700px) {
             header {
                 flex-direction: column;
                 align-items: flex-start;
-                padding: 1.2rem 1rem 1.2rem 1rem;
+                padding: 1.2rem 0.5rem 1.2rem 0.5rem;
+                margin-bottom: 1rem;
+                position: relative;
             }
             .logo-title .app-name {
                 font-size: 1.3rem;
@@ -167,6 +183,50 @@
                 flex-direction: column;
                 gap: 0.5rem;
                 padding: 0.7rem 0.2rem;
+                margin-bottom: 1rem;
+            }
+            nav a {
+                font-size: 1rem;
+                padding: 0.5rem 0.7rem;
+            }
+            .container {
+                padding: 0 0.3rem;
+            }
+            footer {
+                font-size: 0.98rem;
+                padding: 0.7rem 0 0.5rem 0;
+                margin-top: 1rem;
+            }
+            .nav-profile-dropdown {
+                position: fixed !important;
+                top: 0.7rem;
+                right: 1rem;
+                margin-left: 0;
+                z-index: 1001;
+                background: transparent;
+                box-shadow: none;
+            }
+            nav {
+                padding-top: 3.2rem;
+            }
+        }
+        @media (max-width: 500px) {
+            .logo-title img {
+                height: 36px;
+            }
+            .logo-title .app-name {
+                font-size: 1.05rem;
+            }
+            header {
+                padding: 0.7rem 0.2rem 0.7rem 0.2rem;
+            }
+            nav a {
+                font-size: 0.98rem;
+                padding: 0.4rem 0.5rem;
+            }
+            .nav-profile-dropdown {
+                top: 0.3rem;
+                right: 0.5rem;
             }
         }
     </style>
@@ -174,22 +234,12 @@
 </head>
 <body>
     {% block header %}
-        <!-- Default: empty. Home page will override this block. -->
-    {% endblock %}
-    {% block navbar %}
-    <nav>
-        <a href="{% url 'event_list' %}">🎟️ Events</a>
-        <a href="{% url 'event_calendar' %}">🗓️ Calendar</a>
-        {% if user.is_superuser %}
-            <a href="{% url 'event_create' %}">➕ Create Event</a>
-            
-            
-        {% else %}
-            
-            <a href="{% url 'user_dashboard' %}">👤 User Dashboard</a>
-        {% endif %}
-        
-        {% if user.is_authenticated %}
+        <header>
+            <div class="logo-title">
+                <img src="{% static 'images/Nyandarua logo.png' %}" alt="Logo">
+                <span class="app-name">Nyandarua Stadium Ticketing</span>
+            </div>
+            {% if user.is_authenticated %}
             <div class="nav-profile-dropdown">
                 <div class="profile-pic-wrapper">
                     {% if user.profile.photo %}
@@ -203,7 +253,20 @@
                     <a href="{% url 'logout' %}">🚪 Logout</a>
                 </div>
             </div>
+            {% endif %}
+        </header>
+    {% endblock %}
+    {% block navbar %}
+    <nav>
+        <a href="{% url 'event_list' %}">🎟️ Events</a>
+        <a href="{% url 'event_calendar' %}">🗓️ Calendar</a>
+        {% if user.is_superuser %}
+            <a href="{% url 'event_create' %}">➕ Create Event</a>
+            <a href="{% url 'admin_dashboard' %}">🛠️ Dashboard</a>
         {% else %}
+            <a href="{% url 'user_dashboard' %}">👤 User Dashboard</a>
+        {% endif %}
+        {% if not user.is_authenticated %}
             <a href="{% url 'login' %}">🔑 Login</a>
             <a href="{% url 'register' %}">📝 Register</a>
         {% endif %}
@@ -229,7 +292,7 @@ document.addEventListener('DOMContentLoaded', function() {
         dropdown.addEventListener('mouseleave', function() {
             hideTimeout = setTimeout(function() {
                 dropdownContent.style.display = 'none';
-            }, 220); // 220ms delay before hiding
+            }, 220);
         });
         dropdownContent.addEventListener('mouseenter', function() {
             clearTimeout(hideTimeout);

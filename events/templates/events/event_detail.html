@@ -23,14 +23,51 @@
         border-radius: 10px;
         box-shadow: 0 2px 8px rgba(0,0,0,0.08);
         background: #f4f4f4;
+        transition: width 0.2s, height 0.2s;
     }
     .event-details {
         flex: 1;
     }
     @media (max-width: 900px) {
-        .event-card { flex-direction: column; align-items: center; }
-        .event-thumbnail { width: 100%; max-width: 100%; height: 180px; margin-bottom: 1.2rem; }
-        .event-details { width: 100%; }
+        .event-card { 
+            flex-direction: column; 
+            align-items: center; 
+            padding: 1.2rem 0.7rem 1.5rem 0.7rem;
+            gap: 1.2rem;
+        }
+        .event-thumbnail { 
+            width: 100%; 
+            max-width: 100%; 
+            min-width: 0;
+            height: 180px; 
+            margin-bottom: 1.2rem; 
+        }
+        .event-details { 
+            width: 100%; 
+        }
+    }
+    @media (max-width: 600px) {
+        .event-card {
+            padding: 0.7rem 0.2rem 1rem 0.2rem;
+            gap: 0.7rem;
+        }
+        .event-thumbnail {
+            width: 100%;
+            max-width: 100%;
+            min-width: 0;
+            height: 140px;
+            margin-bottom: 1rem;
+            border-radius: 8px;
+        }
+        .event-details h2 {
+            font-size: 1.2rem;
+        }
+        .event-details p, .event-details strong, .event-details table {
+            font-size: 0.97rem;
+        }
+        .event-details table th, .event-details table td {
+            padding: 0.3rem !important;
+        }
     }
 </style>
 <div class="event-card">
@@ -55,7 +92,6 @@
                         <th style="text-align:left; padding:0.5rem;">Type</th>
                         <th style="text-align:left; padding:0.5rem;">Price</th>
                         <th style="text-align:left; padding:0.5rem;">Remaining</th>
-                        <th></th>
                     </tr>
                 </thead>
                 <tbody>
@@ -64,22 +100,22 @@
                         <td style="padding:0.5rem;">{{ item.type.get_name_display }}</td>
                         <td style="padding:0.5rem;">ksh {{ item.type.price }}</td>
                         <td style="padding:0.5rem;">{{ item.remaining }}</td>
-                        <td style="padding:0.5rem;">
-                            {% if item.remaining > 0 %}
-                                <a href="{% url 'ticket_purchase' event.pk item.type.pk %}" class="cta">Book</a>
-                            {% else %}
-                                <span style="color:#dc3545;">Sold Out</span>
-                            {% endif %}
-                        </td>
                     </tr>
                     {% empty %}
                     <tr>
-                        <td colspan="4" style="padding:0.5rem;">No ticket types available for this event.</td>
+                        <td colspan="3" style="padding:0.5rem;">No ticket types available for this event.</td>
                     </tr>
                     {% endfor %}
                 </tbody>
             </table>
         </div>
+        {% with sorted_types=ticket_type_data|dictsortreversed:"remaining" %}
+            {% if sorted_types and sorted_types.0.remaining > 0 %}
+                <a href="{% url 'ticket_purchase' event.pk sorted_types.0.type.pk %}" class="cta" style="margin-top:1.2rem;display:inline-block;">Book Tickets</a>
+            {% else %}
+                <span style="color:#dc3545; font-weight:600; margin-top:1.2rem; display:inline-block;">Sold Out</span>
+            {% endif %}
+        {% endwith %}
         <a href="{% url 'event_list' %}" style="margin-left:1.5rem;">&larr; Back to Events</a>
     </div>
 </div>

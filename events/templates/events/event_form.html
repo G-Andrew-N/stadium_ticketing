@@ -144,6 +144,7 @@
                     <label>Quantity:</label>
                     <input type="number" min="0" name="qty_{{ key }}" placeholder="0"
                            value="{% if saved %}{{ saved.quantity }}{% endif %}" {% if not saved %}disabled class="disabled"{% endif %}>
+                    <input type="hidden" name="seats_{{ key }}" id="seats_{{ key }}">
                 </div>
                 {% endwith %}
             {% endfor %}
@@ -153,7 +154,25 @@
     </form>
 </div>
 <script>
-    // Enable/disable price and qty fields based on checkbox
+    // Mapping ticket type keys to distinct letters
+    const ticketTypeLetters = {
+        'VVIP': 'V',
+        'VIP': 'Q',
+        'Executive': 'E',
+        'Gold': 'G',
+        'Silver': 'L',
+        'Bronze': 'B',
+        'Economy': 'M',
+        'Early Bird': 'Y',
+        'Group': 'R',
+        'Student': 'T',
+        'Season': 'N',
+        'All Access': 'A',
+        'Press': 'P',
+        'Backstage': 'K',
+        'Disabled': 'D'
+    };
+
     document.addEventListener('DOMContentLoaded', function() {
         document.querySelectorAll('input[type="checkbox"][name="ticket_types"]').forEach(function(cb) {
             cb.addEventListener('change', function() {
@@ -172,6 +191,26 @@
                     qtyInput.classList.add('disabled');
                     priceInput.value = '';
                     qtyInput.value = '';
+                }
+            });
+        });
+
+        // Autofill seats field when quantity changes
+        document.querySelectorAll('input[name^="qty_"]').forEach(function(qtyInput) {
+            qtyInput.addEventListener('input', function() {
+                var key = qtyInput.name.replace('qty_', '');
+                var seatsInput = document.getElementById('seats_' + key);
+                var qty = parseInt(qtyInput.value);
+                // Use the mapped letter, fallback to 'S'
+                var letter = ticketTypeLetters[key] || 'S';
+                if (!isNaN(qty) && qty > 0) {
+                    var seats = [];
+                    for (var i = 1; i <= qty; i++) {
+                        seats.push(letter + i);
+                    }
+                    seatsInput.value = seats.join(',');
+                } else {
+                    seatsInput.value = '';
                 }
             });
         });

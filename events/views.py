@@ -93,13 +93,15 @@ def event_form(request, pk=None):
                 if key in selected_types:
                     price = request.POST.get(f'price_{key}', '0')
                     qty = request.POST.get(f'qty_{key}', '0')
-                    if price and qty:
-                        TicketType.objects.create(
-                            event=saved_event,
-                            name=key,
-                            price=price,
-                            total_available=qty
-                        )
+                    seats = request.POST.get(f'seats_{key}')  # This is the generated seat list, e.g. B1,B2,B3,...
+                    # Create TicketType with seats
+                    TicketType.objects.create(
+                        event=saved_event,
+                        name=key,
+                        price=price,
+                        total_available=qty,
+                        seats=seats
+                    )
             return redirect('event_detail', pk=saved_event.pk)
     else:
         form = EventForm(instance=event_obj)

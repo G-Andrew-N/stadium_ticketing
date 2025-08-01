@@ -39,10 +39,6 @@
         color: #dc3545;
         font-weight: bold;
     }
-    .ticket-status-cancelled {
-        color: #888;
-        font-weight: bold;
-    }
     .ticket-actions a {
         color: #007bff;
         text-decoration: underline;
@@ -74,27 +70,25 @@
         </thead>
         <tbody>
             {% for ticket in tickets %}
-            <tr>
-                <td>{{ ticket.event.name }}</td>
-                <td>{{ ticket.event.date|date:"F j, Y, g:i a" }}</td>
-                <td>{{ ticket.seat }}</td>
-                <td>{{ ticket.purchase_date|date:"F j, Y" }}</td>
-                <td>
-                    {% if ticket.status == 'Cancelled' %}
-                        <span class="ticket-status-cancelled">Cancelled</span>
-                    {% elif ticket.event.date < now %}
-                        <span class="ticket-status-expired">Expired</span>
-                    {% else %}
-                        <span class="ticket-status-valid">Valid</span>
-                    {% endif %}
-                </td>
-                <td class="ticket-actions">
-                    <a href="{% url 'ticket_detail' ticket.pk %}">View</a>
-                    {% if ticket.status != 'Cancelled' %}
+                {% if ticket.status != 'Cancelled' %}
+                <tr>
+                    <td>{{ ticket.event.name }}</td>
+                    <td>{{ ticket.event.date|date:"F j, Y, g:i a" }}</td>
+                    <td>{{ ticket.seat }}</td>
+                    <td>{{ ticket.purchase_date|date:"F j, Y" }}</td>
+                    <td>
+                        {% if ticket.event.date < now %}
+                            <span class="ticket-status-expired">Expired</span>
+                        {% else %}
+                            <span class="ticket-status-valid">Valid</span>
+                        {% endif %}
+                    </td>
+                    <td class="ticket-actions">
+                        <a href="{% url 'ticket_detail' ticket.pk %}">View</a>
                         <a href="{% url 'ticket_cancel' ticket.pk %}" class="cancel">Cancel</a>
-                    {% endif %}
-                </td>
-            </tr>
+                    </td>
+                </tr>
+                {% endif %}
             {% endfor %}
         </tbody>
     </table>
@@ -102,5 +96,6 @@
         <p>You have not purchased any tickets yet.</p>
     {% endif %}
     <a href="{% url 'event_list' %}" class="cta">Browse Events</a>
+    <a href="{% url 'cancelled_tickets' %}" class="cta" style="background:#888;">View Cancelled Tickets</a>
 </div>
 {% endblock %}

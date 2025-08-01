@@ -61,28 +61,26 @@
     .profile-actions a.logout {
         color: #dc3545;
     }
-    .tickets-table {
-        width: 100%;
-        border-collapse: collapse;
-        margin-top: 2rem;
+    .tickets-link-section {
+        margin-top: 2.5rem;
+        text-align: center;
     }
-    .tickets-table th, .tickets-table td {
-        border: 1px solid #e5e5e5;
-        padding: 0.7rem;
-        text-align: left;
-        font-size: 0.98rem;
+    .tickets-link-section a {
+        display: inline-block;
+        background: #007bff;
+        color: #fff;
+        padding: 0.8rem 2rem;
+        border-radius: 8px;
+        font-size: 1.08rem;
+        font-weight: 600;
+        text-decoration: none;
+        box-shadow: 0 2px 12px rgba(0,123,255,0.13);
+        transition: background 0.18s, color 0.18s;
     }
-    .tickets-table th {
-        background: #f4f8fb;
-        color: #0052cc;
-    }
-    .ticket-status-valid {
-        color: #28a745;
-        font-weight: bold;
-    }
-    .ticket-status-expired {
-        color: #dc3545;
-        font-weight: bold;
+    .tickets-link-section a:hover {
+        background: #0052cc;
+        color: #fff;
+        text-decoration: none;
     }
 </style>
 <div class="profile-section">
@@ -105,40 +103,8 @@
         <a href="{% url 'logout' %}" class="logout">Logout</a>
     </div>
 
-    <h3 style="margin-top:2.5rem; color:#0052cc;">My Tickets</h3>
-    {% if tickets %}
-    <table class="tickets-table">
-        <thead>
-            <tr>
-                <th>Event</th>
-                <th>Date & Time</th>
-                <th>Seat</th>
-                <th>Status</th>
-                <th>Actions</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for ticket in tickets %}
-            <tr>
-                <td>{{ ticket.event.name }}</td>
-                <td>{{ ticket.event.date|date:"F j, Y, g:i a" }}</td>
-                <td>{{ ticket.seat }}</td>
-                <td>
-                    {% if ticket.event.date < now %}
-                        <span class="ticket-status-expired">Expired</span>
-                    {% else %}
-                        <span class="ticket-status-valid">Valid</span>
-                    {% endif %}
-                </td>
-                <td>
-                    <a href="{% url 'ticket_detail' ticket.pk %}">View</a>
-                </td>
-            </tr>
-            {% endfor %}
-        </tbody>
-    </table>
-    {% else %}
-        <p style="margin-top:1.5rem;">You have not purchased any tickets yet.</p>
-    {% endif %}
+    <div class="tickets-link-section">
+        <a href="{% url 'ticket_list' %}">View My Tickets</a>
+    </div>
 </div>
 {% endblock %}
