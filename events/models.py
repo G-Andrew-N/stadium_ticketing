@@ -27,9 +27,13 @@ class Event(models.Model):
         ('champions_league', 'Champions League'),
         # Add more as needed
     ]
+    LOCATION_CHOICES = [
+        ('ol_kalou', 'Ol Kalou Stadium'),
+        ('kararani', 'Kararani Stadium (Ndunyu Njeru)'),
+    ]
     name = models.CharField(max_length=200)
     date = models.DateTimeField()
-    location = models.CharField(max_length=200)
+    location = models.CharField(max_length=32, choices=LOCATION_CHOICES, default='ol_kalou')
     description = models.TextField(blank=True)
     thumbnail = models.ImageField(upload_to='event_thumbnails/', blank=True, null=True)
     event_type = models.CharField(max_length=32, choices=EVENT_TYPE_CHOICES, default='sports')

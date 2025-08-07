@@ -33,7 +33,21 @@ def event_list(request):
     from collections import OrderedDict
     grouped_events = OrderedDict()
     for key, label in Event.EVENT_TYPE_CHOICES:
-        grouped_events[label] = events.filter(event_type=key)
+        filtered_events = list(events.filter(event_type=key))
+        
+        # Add ticket data to events after filtering
+        for event in filtered_events:
+            ticket_types = event.ticket_types.all()
+            total_available = sum(tt.total_available for tt in ticket_types)
+            total_sold = sum(Ticket.objects.filter(event=event, status='Active', tickettype=tt).count() for tt in ticket_types)
+            total_remaining = total_available - total_sold
+            
+            # Ensure we have valid numbers (handle None values)
+            event.total_available = total_available or 0
+            event.total_sold = total_sold or 0
+            event.total_remaining = total_remaining or 0
+        
+        grouped_events[label] = filtered_events
 
     # Only show sport types and leagues for sports events
     sport_type_choices = Event.objects.filter(event_type='sports').values_list('sport_type', flat=True).distinct()
@@ -106,10 +120,20 @@ def event_form(request, pk=None):
     else:
         form = EventForm(instance=event_obj)
 
+    # Build saved_ticket_types context for editing
+    saved_ticket_types = {}
+    if event_obj:
+        for tt in event_obj.ticket_types.all():
+            saved_ticket_types[tt.name] = {
+                'price': tt.price,
+                'quantity': tt.total_available
+            }
+
     return render(request, 'events/event_form.html', {
         'form': form,
         'event': event_obj,
         'TICKET_TYPE_CHOICES': TICKET_TYPE_CHOICES,
+        'saved_ticket_types': saved_ticket_types,
     })
 
 def event_edit(request, pk):

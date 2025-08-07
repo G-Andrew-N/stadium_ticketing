@@ -94,7 +94,7 @@
     }
 </style>
 <div class="event-form-section">
-    <h2>Create Event</h2>
+    <h2>{% if event %}Edit Event{% else %}Create Event{% endif %}</h2>
     <form method="post" enctype="multipart/form-data">
         {% csrf_token %}
         <label for="id_name">Event Name</label>
@@ -149,7 +149,7 @@
                 {% endwith %}
             {% endfor %}
         </div>
-        <button type="submit" class="cta">Create Event</button>
+        <button type="submit" class="cta">{% if event %}Update Event{% else %}Create Event{% endif %}</button>
         <a href="{% url 'event_list' %}" style="margin-left:1.5rem;">Cancel</a>
     </form>
 </div>
@@ -174,11 +174,21 @@
     };
 
     document.addEventListener('DOMContentLoaded', function() {
+        // Initialize disabled state for already checked checkboxes
         document.querySelectorAll('input[type="checkbox"][name="ticket_types"]').forEach(function(cb) {
+            var key = cb.value;
+            var priceInput = document.querySelector('input[name="price_' + key + '"]');
+            var qtyInput = document.querySelector('input[name="qty_' + key + '"]');
+            
+            // If checkbox is already checked (for editing), enable the inputs
+            if (cb.checked) {
+                priceInput.disabled = false;
+                qtyInput.disabled = false;
+                priceInput.classList.remove('disabled');
+                qtyInput.classList.remove('disabled');
+            }
+            
             cb.addEventListener('change', function() {
-                var key = cb.value;
-                var priceInput = document.querySelector('input[name="price_' + key + '"]');
-                var qtyInput = document.querySelector('input[name="qty_' + key + '"]');
                 if (cb.checked) {
                     priceInput.disabled = false;
                     qtyInput.disabled = false;

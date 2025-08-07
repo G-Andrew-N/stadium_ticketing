@@ -83,7 +83,7 @@
 <div class="admin-dashboard-section">
     <div class="admin-header">
         <div>
-            <div class="welcome">Welcome, {{ user.first_name|default:user.username }}! <span style="font-size:1rem;color:#888;">(Superuser)</span></div>
+            <div class="welcome">Welcome, {{ user.first_name|default:user.username }}! <span style="font-size:1rem;color:#888;">(Manager)</span></div>
             <div style="color:#888;">Admin since {{ user.date_joined|date:"F Y" }}</div>
         </div>
     </div>
@@ -98,7 +98,7 @@
         </a>
         <a href="/admin/" class="admin-link">
             <span class="icon">⚙️</span>
-            Django Admin
+            Manage Database
         </a>
         <a href="{% url 'event_calendar' %}" class="admin-link">
             <span class="icon">🗓️</span>
