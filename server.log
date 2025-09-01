@@ -1,0 +1,55 @@
+nohup: ignoring input
+Watching for file changes with StatReloader
+[26/Aug/2025 07:39:05] "HEAD / HTTP/1.1" 200 0
+[26/Aug/2025 07:39:42] "GET / HTTP/1.1" 200 4912
+[26/Aug/2025 07:39:42] "GET /static/css/styles.css HTTP/1.1" 200 2612
+[26/Aug/2025 07:39:42] "GET /static/images/Nyandarua%20logo.png HTTP/1.1" 200 61874
+Not Found: /favicon.ico
+[26/Aug/2025 07:39:44] "GET /users/login/ HTTP/1.1" 200 15675
+[26/Aug/2025 07:39:44] "GET /static/images/favicon.ico HTTP/1.1" 404 1868
+Not Found: /favicon.ico
+[26/Aug/2025 07:43:40] "GET / HTTP/1.1" 200 4912
+[26/Aug/2025 07:44:40] "GET / HTTP/1.1" 200 4912
+Not Found: /favicon.ico
+[26/Aug/2025 07:44:41] "GET /users/login/ HTTP/1.1" 200 15675
+[26/Aug/2025 07:44:54] "GET /users/register/ HTTP/1.1" 200 16140
+[26/Aug/2025 07:45:44] "POST /users/register/ HTTP/1.1" 302 0
+[26/Aug/2025 07:45:44] "GET / HTTP/1.1" 200 4912
+[26/Aug/2025 07:45:46] "GET /users/login/ HTTP/1.1" 200 15675
+[26/Aug/2025 07:45:48] "POST /users/login/ HTTP/1.1" 302 0
+[26/Aug/2025 07:45:48] "GET /events/user-dashboard/ HTTP/1.1" 200 17879
+[26/Aug/2025 07:45:48] "GET /static/images/default_profile.png HTTP/1.1" 404 1892
+[26/Aug/2025 07:45:54] "GET /events/events/ HTTP/1.1" 200 29968
+[26/Aug/2025 07:45:54] "GET /static/images/default_profile.png HTTP/1.1" 404 1892
+[26/Aug/2025 07:45:54] "GET /media/event_thumbnails/image_3.jpg HTTP/1.1" 200 314812
+[26/Aug/2025 07:45:54] "GET /media/event_thumbnails/football2_lKfbJX5.png HTTP/1.1" 200 2476531
+[26/Aug/2025 07:46:04] "GET /users/profile/ HTTP/1.1" 200 16740
+[26/Aug/2025 07:46:04] "GET /static/images/default_profile.png HTTP/1.1" 404 1892
+[26/Aug/2025 07:46:09] "GET /users/profile/edit/ HTTP/1.1" 200 18022
+[26/Aug/2025 07:46:09] "GET /static/images/default_profile.png HTTP/1.1" 404 1892
+[26/Aug/2025 07:48:05] "POST /users/profile/edit/ HTTP/1.1" 302 0
+[26/Aug/2025 07:48:05] "GET /users/profile/ HTTP/1.1" 200 16732
+[26/Aug/2025 07:48:05] "GET /media/profile_photos/catboss.webp HTTP/1.1" 200 369790
+[26/Aug/2025 07:48:08] "GET /events/events/ HTTP/1.1" 200 29968
+[26/Aug/2025 07:48:08] "GET /media/profile_photos/catboss.webp HTTP/1.1" 304 0
+[26/Aug/2025 07:48:11] "GET /events/15/ HTTP/1.1" 200 17693
+[26/Aug/2025 07:48:11] "GET /media/profile_photos/catboss.webp HTTP/1.1" 304 0
+[26/Aug/2025 07:48:13] "GET /tickets/purchase/15/41/ HTTP/1.1" 200 40575
+[26/Aug/2025 07:48:13] "GET /media/profile_photos/catboss.webp HTTP/1.1" 304 0
+[26/Aug/2025 07:48:31] "POST /tickets/purchase/15/41/ HTTP/1.1" 200 40672
+[26/Aug/2025 07:48:31] "GET /media/profile_photos/catboss.webp HTTP/1.1" 304 0
+[26/Aug/2025 07:48:43] "POST /tickets/purchase/15/41/ HTTP/1.1" 302 0
+[26/Aug/2025 07:48:43] "GET /tickets/confirm/50/ HTTP/1.1" 200 16378
+[26/Aug/2025 07:48:44] "GET /media/profile_photos/catboss.webp HTTP/1.1" 304 0
+[26/Aug/2025 07:48:45] "GET /tickets/50/ HTTP/1.1" 200 17247
+[26/Aug/2025 07:48:46] "GET /media/ticket_qrcodes/ticket_50_qr.png HTTP/1.1" 200 799
+[26/Aug/2025 07:48:49] "GET /users/profile/ HTTP/1.1" 200 16732
+[26/Aug/2025 07:48:49] "GET /media/profile_photos/catboss.webp HTTP/1.1" 304 0
+[26/Aug/2025 07:48:55] "GET /events/events/ HTTP/1.1" 200 29968
+[26/Aug/2025 07:48:55] "GET /media/profile_photos/catboss.webp HTTP/1.1" 304 0
+[26/Aug/2025 08:06:19] "GET /events/15/ HTTP/1.1" 200 17693
+[26/Aug/2025 08:06:19] "GET /media/profile_photos/catboss.webp HTTP/1.1" 304 0
+[26/Aug/2025 08:06:21] "GET /events/events/ HTTP/1.1" 200 29968
+[26/Aug/2025 08:07:45] "GET /events/15/ HTTP/1.1" 200 17693
+[26/Aug/2025 08:07:48] "GET /users/profile/ HTTP/1.1" 200 16732
+[26/Aug/2025 08:07:53] "GET /users/profile/edit/ HTTP/1.1" 200 18244
