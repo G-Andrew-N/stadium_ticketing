@@ -10,6 +10,9 @@ Pillow>=9.1.0
 # QR Code generation
 qrcode[pil]>=8.0
 
+# Production server
+gunicorn>=21.0.0
+
 # Database (SQLite is included with Django by default)
 # Uncomment if using a different database:
 # psycopg2-binary  # For PostgreSQL
