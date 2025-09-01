@@ -1,10 +1,17 @@
+# Core Django and dependencies
 Django>=5.1,<6.0
 pytz
 sqlparse
 asgiref
-Pillow
 
-# Optional: Uncomment if using a database other than SQLite
+# Image processing
+Pillow>=9.1.0
+
+# QR Code generation
+qrcode[pil]>=8.0
+
+# Database (SQLite is included with Django by default)
+# Uncomment if using a different database:
 # psycopg2-binary  # For PostgreSQL
 # mysqlclient      # For MySQL
 
@@ -12,4 +19,13 @@ Pillow
 # django-crispy-forms
 
 # Optional: Uncomment if using django-widget-tweaks
-# django-widget-
+# django-widget-tweaks
+
+# Optional: Uncomment if using environment variables
+# python-decouple
+
+# Optional: Uncomment if using REST API
+# djangorestframework
+
+# Optional: Uncomment if using CORS
+# django-cors-headers
