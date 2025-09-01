@@ -26,7 +26,7 @@ SECRET_KEY = os.environ.get('SECRET_KEY', '8bab38e26925902687c9171967dea655')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.environ.get('DEBUG', 'False').lower() == 'true'
 
-ALLOWED_HOSTS = os.environ.get('ALLOWED_HOSTS', 'localhost,127.0.0.1,stadium-ticketing-5.onrender.com,stadium-ticketing-5-p2x7.onrender.com').split(',')
+ALLOWED_HOSTS = os.environ.get('ALLOWED_HOSTS', 'localhost,127.0.0.1,.onrender.com').split(',')
 
 
 # Application definition
