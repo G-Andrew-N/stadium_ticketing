@@ -92,12 +92,16 @@
     @media (max-width: 700px) {
         .container {
             padding: 1.2rem;
+            min-width: 0;
+            width: 98vw;
+            box-sizing: border-box;
         }
         .dashboard-header {
             align-items: flex-start;
         }
         .dashboard-links {
-            flex-direction: column;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
             gap: 1rem;
         }
         .dashboard-link {
@@ -112,6 +116,20 @@
         }
         .dashboard-tickets table {
             min-width: 560px;
+        }
+    }
+    @media (max-width: 480px) {
+        .container {
+            padding: 0.5rem;
+            width: 100vw;
+        }
+        .dashboard-links {
+            grid-template-columns: 1fr 1fr;
+            gap: 0.6rem;
+        }
+        .dashboard-link {
+            padding: 0.7rem 0.3rem;
+            font-size: 0.98rem;
         }
     }
 </style>

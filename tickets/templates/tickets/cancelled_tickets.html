@@ -98,7 +98,6 @@
         font-size: 1.1rem;
     }
 </style>
-<div class="tickets-section">
     <h2>Cancelled Tickets</h2>
     {% if tickets %}
     <table class="ticket-table">
@@ -127,5 +126,4 @@
         <div class="no-tickets-msg">You have no cancelled tickets.</div>
     {% endif %}
     <a href="{% url 'ticket_list' %}" class="cta">Back to My Tickets</a>
-</div>
 {% endblock %}

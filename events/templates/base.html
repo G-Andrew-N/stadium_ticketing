@@ -9,11 +9,10 @@
         (function() {
             try {
                 var savedTheme = localStorage.getItem('theme');
-                var systemPrefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
-                var theme = savedTheme || (systemPrefersDark ? 'dark' : 'light');
+                var theme = savedTheme || 'dark';
                 document.documentElement.setAttribute('data-theme', theme);
             } catch (e) {
-                document.documentElement.setAttribute('data-theme', 'light');
+                document.documentElement.setAttribute('data-theme', 'dark');
             }
         })();
     </script>
@@ -557,7 +556,7 @@ document.addEventListener('DOMContentLoaded', function() {
     var themeButtons = [themeToggle, document.getElementById('mobileThemeToggle')].filter(Boolean);
 
     function getCurrentTheme() {
-        return document.documentElement.getAttribute('data-theme') || 'light';
+        return document.documentElement.getAttribute('data-theme') || 'dark';
     }
 
     function applyTheme(theme) {

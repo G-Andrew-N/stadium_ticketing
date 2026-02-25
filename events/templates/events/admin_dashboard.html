@@ -118,9 +118,13 @@
     @media (max-width: 700px) {
         .container {
             padding: 1.2rem;
+            min-width: 0;
+            width: 98vw;
+            box-sizing: border-box;
         }
         .admin-links {
-            flex-direction: column;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
             gap: 1rem;
         }
         .admin-link {
@@ -138,6 +142,20 @@
         }
         .admin-stats-table {
             min-width: 520px;
+        }
+    }
+    @media (max-width: 480px) {
+        .container {
+            padding: 0.5rem;
+            width: 100vw;
+        }
+        .admin-links {
+            grid-template-columns: 1fr 1fr;
+            gap: 0.6rem;
+        }
+        .admin-link {
+            padding: 0.7rem 0.3rem;
+            font-size: 0.98rem;
         }
     }
 </style>

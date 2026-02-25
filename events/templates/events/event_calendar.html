@@ -6,7 +6,10 @@
 <style>
     .calendar-container {
         width: 100%;
+        max-width: 100%;
+        box-sizing: border-box;
         overflow-x: auto;
+        overflow-y: hidden;
         margin: 2rem 0;
         background: #fff;
         border-radius: 10px;
@@ -14,7 +17,8 @@
         padding: 1rem;
     }
     .calendar-table {
-        width: 100%;
+        width: max(100%, 800px);
+        max-width: none;
         border-collapse: collapse;
         min-width: 800px;
         margin: 0;
@@ -174,6 +178,7 @@
         .calendar-container {
             margin: 1.5rem 0;
             padding: 0.5rem;
+            box-sizing: border-box;
         }
         .calendar-table {
             min-width: 700px;
@@ -205,6 +210,7 @@
             margin: 1rem 0;
             padding: 0.3rem;
             border-radius: 8px;
+            box-sizing: border-box;
         }
         .calendar-table {
             min-width: 600px;
@@ -239,6 +245,7 @@
         .calendar-container {
             margin: 0.8rem 0;
             padding: 0.2rem;
+            box-sizing: border-box;
         }
         .calendar-table {
             min-width: 500px;
@@ -273,6 +280,7 @@
         .calendar-container {
             margin: 0.5rem 0;
             padding: 0.1rem;
+            box-sizing: border-box;
         }
         .calendar-table {
             min-width: 400px;
@@ -309,6 +317,7 @@
         .calendar-container {
             margin: 0.3rem 0;
             padding: 0.05rem;
+            box-sizing: border-box;
         }
         .calendar-table {
             min-width: 320px;
