@@ -30,3 +30,6 @@ static/
 
 # Build scripts
 build.sh
+server.log
+.md
+!README.md
