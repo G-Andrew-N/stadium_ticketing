@@ -9,39 +9,49 @@
     }
     .card-list {
         display: grid;
-        grid-template-columns: repeat(3, minmax(0, 1fr));
-        gap: 1.5rem;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 18px;
+        margin-bottom: 32px;
         align-items: stretch;
     }
     .event-card {
-        background: #ffffff;
-        border-radius: 0;
-        box-shadow: none;
-        padding: 2rem 1.5rem;
-        width: 100%;
         display: flex;
         flex-direction: column;
+        justify-content: flex-start;
         align-items: stretch;
-        font-family: 'Segoe UI', 'Roboto', Arial, sans-serif;
-        margin-bottom: 0;
-        transition: none;
-        position: relative;
-        overflow: visible;
-        border: 1px solid #d8dce2;
-        min-height: 620px;
+        max-width: 100%;
+        min-height: 260px;
+        height: 100%;
+        margin: 0;
+        padding: 14px 10px;
+        background: #fff;
+        border-radius: 10px;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+        transition: box-shadow 0.2s;
+    }
+    .event-card:hover {
+        box-shadow: 0 4px 16px rgba(0,0,0,0.12);
+    }
+    .event-card img {
+        max-height: 90px;
+        min-height: 90px;
+        object-fit: cover;
+        border-radius: 6px;
+        margin-bottom: 10px;
+    }
+    .event-card .card-body {
+        flex: 1 1 auto;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
     }
     .event-card::before {
         content: none;
     }
-    .event-card:hover {
-        box-shadow: none;
-        transform: none;
-        border-color: #d8dce2;
-    }
     .event-thumbnail {
         width: 100%;
         max-width: 100%;
-        height: 180px;
+        height: 100px; /* reduce image height */
         object-fit: cover;
         border-radius: 0;
         box-shadow: none;
@@ -248,13 +258,19 @@
     }
     @media (max-width: 900px) {
         .card-list {
-            grid-template-columns: 1fr;
-            gap: 1.5rem;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem 1rem;
         }
         .event-card {
             width: 100%;
             min-width: 0;
             min-height: 0;
+        }
+    }
+    @media (max-width: 600px) {
+        .card-list {
+            grid-template-columns: 1fr;
+            gap: 1.5rem 0;
         }
     }
     @media (max-width: 700px) {
@@ -447,24 +463,25 @@
     </div>
     {% for category, events in grouped_events.items %}
         {% if events %}
-            <h2 style="color:#0052cc; margin-bottom:0.7rem; margin-top:2.2rem; font-size:1.3rem;">{{ category }}</h2>
-            <div class="card-list">
-                {% for event in events %}
-                <div class="event-card">
-                    {% if event.thumbnail %}
-                        <img src="{{ event.thumbnail.url }}" alt="{{ event.name }} thumbnail" class="event-thumbnail">
-                    {% else %}
-                        <img src="{% static 'images/default_event_thumb.png' %}" alt="No thumbnail" class="event-thumbnail">
-                    {% endif %}
-                    <strong class="event-title">{{ event.name }}</strong>
-                    <div class="event-date"><i class="fa fa-calendar"></i> {{ event.date|date:"F j, Y" }} | {{ event.start_time|time:"g:i a" }} - {{ event.end_time|time:"g:i a" }}</div>
-                    <div class="event-location"><i class="fa fa-map-marker"></i> {{ event.location }}</div>
-                    <div class="event-description">{{ event.description|linebreaksbr|truncatewords:30 }}</div>
-                    {% if event.event_type == 'sports' %}
-                        <div class="event-sport-type"><span class="label">Sport:</span> {{ event.get_sport_type_display }}</div>
-                        <div class="event-league"><span class="label">League:</span> {{ event.get_league_display }}</div>
-                    {% endif %}
-                    
+            <div class="category-section">
+                <h2 style="color:#0052cc; margin-bottom:0.7rem; margin-top:2.2rem; font-size:1.3rem;">{{ category }}</h2>
+                <div class="card-list">
+                    {% for event in events %}
+                    <div class="event-card">
+                        {% if event.thumbnail %}
+                            <img src="{{ event.thumbnail.url }}" alt="{{ event.name }} thumbnail" class="event-thumbnail">
+                        {% else %}
+                            <img src="{% static 'images/default_event_thumb.png' %}" alt="No thumbnail" class="event-thumbnail">
+                        {% endif %}
+                        <strong class="event-title">{{ event.name }}</strong>
+                        <div class="event-date"><i class="fa fa-calendar"></i> {{ event.date|date:"F j, Y" }} | {{ event.start_time|time:"g:i a" }} - {{ event.end_time|time:"g:i a" }}</div>
+                        <div class="event-location"><i class="fa fa-map-marker"></i> {{ event.location }}</div>
+                        <div class="event-description">{{ event.description|linebreaksbr|truncatewords:30 }}</div>
+                        {% if event.event_type == 'sports' %}
+                            <div class="event-sport-type"><span class="label">Sport:</span> {{ event.get_sport_type_display }}</div>
+                            <div class="event-league"><span class="label">League:</span> {{ event.get_league_display }}</div>
+                        {% endif %}
+                        
                                          <!-- Ticket Information -->
                      <div class="ticket-info">
                          {% if user.is_superuser %}
@@ -506,8 +523,6 @@
                 {% endfor %}
             </div>
         {% endif %}
-    {% empty %}
-        <div>No events available at the moment. Please check back soon!</div>
     {% endfor %}
 <script>
     // Show/hide sport type and league selects based on event type selection

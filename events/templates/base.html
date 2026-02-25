@@ -21,11 +21,12 @@
     <style>
         html, body {
             height: 100%;
-            min-height: 100%;
-            margin: 0;
-            padding: 0;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
         }
         body {
+            flex: 1 0 auto;
             display: flex;
             flex-direction: column;
             min-height: 100vh;
@@ -543,7 +544,11 @@
      </nav>
      {% endblock %}
     <div class="container">
-        {% block content %}{% endblock %}
+        {% block content %}
+        <div class="main-content">
+            <!-- ...existing code... -->
+        </div>
+        {% endblock %}
     </div>
     {% if user.is_authenticated %}
     <footer>

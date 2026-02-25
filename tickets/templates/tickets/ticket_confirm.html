@@ -3,6 +3,7 @@
 {% block title %}Ticket Purchase Confirmation | Stadium Ticketing{% endblock %}
 
 {% block content %}
+<div class="main-content">
 <style>
     .confirm-section {
         max-width: 500px;
@@ -114,6 +115,9 @@
     }
 </style>
 <div class="container">
+    <div class="confirm-section" style="background: #fffbe6; border: 1px solid #ffe58f; color: #ad8b00; margin-bottom: 1.5rem; padding: 1rem 1.2rem; border-radius: 8px; text-align: center; font-size: 1.04rem;">
+        <strong>Note for Testers:</strong> Payments are currently simulated for phase 1 testing. No real payment is processed. Real payment methods will be added in a future update.
+    </div>
     <div class="confirm-section">
         <h2>Thank You! Your Ticket{% if tickets|length > 1 %}s{% endif %} Have Been Purchased.</h2>
         <div class="ticket-summary">
@@ -146,5 +150,6 @@
         <a href="{% url 'ticket_list' %}" class="cta">My Tickets</a>
         <a href="{% url 'event_list' %}" class="cta">Browse More Events</a>
     </div>
+</div>
 </div>
 {% endblock %}

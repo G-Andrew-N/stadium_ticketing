@@ -76,8 +76,17 @@
         width: 100px;
     }
     .ticket-type-row input[type="checkbox"] {
-        transform: scale(1.2);
-        margin-right: 0.5rem;
+        transform: scale(1.3);
+        margin-right: 0.7rem;
+        accent-color: #007bff;
+        cursor: pointer;
+        min-width: 24px;
+        min-height: 24px;
+    }
+    .ticket-type-row label[for^="ttype_"] {
+        font-weight: 600;
+        font-size: 1rem;
+        margin-right: 0.7rem;
     }
     .ticket-type-row .disabled {
         opacity: 0.5;
@@ -221,17 +230,12 @@
             {% for key, label in TICKET_TYPE_CHOICES %}
                 {% with saved=saved_ticket_types|get_item:key %}
                 <div class="ticket-type-row">
-                    <input type="checkbox" id="ttype_{{ key }}" name="ticket_types"
-                           value="{{ key }}"
-                           {% if saved %}checked{% endif %}>
+                    <input type="checkbox" id="ttype_{{ key }}" name="ticket_types" value="{{ key }}" aria-label="Select {{ label }} ticket type" {% if saved %}checked{% endif %}>
                     <label for="ttype_{{ key }}">{{ label }}</label>
-                    <label>Price:</label>
-                    <input type="number" step="0.01" min="0" name="price_{{ key }}"
-                           placeholder="0.00"
-                           value="{% if saved %}{{ saved.price }}{% endif %}" {% if not saved %}disabled class="disabled"{% endif %}>
-                    <label>Quantity:</label>
-                    <input type="number" min="0" name="qty_{{ key }}" placeholder="0"
-                           value="{% if saved %}{{ saved.quantity }}{% endif %}" {% if not saved %}disabled class="disabled"{% endif %}>
+                    <label for="price_{{ key }}">Price:</label>
+                    <input type="number" step="0.01" min="0" name="price_{{ key }}" id="price_{{ key }}" placeholder="0.00" value="{% if saved %}{{ saved.price }}{% endif %}" {% if not saved %}disabled class="disabled"{% endif %}>
+                    <label for="qty_{{ key }}">Quantity:</label>
+                    <input type="number" min="0" name="qty_{{ key }}" id="qty_{{ key }}" placeholder="0" value="{% if saved %}{{ saved.quantity }}{% endif %}" {% if not saved %}disabled class="disabled"{% endif %}>
                     <input type="hidden" name="seats_{{ key }}" id="seats_{{ key }}">
                 </div>
                 {% endwith %}
