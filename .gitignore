@@ -1,0 +1,32 @@
+# Sensitive files and folders
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# SQLite database
+*.sqlite3
+db.sqlite3
+
+# Virtual environments
+.venv/
+
+# Media uploads
+media/
+event_thumbnails/
+profile_photos/
+ticket_qrcodes/
+
+# Static files
+static/
+
+# Logs
+*.log
+
+# Environment and secrets
+*.env
+*.secret
+
+# Build scripts
+build.sh
