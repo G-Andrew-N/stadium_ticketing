@@ -1,111 +1,202 @@
 {% extends "base.html" %}
-{% block navbar %}{% endblock %}
 {% load static %}
+{% block title %}Login | Stadium Ticketing{% endblock %}
+{% block navbar %}{% endblock %}
 
-{% block header %}
-<div style="width:100%;text-align:center;margin-top:2.5rem;margin-bottom:1.5rem;">
-    
-    <div style="font-size:2rem;font-weight:bold;color:#050505;letter-spacing:1px;margin-top:0.5rem;">Stadium Ticketing</div>
-    <div style="color:#0b0b0b;font-size:1.08rem;margin-top:0.2rem;">log into your account</div>
-</div>
-{% endblock %}
+{% block header %}{% endblock %}
 
 {% block content %}
 <style>
-    .login-section {
-        max-width: 400px;
-        margin: 3rem auto 2rem auto;
-        background: rgba(255,255,255,0.92);
-        padding: 2.2rem 2rem 1.5rem 2rem;
+    .auth-logo {
+        width: 86px;
+        height: 86px;
         border-radius: 12px;
-        box-shadow: 0 2px 16px rgba(0,0,0,0.10);
-    }
-    .login-section h2 {
-        color: #0052cc;
-        margin-bottom: 1.5rem;
-        text-align: center;
-        letter-spacing: 1px;
-    }
-    .login-section form label {
+        object-fit: contain;
+        padding: 6px;
+        background: #fff;
+        box-sizing: border-box;
+        box-shadow: 0 2px 12px rgba(0,123,255,0.15);
         display: block;
-        margin-top: 1.1rem;
-        font-weight: 500;
-        color: #0052cc;
+        margin: 0 auto 0.7rem auto;
     }
-    .login-section form input {
-        width: 100%;
-        padding: 0.7rem;
-        margin-top: 0.3rem;
-        border: 1px solid #b3c6e0;
-        border-radius: 6px;
+    .auth-title {
+        margin: 0.9rem 0 0.2rem 0;
+        color: #ffffff;
+        text-shadow: 0 2px 8px rgba(0, 60, 140, 0.35);
+        font-size: 1.8rem;
+        text-align: center;
+    }
+    .auth-subtitle {
+        margin: 0;
+        color: #eaf3ff;
+        text-shadow: 0 1px 4px rgba(0, 60, 140, 0.25);
         font-size: 1rem;
-        background: #f7faff;
-        transition: border 0.2s;
+        text-align: center;
     }
-    .login-section form input:focus {
-        border: 1.5px solid #007bff;
+    .container {
+        max-width: 430px;
+        margin: 1.2rem auto 2rem auto;
+        background: #fff;
+        border-radius: 14px;
+        box-shadow: 0 8px 28px rgba(0, 82, 204, 0.14);
+        padding: 1.8rem;
+        box-sizing: border-box;
+    }
+    .auth-error {
+        background: #fff1f1;
+        border: 1px solid #f5c2c7;
+        color: #b4232d;
+        border-radius: 8px;
+        padding: 0.75rem 0.9rem;
+        margin-bottom: 1rem;
+        font-size: 0.95rem;
+    }
+    .auth-field {
+        margin-top: 0.95rem;
+    }
+    .auth-field label {
+        display: block;
+        margin-bottom: 0.35rem;
+        color: #0052cc;
+        font-weight: 600;
+    }
+    .auth-field input {
+        width: 100%;
+        box-sizing: border-box;
+        padding: 0.72rem 0.8rem;
+        border: 1px solid #c3d4ea;
+        border-radius: 8px;
+        font-size: 1rem;
+        background: #f8fbff;
+        transition: border 0.18s, box-shadow 0.18s;
+    }
+    .auth-field input:focus {
+        border-color: #007bff;
+        box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.12);
         outline: none;
         background: #fff;
     }
-    .login-section form button {
-        margin-top: 1.7rem;
+    .auth-button {
+        margin-top: 1.35rem;
+        width: 100%;
+        border: none;
+        border-radius: 8px;
         background: #007bff;
         color: #fff;
-        border: none;
-        padding: 0.85rem 2rem;
-        border-radius: 6px;
-        font-size: 1.1rem;
+        padding: 0.82rem 1rem;
+        font-size: 1.05rem;
+        font-weight: 600;
         cursor: pointer;
-        width: 100%;
-        font-weight: bold;
-        box-shadow: 0 2px 8px rgba(0,123,255,0.08);
         transition: background 0.18s;
     }
-    .login-section form button:hover {
+    .auth-button:hover {
         background: #0052cc;
     }
-    .login-section .links {
-        margin-top: 1.5rem;
+    .auth-links {
+        margin-top: 1rem;
         text-align: center;
+        font-size: 0.96rem;
     }
-    .login-section .links a {
+    .auth-links a {
         color: #007bff;
-        text-decoration: underline;
-        margin: 0 0.5rem;
-        font-size: 1rem;
-        transition: color 0.18s;
+        text-decoration: none;
+        font-weight: 500;
     }
-    .login-section .links a:hover {
-        color: #0052cc;
+    .auth-links a:hover {
+        text-decoration: underline;
+    }
+    .field-error {
+        color: #b4232d;
+        font-size: 0.9rem;
+        margin-top: 0.3rem;
     }
     @media (max-width: 600px) {
-        .login-section {
-            padding: 1.2rem 0.7rem 1rem 0.7rem;
+        .auth-title {
+            font-size: 1.5rem;
+            margin-top: 0.65rem;
+        }
+        .auth-subtitle {
+            font-size: 0.95rem;
+            line-height: 1.4;
+        }
+        .auth-logo {
+            width: 74px;
+            height: 74px;
+            padding: 5px;
+        }
+        .container {
+            width: calc(100% - 1rem);
+            margin: 0.8rem auto 1.2rem auto;
+            padding: 1.2rem;
+            border-radius: 12px;
+            box-sizing: border-box;
+        }
+        .auth-field {
+            margin-top: 0.8rem;
+        }
+        .auth-field input {
+            min-height: 44px;
+            padding: 0.78rem 0.85rem;
+            font-size: 0.98rem;
+        }
+        .auth-button {
+            min-height: 46px;
+            margin-top: 1rem;
+            font-size: 1rem;
+        }
+        .auth-links {
+            margin-top: 0.9rem;
+            font-size: 0.92rem;
+            display: flex;
+            flex-direction: column;
+            gap: 0.35rem;
+        }
+        .auth-links span {
+            display: none;
+        }
+    }
+    @media (max-width: 380px) {
+        .container {
+            padding: 0.95rem;
+        }
+        .auth-title {
+            font-size: 1.35rem;
         }
     }
 </style>
-<div class="container">
-    <div class="login-section">
-        <h2>Login</h2>
-        <form method="post" action="">
-            {% csrf_token %}
-            {% if form.errors %}
-                <div style="color: #dc3545; margin-bottom: 1rem;">
-                    Please enter a correct username and password.
-                </div>
-            {% endif %}
-            <label for="id_username">Username</label>
-            <input type="text" name="username" id="id_username" required autofocus>
 
-            <label for="id_password">Password</label>
-            <input type="password" name="password" id="id_password" required>
+<img src="{% static 'images/nyandarua-logo.png' %}" alt="Nyandarua Stadium" class="auth-logo">
+<h1 class="auth-title">Welcome back</h1>
+<p class="auth-subtitle">Sign in to manage your profile and tickets.</p>
 
-            <button type="submit">Login</button>
-        </form>
-        <div class="links">
-            <a href="{% url 'password_reset' %}">Forgot password?</a> |
-            <a href="{% url 'register' %}">Create an account</a>
-        </div>
+{% if form.errors %}
+    <div class="auth-error">Please enter a valid username and password.</div>
+{% endif %}
+
+<form method="post" action="">
+    {% csrf_token %}
+    <div class="auth-field">
+        <label for="id_username">Username</label>
+        <input type="text" name="username" id="id_username" value="{{ form.username.value|default:'' }}" required autofocus>
+        {% for error in form.username.errors %}
+            <div class="field-error">{{ error }}</div>
+        {% endfor %}
     </div>
+
+    <div class="auth-field">
+        <label for="id_password">Password</label>
+        <input type="password" name="password" id="id_password" required>
+        {% for error in form.password.errors %}
+            <div class="field-error">{{ error }}</div>
+        {% endfor %}
+    </div>
+
+    <button type="submit" class="auth-button">Sign In</button>
+</form>
+
+<div class="auth-links">
+    <a href="{% url 'password_reset' %}">Forgot password?</a>
+    <span> · </span>
+    <a href="{% url 'register' %}">Create account</a>
 </div>
 {% endblock %}

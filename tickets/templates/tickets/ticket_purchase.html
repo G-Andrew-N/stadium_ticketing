@@ -61,6 +61,15 @@
         text-decoration: underline;
         margin: 0 0.5rem;
     }
+    .purchase-alert {
+        background: #fff1f1;
+        border: 1px solid #f5c2c7;
+        color: #b4232d;
+        border-radius: 8px;
+        padding: 0.75rem 0.9rem;
+        margin-bottom: 1rem;
+        font-size: 0.95rem;
+    }
     /* Modal styles */
     #seat-modal {
         display: none;
@@ -99,12 +108,123 @@
         border-radius: 7px;
         padding: 0.7rem 0.5rem;
     }
+    @media (max-width: 700px) {
+        .purchase-section {
+            padding: 1rem;
+            margin: 1rem auto;
+        }
+        .event-summary {
+            padding: 0.8rem;
+        }
+        #seat-modal > div {
+            width: calc(100vw - 1.2rem);
+            max-width: none;
+            margin: 2vh auto;
+            padding: 1rem;
+            box-sizing: border-box;
+        }
+        #seat-list {
+            max-height: 45vh;
+        }
+        #open-seat-picker,
+        #confirm-seats,
+        #close-seat-modal,
+        .purchase-section form button {
+            width: 100%;
+            box-sizing: border-box;
+        }
+    }
+
+    html[data-theme='dark'] .purchase-section {
+        background: #111827;
+        color: #e5e7eb;
+        border: 1px solid #374151;
+        box-shadow: none;
+    }
+    html[data-theme='dark'] .purchase-section h2 {
+        color: #f3f4f6;
+    }
+    html[data-theme='dark'] .event-summary {
+        background: #1f2937;
+        border: 1px solid #374151;
+    }
+    html[data-theme='dark'] .event-summary p,
+    html[data-theme='dark'] .purchase-section p,
+    html[data-theme='dark'] .purchase-section strong,
+    html[data-theme='dark'] .purchase-section li,
+    html[data-theme='dark'] .purchase-section label,
+    html[data-theme='dark'] .purchase-section em,
+    html[data-theme='dark'] #selected-seats-label {
+        color: #d1d5db;
+    }
+    html[data-theme='dark'] .purchase-section form input,
+    html[data-theme='dark'] .purchase-section form select {
+        background: #1f2937;
+        color: #f9fafb;
+        border-color: #4b5563;
+    }
+    html[data-theme='dark'] .purchase-section form input::placeholder {
+        color: #9ca3af;
+    }
+    html[data-theme='dark'] .purchase-section form button,
+    html[data-theme='dark'] #confirm-seats,
+    html[data-theme='dark'] #close-seat-modal,
+    html[data-theme='dark'] #open-seat-picker {
+        background: #2563eb;
+        color: #eff6ff;
+        border: none;
+    }
+    html[data-theme='dark'] .purchase-section form button:hover,
+    html[data-theme='dark'] #confirm-seats:hover,
+    html[data-theme='dark'] #close-seat-modal:hover,
+    html[data-theme='dark'] #open-seat-picker:hover {
+        background: #1d4ed8;
+    }
+    html[data-theme='dark'] .total-cost {
+        background: #1f2937;
+        border: 1px solid #374151;
+        color: #dbeafe;
+    }
+    html[data-theme='dark'] .purchase-section .links a {
+        color: #93c5fd;
+    }
+    html[data-theme='dark'] .purchase-alert {
+        background: #2a1115;
+        border-color: #7f1d1d;
+        color: #fecaca;
+    }
+    html[data-theme='dark'] #seat-modal {
+        background: rgba(0, 0, 0, 0.7);
+    }
+    html[data-theme='dark'] #seat-modal > div {
+        background: #111827;
+        color: #e5e7eb;
+        border: 1px solid #374151;
+    }
+    html[data-theme='dark'] #seat-list {
+        border: 1px solid #374151;
+        padding: 0.5rem;
+        background: #0f172a;
+    }
+    html[data-theme='dark'] #seat-list button {
+        background: #1f2937;
+        color: #e5e7eb;
+        border: 1px solid #4b5563;
+        border-radius: 0;
+    }
+    html[data-theme='dark'] #seat-list button:hover {
+        background: #374151;
+    }
 </style>
 <div class="purchase-section">
     <h2>Purchase Ticket</h2>
+    {% if purchase_blocked %}
+        <div class="purchase-alert">{{ purchase_block_message }}</div>
+    {% endif %}
     <div class="event-summary">
         <p><strong>Event:</strong> {{ event.name }}</p>
-        <p><strong>Date & Time:</strong> {{ event.date|date:"F j, Y, g:i a" }}</p>
+        <p><strong>Date:</strong> {{ event.date|date:"F j, Y" }}</p>
+        <p><strong>Time:</strong> {{ event.start_time|time:"g:i a" }} - {{ event.end_time|time:"g:i a" }}</p>
         <p><strong>Location:</strong> {{ event.location }}</p>
     </div>
     <div style="margin-bottom:1.5rem;">
@@ -120,6 +240,7 @@
             {% endfor %}
         </ul>
     </div>
+    {% if not purchase_blocked %}
     <form method="post" action="">
         {% csrf_token %}
         {{ form.non_field_errors }}
@@ -138,11 +259,13 @@
         </div>
         <button type="submit">Purchase Ticket</button>
     </form>
+    {% endif %}
     <div class="links">
         <a href="{% url 'event_detail' event.pk %}">&larr; Back to Event Details</a>
     </div>
 </div>
 
+{% if not purchase_blocked %}
 <!-- Modal -->
 <div id="seat-modal">
   <div>
@@ -249,4 +372,5 @@ window.onclick = function(event) {
     }
 };
 </script>
+{% endif %}
 {% endblock %}

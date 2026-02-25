@@ -107,13 +107,14 @@
         <h2>Ticket for {{ ticket.event.name }}</h2>
         <div class="ticket-info">
             <p><label>Event:</label> {{ ticket.event.name }}</p>
-            <p><label>Date & Time:</label> {{ ticket.event.date|date:"F j, Y, g:i a" }}</p>
+            <p><label>Date:</label> {{ ticket.event.date|date:"F j, Y" }}</p>
+            <p><label>Time:</label> {{ ticket.event.start_time|time:"g:i a" }} - {{ ticket.event.end_time|time:"g:i a" }}</p>
             <p><label>Location:</label> {{ ticket.event.location }}</p>
             <p><label>Seat:</label> {{ ticket.seat }}</p>
             <p><label>Status:</label>
                 {% if ticket.status == 'Cancelled' %}
                     <span class="ticket-status-cancelled">Cancelled</span>
-                {% elif ticket.event.date < now %}
+                {% elif ticket.event.is_over %}
                     <span class="ticket-status-expired">Expired</span>
                 {% else %}
                     <span class="ticket-status-valid">Valid</span>

@@ -25,6 +25,8 @@
             box-shadow: 0 2px 16px rgba(0,0,0,0.09);
             text-align: center;
             font-family: 'Segoe UI', 'Roboto', Arial, sans-serif;
+            box-sizing: border-box;
+            width: calc(100% - 2rem);
         }
         .home-logo {
             width: 120px;
@@ -98,6 +100,7 @@
             text-align: left;
             margin-left: auto;
             margin-right: auto;
+            box-sizing: border-box;
         }
         .about-section h2 {
             color: #0052cc;
@@ -115,6 +118,7 @@
         @media (max-width: 600px) {
             .home-section, .about-section {
                 padding: 1.2rem;
+                width: calc(100% - 1rem);
             }
             .home-title {
                 font-size: 1.5rem;
@@ -127,12 +131,51 @@
                 height: 80px;
                 margin-top: -2rem;
             }
+            .home-hero {
+                font-size: 1rem;
+                line-height: 1.5;
+            }
+            .action-links {
+                display: flex;
+                flex-direction: column;
+                gap: 0.7rem;
+            }
+            .action-links a {
+                width: 100%;
+                margin: 0;
+                box-sizing: border-box;
+                text-align: center;
+            }
+            .about-section {
+                margin-top: 1rem;
+            }
+        }
+        @media (max-width: 380px) {
+            .home-section {
+                margin: 1.2rem auto 1rem auto;
+                padding: 0.9rem;
+            }
+            .home-title {
+                font-size: 1.2rem;
+            }
+            .home-tagline {
+                font-size: 0.96rem;
+            }
+            .home-logo {
+                width: 68px;
+                height: 68px;
+                margin-top: -1.3rem;
+            }
+            .about-section {
+                padding: 0.9rem;
+                font-size: 0.96rem;
+            }
         }
     </style>
 </head>
 <body>
     <div class="home-section">
-        <img src="{% static 'images/Nyandarua logo.png' %}" alt="Arena Logo" class="home-logo">
+        <img src="{% static 'images/nyandarua-logo.png' %}" alt="Arena Logo" class="home-logo">
         <div class="home-title">Nyandarua Stadium Ticketing</div>
         <div class="home-tagline">Your Gateway to Live Stadium Events</div>
         <div class="home-hero">

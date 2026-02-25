@@ -4,7 +4,7 @@
 
 {% block content %}
 <style>
-    .event-card {
+    .container {
         background: rgba(255,255,255,0.97);
         border-radius: 12px;
         box-shadow: 0 2px 12px rgba(0,0,0,0.07);
@@ -28,8 +28,21 @@
     .event-details {
         flex: 1;
     }
+    .ticket-types-table {
+        width: 100%;
+        border-collapse: collapse;
+    }
+    .event-actions {
+        margin-top: 1.2rem;
+    }
+    .event-actions .cta {
+        margin-top: 0;
+    }
+    .event-actions .back-link {
+        margin-left: 1.5rem;
+    }
     @media (max-width: 900px) {
-        .event-card { 
+        .container { 
             flex-direction: column; 
             align-items: center; 
             padding: 1.2rem 0.7rem 1.5rem 0.7rem;
@@ -47,7 +60,7 @@
         }
     }
     @media (max-width: 600px) {
-        .event-card {
+        .container {
             padding: 0.7rem 0.2rem 1rem 0.2rem;
             gap: 0.7rem;
         }
@@ -68,9 +81,26 @@
         .event-details table th, .event-details table td {
             padding: 0.3rem !important;
         }
+        .ticket-types-wrap {
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+        }
+        .ticket-types-table {
+            min-width: 420px;
+        }
+        .event-actions .cta,
+        .event-actions .back-link {
+            display: block;
+            margin: 0.6rem 0 0 0;
+            width: 100%;
+            box-sizing: border-box;
+            text-align: center;
+        }
+        .event-actions .back-link {
+            margin-left: 0;
+        }
     }
 </style>
-<div class="event-card">
     {% if event.thumbnail %}
         <img src="{{ event.thumbnail.url }}" alt="{{ event.name }} thumbnail" class="event-thumbnail">
     {% else %}
@@ -78,7 +108,8 @@
     {% endif %}
     <div class="event-details">
         <h2>{{ event.name }}</h2>
-        <p><strong>Date & Time:</strong> {{ event.date|date:"F j, Y, g:i a" }}</p>
+        <p><strong>Date:</strong> {{ event.date|date:"F j, Y" }}</p>
+        <p><strong>Time:</strong> {{ event.start_time|time:"g:i a" }} - {{ event.end_time|time:"g:i a" }}</p>
         <p><strong>Location:</strong> {{ event.location }}</p>
         <div style="margin: 1.5rem 0;">
             <strong>Description:</strong>
@@ -86,7 +117,8 @@
         </div>
         <div style="margin: 2rem 0;">
             <h3>Available Ticket Types</h3>
-            <table style="width:100%; border-collapse:collapse;">
+            <div class="ticket-types-wrap">
+            <table class="ticket-types-table">
                 <thead>
                     <tr>
                         <th style="text-align:left; padding:0.5rem;">Type</th>
@@ -108,15 +140,17 @@
                     {% endfor %}
                 </tbody>
             </table>
+            </div>
         </div>
-        {% with sorted_types=ticket_type_data|dictsortreversed:"remaining" %}
-            {% if sorted_types and sorted_types.0.remaining > 0 %}
-                <a href="{% url 'ticket_purchase' event.pk sorted_types.0.type.pk %}" class="cta" style="margin-top:1.2rem;display:inline-block;">Book Tickets</a>
-            {% else %}
-                <span style="color:#dc3545; font-weight:600; margin-top:1.2rem; display:inline-block;">Sold Out</span>
-            {% endif %}
-        {% endwith %}
-        <a href="{% url 'event_list' %}" style="margin-left:1.5rem;">&larr; Back to Events</a>
+        <div class="event-actions">
+            {% with sorted_types=ticket_type_data|dictsortreversed:"remaining" %}
+                {% if sorted_types and sorted_types.0.remaining > 0 %}
+                    <a href="{% url 'ticket_purchase' event.pk sorted_types.0.type.pk %}" class="cta" style="display:inline-block;">Book Tickets</a>
+                {% else %}
+                    <span style="color:#dc3545; font-weight:600; margin-top:1.2rem; display:inline-block;">Sold Out</span>
+                {% endif %}
+            {% endwith %}
+            <a href="{% url 'event_list' %}" class="back-link">&larr; Back to Events</a>
+        </div>
     </div>
-</div>
 {% endblock %}

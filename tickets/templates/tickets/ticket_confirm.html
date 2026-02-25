@@ -52,13 +52,74 @@
     .ticket-list-table th {
         background: #f4f8fb;
     }
+    @media (max-width: 700px) {
+        .confirm-section {
+            padding: 1rem;
+        }
+        .ticket-summary {
+            padding: 0.8rem;
+        }
+        .ticket-list-table {
+            display: block;
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+            min-width: 520px;
+        }
+        .confirm-section .cta {
+            width: 100%;
+            margin: 0.4rem 0;
+            box-sizing: border-box;
+        }
+    }
+    html[data-theme='dark'] .confirm-section {
+        background: #111827;
+        color: #e5e7eb;
+        border: 1px solid #374151;
+        box-shadow: none;
+    }
+    html[data-theme='dark'] .confirm-section h2 {
+        color: #4ade80;
+    }
+    html[data-theme='dark'] .ticket-summary {
+        background: #1f2937;
+        border: 1px solid #374151;
+        color: #d1d5db;
+    }
+    html[data-theme='dark'] .ticket-summary p,
+    html[data-theme='dark'] .ticket-summary strong {
+        color: #d1d5db;
+    }
+    html[data-theme='dark'] .ticket-list-table th,
+    html[data-theme='dark'] .ticket-list-table td {
+        border-color: #374151;
+        color: #e5e7eb;
+        background: #111827;
+    }
+    html[data-theme='dark'] .ticket-list-table th {
+        background: #1f2937;
+        color: #dbeafe;
+    }
+    html[data-theme='dark'] .ticket-list-table a {
+        color: #93c5fd;
+    }
+    html[data-theme='dark'] .ticket-list-table a:hover {
+        color: #bfdbfe;
+    }
+    html[data-theme='dark'] .confirm-section .cta {
+        background: #2563eb;
+        color: #eff6ff;
+    }
+    html[data-theme='dark'] .confirm-section .cta:hover {
+        background: #1d4ed8;
+    }
 </style>
 <div class="container">
     <div class="confirm-section">
         <h2>Thank You! Your Ticket{% if tickets|length > 1 %}s{% endif %} Have Been Purchased.</h2>
         <div class="ticket-summary">
             <p><strong>Event:</strong> {{ tickets.0.event.name }}</p>
-            <p><strong>Date & Time:</strong> {{ tickets.0.event.date|date:"F j, Y, g:i a" }}</p>
+            <p><strong>Date:</strong> {{ tickets.0.event.date|date:"F j, Y" }}</p>
+            <p><strong>Time:</strong> {{ tickets.0.event.start_time|time:"g:i a" }} - {{ tickets.0.event.end_time|time:"g:i a" }}</p>
             <p><strong>Location:</strong> {{ tickets.0.event.location }}</p>
             <table class="ticket-list-table">
                 <thead>

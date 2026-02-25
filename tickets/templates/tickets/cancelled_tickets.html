@@ -75,10 +75,20 @@
     @media (max-width: 700px) {
         .tickets-section {
             padding: 1rem;
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+        }
+        .ticket-table {
+            min-width: 540px;
         }
         .ticket-table, .ticket-table th, .ticket-table td {
             font-size: 0.95rem;
             padding: 0.5rem;
+        }
+        .cta {
+            width: 100%;
+            text-align: center;
+            box-sizing: border-box;
         }
     }
     .no-tickets-msg {
@@ -95,7 +105,7 @@
         <thead>
             <tr>
                 <th>Event</th>
-                <th>Date & Time</th>
+                <th>Schedule</th>
                 <th>Seat</th>
                 <th>Purchase Date</th>
                 <th>Status</th>
@@ -105,7 +115,7 @@
             {% for ticket in tickets %}
             <tr>
                 <td>{{ ticket.event.name }}</td>
-                <td>{{ ticket.event.date|date:"F j, Y, g:i a" }}</td>
+                <td>{{ ticket.event.date|date:"F j, Y" }}<br>{{ ticket.event.start_time|time:"g:i a" }} - {{ ticket.event.end_time|time:"g:i a" }}</td>
                 <td>{{ ticket.seat }}</td>
                 <td>{{ ticket.purchase_date|date:"F j, Y" }}</td>
                 <td><span class="ticket-status-cancelled">Cancelled</span></td>

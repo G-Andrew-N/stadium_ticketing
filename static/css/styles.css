@@ -150,3 +150,94 @@ footer {
         font-size: 1.15rem;
     }
 }
+
+html[data-theme='dark'] {
+    color-scheme: dark;
+}
+
+html[data-theme='dark'] body {
+    background: #0f172a !important;
+    color: #e5e7eb !important;
+}
+
+html[data-theme='dark'] .container,
+html[data-theme='dark'] [class$='-section'],
+html[data-theme='dark'] [class*='-section '],
+html[data-theme='dark'] .auth-card,
+html[data-theme='dark'] .dashboard-link,
+html[data-theme='dark'] .dropdown-content,
+html[data-theme='dark'] .ticket-card,
+html[data-theme='dark'] .event-card {
+    background: #111827 !important;
+    color: #e5e7eb !important;
+    box-shadow: 0 4px 18px rgba(0, 0, 0, 0.35) !important;
+}
+
+html[data-theme='dark'] h1,
+html[data-theme='dark'] h2,
+html[data-theme='dark'] h3,
+html[data-theme='dark'] h4,
+html[data-theme='dark'] h5,
+html[data-theme='dark'] h6 {
+    color: #f3f4f6 !important;
+}
+
+html[data-theme='dark'] p,
+html[data-theme='dark'] span,
+html[data-theme='dark'] li,
+html[data-theme='dark'] label,
+html[data-theme='dark'] td,
+html[data-theme='dark'] th,
+html[data-theme='dark'] small {
+    color: #d1d5db !important;
+}
+
+html[data-theme='dark'] a {
+    color: #93c5fd !important;
+}
+
+html[data-theme='dark'] a:hover {
+    color: #bfdbfe !important;
+}
+
+html[data-theme='dark'] input,
+html[data-theme='dark'] select,
+html[data-theme='dark'] textarea {
+    background: #1f2937 !important;
+    color: #f9fafb !important;
+    border: 1px solid #374151 !important;
+}
+
+html[data-theme='dark'] input::placeholder,
+html[data-theme='dark'] textarea::placeholder {
+    color: #9ca3af !important;
+}
+
+html[data-theme='dark'] button,
+html[data-theme='dark'] .cta,
+html[data-theme='dark'] [type='submit'] {
+    background: #2563eb !important;
+    color: #eff6ff !important;
+    border-color: transparent !important;
+}
+
+html[data-theme='dark'] button:hover,
+html[data-theme='dark'] .cta:hover,
+html[data-theme='dark'] [type='submit']:hover {
+    background: #1d4ed8 !important;
+}
+
+html[data-theme='dark'] table,
+html[data-theme='dark'] th,
+html[data-theme='dark'] td {
+    border-color: #374151 !important;
+}
+
+html[data-theme='dark'] .ticket-status-valid {
+    color: #4ade80 !important;
+}
+
+html[data-theme='dark'] .ticket-status-expired,
+html[data-theme='dark'] .ticket-status-cancelled {
+    color: #fca5a5 !important;
+}

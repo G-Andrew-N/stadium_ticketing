@@ -5,8 +5,20 @@
     <meta charset="UTF-8">
     <title>{% block title %}Stadium Ticketing{% endblock %}</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <script>
+        (function() {
+            try {
+                var savedTheme = localStorage.getItem('theme');
+                var systemPrefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+                var theme = savedTheme || (systemPrefersDark ? 'dark' : 'light');
+                document.documentElement.setAttribute('data-theme', theme);
+            } catch (e) {
+                document.documentElement.setAttribute('data-theme', 'light');
+            }
+        })();
+    </script>
     <link rel="stylesheet" href="{% static 'css/styles.css' %}">
-    <link rel="icon" href="{% static 'images/favicon.ico' %}" type="image/x-icon">
+    <link rel="icon" href="{% static 'images/nyandarua-logo.png' %}" type="image/png">
     <style>
         html, body {
             height: 100%;
@@ -23,7 +35,7 @@
         }
         header {
             background: rgba(255,255,255,0.98);
-            border-radius: 0 0 18px 18px;
+            border-radius: 0;
             text-align: left;
             padding: 1.2rem 2rem 1.2rem 2rem;
             margin-bottom: 1.5rem;
@@ -32,6 +44,8 @@
             align-items: center;
             justify-content: space-between;
             position: relative;
+            width: 100%;
+            box-sizing: border-box;
         }
         .logo-title {
             display: flex;
@@ -60,13 +74,15 @@
             text-align: center;
             margin-bottom: 2rem;
             background: rgba(255,255,255,0.93);
-            border-radius: 8px;
+            border-radius: 0;
             box-shadow: 0 2px 12px rgba(0,123,255,0.08);
             padding: 0.7rem 0;
             display: flex;
             justify-content: center;
             gap: 1.2rem;
             flex-wrap: wrap;
+            width: 100%;
+            box-sizing: border-box;
         }
         nav a {
             margin: 0 0.5rem;
@@ -96,12 +112,14 @@
             margin-top: 2rem;
             font-size: 1rem;
             background: rgba(255,255,255,0.97);
-            border-radius: 10px 10px 0 0;
+            border-radius: 0;
             text-align: center;
             padding: 1.2rem 0 0.7rem 0;
             box-shadow: 0 -2px 12px rgba(0,123,255,0.07);
             color: #0052cc;
             flex-shrink: 0;
+            width: 100%;
+            box-sizing: border-box;
         }
         .nav-profile-dropdown {
             position: absolute;
@@ -155,6 +173,48 @@
             background: #f4f8fb;
             color: #0052cc;
         }
+        .mobile-menu-utils {
+            display: none;
+            width: 100%;
+            border-top: 1px solid #dbe5f3;
+            padding-top: 0.8rem;
+            margin-top: 0.4rem;
+        }
+        .mobile-profile-row {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.7rem;
+            margin-bottom: 0.8rem;
+            color: #0052cc;
+            font-weight: 600;
+        }
+        .mobile-profile-row img {
+            width: 34px;
+            height: 34px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid #007bff;
+            background: #f4f4f4;
+        }
+        .mobile-theme-btn {
+            width: 80%;
+            margin: 0 auto 0.5rem auto;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            padding: 0.7rem 1rem;
+            border: none;
+            border-radius: 8px;
+            background: #007bff;
+            color: #fff;
+            font-weight: 600;
+            cursor: pointer;
+        }
+        .mobile-theme-btn:hover {
+            background: #0052cc;
+        }
                  /* Mobile Menu Styles */
          .mobile-menu-toggle {
              display: none;
@@ -192,6 +252,74 @@
             margin: 3px 0;
             transition: 0.3s;
             border-radius: 2px;
+        }
+        .theme-toggle {
+            position: fixed;
+            top: 18px;
+            right: 18px;
+            z-index: 1200;
+            border: none;
+            border-radius: 999px;
+            background: #ffffff;
+            color: #0052cc;
+            box-shadow: 0 4px 16px rgba(0, 82, 204, 0.2);
+            font-size: 0.95rem;
+            font-weight: 700;
+            line-height: 1;
+            padding: 0.65rem 0.9rem;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.45rem;
+            transition: transform 0.16s ease, box-shadow 0.16s ease;
+        }
+        body.has-profile .theme-toggle {
+            right: 94px;
+        }
+        .theme-toggle:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 7px 20px rgba(0, 82, 204, 0.28);
+        }
+        .theme-toggle:focus-visible {
+            outline: 3px solid rgba(0, 123, 255, 0.45);
+            outline-offset: 2px;
+        }
+        html[data-theme='dark'] .theme-toggle {
+            background: #1f2937;
+            color: #e5e7eb;
+            box-shadow: 0 6px 18px rgba(0, 0, 0, 0.35);
+        }
+        html[data-theme='dark'] body {
+            background: #0f172a;
+        }
+        html[data-theme='dark'] header,
+        html[data-theme='dark'] nav,
+        html[data-theme='dark'] footer {
+            background: rgba(17, 24, 39, 0.96);
+            color: #e5e7eb;
+            box-shadow: 0 3px 18px rgba(0, 0, 0, 0.35);
+        }
+        html[data-theme='dark'] .logo-title .app-name {
+            color: #dbeafe;
+        }
+        html[data-theme='dark'] nav a {
+            color: #c7ddff;
+        }
+        html[data-theme='dark'] nav a.active,
+        html[data-theme='dark'] nav a:hover {
+            background: #2563eb;
+            color: #f8fafc;
+        }
+        html[data-theme='dark'] .dropdown-content {
+            background: #111827;
+            box-shadow: 0 4px 18px rgba(0, 0, 0, 0.45);
+        }
+        html[data-theme='dark'] .dropdown-content a {
+            color: #dbeafe;
+        }
+        html[data-theme='dark'] .dropdown-content a:hover {
+            background: #1f2937;
+            color: #ffffff;
         }
         
         .mobile-menu-toggle.active span:nth-child(1) {
@@ -241,19 +369,20 @@
              nav {
                  display: none;
                  position: fixed;
-                 top: 0;
-                 left: 0;
-                 width: 100%;
+                 top: 58px;
+                 right: 10px;
+                 left: auto;
+                 width: min(320px, calc(100vw - 20px));
                  height: auto;
                  background: rgba(255, 255, 255, 0.98);
                  z-index: 1000;
                  flex-direction: column;
                  justify-content: flex-start;
-                 align-items: center;
-                 padding: 80px 20px 20px 20px;
-                 gap: 1rem;
+                 align-items: stretch;
+                 padding: 0.8rem;
+                 gap: 0.45rem;
                  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
-                 border-radius: 0 0 15px 15px;
+                 border-radius: 10px;
              }
             
             nav.active {
@@ -261,15 +390,16 @@
             }
             
             nav a {
-                font-size: 1.2rem;
-                padding: 1rem 2rem;
-                margin: 0.5rem 0;
-                width: 80%;
-                text-align: center;
+                font-size: 1rem;
+                padding: 0.75rem 0.85rem;
+                margin: 0;
+                width: 100%;
+                text-align: left;
                 border-radius: 8px;
                 background: rgba(0, 123, 255, 0.1);
                 color: #007bff;
                 font-weight: 600;
+                box-sizing: border-box;
             }
             
             nav a:hover, nav a.active {
@@ -286,13 +416,33 @@
                 margin-top: 1rem;
             }
             .nav-profile-dropdown {
-                position: absolute;
-                top: 0.7rem;
-                right: 4rem;
-                margin-left: 0;
-                z-index: 1001;
-                background: transparent;
-                box-shadow: none;
+                display: none;
+            }
+            body.has-profile .theme-toggle {
+                right: 110px;
+            }
+            .theme-toggle {
+                display: none;
+            }
+            .mobile-menu-utils {
+                display: block;
+            }
+            .mobile-theme-btn {
+                width: 100%;
+                margin: 0.2rem 0 0 0;
+            }
+            html[data-theme='dark'] .mobile-menu-utils {
+                border-top-color: #374151;
+            }
+            html[data-theme='dark'] .mobile-profile-row {
+                color: #dbeafe;
+            }
+            html[data-theme='dark'] .mobile-theme-btn {
+                background: #2563eb;
+                color: #eff6ff;
+            }
+            html[data-theme='dark'] .mobile-theme-btn:hover {
+                background: #1d4ed8;
             }
         }
         
@@ -311,24 +461,29 @@
                 padding: 0.8rem 1.5rem;
                 width: 85%;
             }
-            .nav-profile-dropdown {
-                top: 0.3rem;
-                right: 3.5rem;
-                position: absolute;
-            }
             .mobile-menu-toggle {
                 top: 0.7rem;
                 right: 0.5rem;
+            }
+            nav {
+                top: 50px;
+                right: 8px;
+                width: min(300px, calc(100vw - 16px));
+                padding: 0.65rem;
             }
         }
     </style>
     {% block extra_head %}{% endblock %}
 </head>
-<body>
+<body{% if user.is_authenticated %} class="has-profile"{% endif %}>
+    <button id="themeToggle" class="theme-toggle" type="button" aria-label="Toggle dark mode" title="Toggle theme">
+        <span id="themeToggleIcon" aria-hidden="true">🌙</span>
+        <span id="themeToggleText">Dark</span>
+    </button>
     {% block header %}
         <header>
             <div class="logo-title">
-                <img src="{% static 'images/Nyandarua logo.png' %}" alt="Logo">
+                <img src="{% static 'images/nyandarua-logo.png' %}" alt="Logo">
                 <span class="app-name">Nyandarua Stadium Ticketing</span>
             </div>
             {% if user.is_authenticated %}
@@ -337,7 +492,7 @@
                     {% if user.profile.photo %}
                         <img src="{{ user.profile.photo.url }}" alt="Profile" class="nav-profile-pic">
                     {% else %}
-                        <img src="{% static 'images/default_profile.png' %}" alt="Profile" class="nav-profile-pic">
+                        <img src="{% static 'images/default-profile.svg' %}" alt="Profile" class="nav-profile-pic">
                     {% endif %}
                 </div>
                 <div class="dropdown-content">
@@ -368,16 +523,72 @@
              <a href="{% url 'login' %}">🔑 Login</a>
              <a href="{% url 'register' %}">📝 Register</a>
          {% endif %}
+         <div class="mobile-menu-utils">
+             {% if user.is_authenticated %}
+                 <div class="mobile-profile-row">
+                     {% if user.profile.photo %}
+                         <img src="{{ user.profile.photo.url }}" alt="Profile">
+                     {% else %}
+                         <img src="{% static 'images/default-profile.svg' %}" alt="Profile">
+                     {% endif %}
+                     <span>{{ user.username }}</span>
+                 </div>
+                 <a href="{% url 'profile' %}">🙍‍♂️ Profile</a>
+                 <a href="{% url 'logout' %}">🚪 Logout</a>
+             {% endif %}
+             <button id="mobileThemeToggle" class="mobile-theme-btn" type="button" data-theme-toggle>
+                 <span data-theme-icon aria-hidden="true">🌙</span>
+                 <span data-theme-text>Dark</span>
+             </button>
+         </div>
      </nav>
      {% endblock %}
     <div class="container">
         {% block content %}{% endblock %}
     </div>
+    {% if user.is_authenticated %}
     <footer>
-        &copy; {{ year|default:2025 }} Nyandarua Stadium Ticketing. All rights reserved.
+        &copy; {% now "Y" %} Nyandarua Stadium Ticketing. All rights reserved.
     </footer>
+    {% endif %}
     <script>
 document.addEventListener('DOMContentLoaded', function() {
+    var themeToggle = document.getElementById('themeToggle');
+    var themeButtons = [themeToggle, document.getElementById('mobileThemeToggle')].filter(Boolean);
+
+    function getCurrentTheme() {
+        return document.documentElement.getAttribute('data-theme') || 'light';
+    }
+
+    function applyTheme(theme) {
+        document.documentElement.setAttribute('data-theme', theme);
+        try {
+            localStorage.setItem('theme', theme);
+        } catch (e) {}
+        themeButtons.forEach(function(button) {
+            var icon = button.querySelector('[data-theme-icon]') || button.querySelector('#themeToggleIcon');
+            var text = button.querySelector('[data-theme-text]') || button.querySelector('#themeToggleText');
+            if (theme === 'dark') {
+                if (icon) icon.textContent = '☀️';
+                if (text) text.textContent = 'Light';
+                button.setAttribute('aria-label', 'Switch to light mode');
+            } else {
+                if (icon) icon.textContent = '🌙';
+                if (text) text.textContent = 'Dark';
+                button.setAttribute('aria-label', 'Switch to dark mode');
+            }
+        });
+    }
+
+    applyTheme(getCurrentTheme());
+
+    themeButtons.forEach(function(button) {
+        button.addEventListener('click', function() {
+            var currentTheme = getCurrentTheme();
+            applyTheme(currentTheme === 'dark' ? 'light' : 'dark');
+        });
+    });
+
          // Mobile menu toggle functionality
      const mobileMenuToggle = document.getElementById('mobileMenuToggle');
      const mainNav = document.getElementById('mainNav');

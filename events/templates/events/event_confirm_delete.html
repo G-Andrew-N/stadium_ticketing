@@ -24,7 +24,7 @@
     <div class="container">
         <div class="section">
             <h2>Confirm Delete</h2>
-            <p>Are you sure you want to delete the event <strong>{{ event.name }}</strong> scheduled for {{ event.date|date:"F j, Y, g:i a" }} at {{ event.location }}?</p>
+            <p>Are you sure you want to delete the event <strong>{{ event.name }}</strong> scheduled for {{ event.date|date:"F j, Y" }} from {{ event.start_time|time:"g:i a" }} to {{ event.end_time|time:"g:i a" }} at {{ event.location }}?</p>
             <form method="post">
                 {% csrf_token %}
                 <button type="submit" class="cta" style="background:#dc3545;">Yes, Delete</button>

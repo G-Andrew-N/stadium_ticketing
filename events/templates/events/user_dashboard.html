@@ -4,7 +4,7 @@
 
 {% block content %}
 <style>
-    .dashboard-section {
+    .container {
         max-width: 900px;
         margin: 2.5rem auto;
         background: #fff;
@@ -90,21 +90,36 @@
         font-weight: bold;
     }
     @media (max-width: 700px) {
-        .dashboard-section {
+        .container {
             padding: 1.2rem;
+        }
+        .dashboard-header {
+            align-items: flex-start;
         }
         .dashboard-links {
             flex-direction: column;
             gap: 1rem;
         }
+        .dashboard-link {
+            width: 100%;
+            min-width: 0;
+            box-sizing: border-box;
+            padding: 1rem;
+        }
+        .dashboard-tickets {
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+        }
+        .dashboard-tickets table {
+            min-width: 560px;
+        }
     }
 </style>
-<div class="dashboard-section">
     <div class="dashboard-header">
         {% if user.profile.photo %}
             <img src="{{ user.profile.photo.url }}" alt="Profile Photo">
         {% else %}
-            <img src="{% static 'images/default_profile.png' %}" alt="Profile Photo">
+            <img src="{% static 'images/default-profile.svg' %}" alt="Profile Photo">
         {% endif %}
         <div>
             <div class="welcome">Welcome, {{ user.first_name|default:user.username }}!</div>
@@ -148,7 +163,7 @@
             <thead>
                 <tr>
                     <th>Event</th>
-                    <th>Date & Time</th>
+                    <th>Schedule</th>
                     <th>Seat</th>
                     <th>Status</th>
                     <th>Actions</th>
@@ -158,12 +173,12 @@
                 {% for ticket in tickets|slice:":5" %}
                 <tr>
                     <td>{{ ticket.event.name }}</td>
-                    <td>{{ ticket.event.date|date:"F j, Y, g:i a" }}</td>
+                    <td>{{ ticket.event.date|date:"F j, Y" }}<br>{{ ticket.event.start_time|time:"g:i a" }} - {{ ticket.event.end_time|time:"g:i a" }}</td>
                     <td>{{ ticket.seat }}</td>
                     <td>
                         {% if ticket.status == 'Cancelled' %}
                             <span class="ticket-status-cancelled">Cancelled</span>
-                        {% elif ticket.event.date < now %}
+                        {% elif ticket.event.is_over %}
                             <span class="ticket-status-expired">Expired</span>
                         {% else %}
                             <span class="ticket-status-valid">Valid</span>
@@ -186,5 +201,4 @@
             <p style="margin-top:1rem;">You have not purchased any tickets yet. <a href="{% url 'event_list' %}">Browse events</a></p>
         {% endif %}
     </div>
-</div>
 {% endblock %}

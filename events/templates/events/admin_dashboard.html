@@ -4,7 +4,7 @@
 
 {% block content %}
 <style>
-    .admin-dashboard-section {
+    .container {
         max-width: 1000px;
         margin: 2.5rem auto;
         background: #fff;
@@ -22,6 +22,9 @@
         font-size: 1.3rem;
         color: #0052cc;
         font-weight: 600;
+    }
+    .admin-meta {
+        color: #888;
     }
     .admin-links {
         display: flex;
@@ -70,21 +73,78 @@
         background: #f4f8fb;
         color: #0052cc;
     }
+    .admin-stats-title {
+        color:#0052cc;
+    }
+
+    html[data-theme='dark'] .container {
+        background: #111827;
+        color: #e5e7eb;
+        box-shadow: none;
+        border: 1px solid #374151;
+    }
+    html[data-theme='dark'] .admin-header .welcome {
+        color: #e5e7eb;
+    }
+    html[data-theme='dark'] .admin-meta {
+        color: #9ca3af;
+    }
+    html[data-theme='dark'] .admin-link {
+        background: #1f2937;
+        color: #dbeafe;
+        box-shadow: none;
+        border: 1px solid #374151;
+    }
+    html[data-theme='dark'] .admin-link:hover {
+        background: #2563eb;
+        color: #eff6ff;
+        border-color: #2563eb;
+    }
+    html[data-theme='dark'] .admin-stats-title {
+        color: #e5e7eb;
+    }
+    html[data-theme='dark'] .admin-stats-table th,
+    html[data-theme='dark'] .admin-stats-table td {
+        border-color: #374151;
+        color: #e5e7eb;
+    }
+    html[data-theme='dark'] .admin-stats-table th {
+        background: #1f2937;
+        color: #dbeafe;
+    }
+    html[data-theme='dark'] .admin-stats-table td {
+        background: #111827;
+    }
     @media (max-width: 700px) {
-        .admin-dashboard-section {
+        .container {
             padding: 1.2rem;
         }
         .admin-links {
             flex-direction: column;
             gap: 1rem;
         }
+        .admin-link {
+            width: 100%;
+            min-width: 0;
+            box-sizing: border-box;
+            padding: 1rem;
+        }
+        .admin-header .welcome {
+            font-size: 1.1rem;
+        }
+        .admin-stats {
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+        }
+        .admin-stats-table {
+            min-width: 520px;
+        }
     }
 </style>
-<div class="admin-dashboard-section">
     <div class="admin-header">
         <div>
             <div class="welcome">Welcome, {{ user.first_name|default:user.username }}! <span style="font-size:1rem;color:#888;">(Manager)</span></div>
-            <div style="color:#888;">Admin since {{ user.date_joined|date:"F Y" }}</div>
+            <div class="admin-meta">Admin since {{ user.date_joined|date:"F Y" }}</div>
         </div>
     </div>
     <div class="admin-links">
@@ -101,7 +161,7 @@
             Manage Database
         </a>
         <a href="{% url 'event_calendar' %}" class="admin-link">
-            <span class="icon">🗓️</span>
+            <span class="icon">�️</span>
             Event Calendar
         </a>
         <a href="{% url 'ticket_list' %}" class="admin-link">
@@ -111,7 +171,7 @@
         
     </div>
     <div class="admin-stats">
-        <h3 style="color:#0052cc;">Quick Stats</h3>
+        <h3 class="admin-stats-title">Quick Stats</h3>
         <table class="admin-stats-table">
             <thead>
                 <tr>
@@ -131,5 +191,4 @@
             </tbody>
         </table>
     </div>
-</div>
 {% endblock %}

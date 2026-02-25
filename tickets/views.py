@@ -128,7 +128,10 @@ def ticket_purchase(request, event_id, tickettype_id):
         taken_seats = taken_seats_dict[ttype.pk]
         available_seats_dict[ttype.pk] = [s for s in all_seats if s not in taken_seats]
 
-    if request.method == 'POST':
+    purchase_blocked = event_obj.is_over
+    purchase_block_message = 'Ticket sales are closed because this event has already ended.'
+
+    if request.method == 'POST' and not purchase_blocked:
         form = TicketPurchaseForm(request.POST, event=event_obj, user=request.user)
         form.fields['tickettype'].queryset = event_obj.ticket_types.all()
         if form.is_valid():
@@ -164,6 +167,10 @@ def ticket_purchase(request, event_id, tickettype_id):
 
                 ticket_ids = [t.pk for t in tickets]
                 return redirect('ticket_confirm', ids=",".join(map(str, ticket_ids)))
+    elif request.method == 'POST' and purchase_blocked:
+        form = TicketPurchaseForm(event=event_obj, user=request.user)
+        form.fields['tickettype'].queryset = event_obj.ticket_types.all()
+        form.add_error(None, purchase_block_message)
     else:
         form = TicketPurchaseForm(event=event_obj, user=request.user)
         form.fields['tickettype'].queryset = event_obj.ticket_types.all()
@@ -174,6 +181,8 @@ def ticket_purchase(request, event_id, tickettype_id):
         'ticket_types': ticket_types,
         'taken_seats_dict': taken_seats_dict,  # Pass to template
         'available_seats_dict': available_seats_dict,
+        'purchase_blocked': purchase_blocked,
+        'purchase_block_message': purchase_block_message,
     })
 
 @login_required

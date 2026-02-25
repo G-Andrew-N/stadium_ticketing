@@ -19,6 +19,7 @@ from django.urls import path, include
 from . import views
 from django.conf import settings
 from django.conf.urls.static import static
+from django.contrib.staticfiles.urls import staticfiles_urlpatterns
 
 urlpatterns = [
     path('', views.home, name='home'),  # Homepage at root URL
@@ -32,6 +33,9 @@ urlpatterns = [
 
 handler404 = 'stadium_ticketing.views.custom_404'
 
-# Serve static and media files in both development and production
-urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
+# Serve media files
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+
+# Serve static files in development
+if settings.DEBUG:
+    urlpatterns += staticfiles_urlpatterns()

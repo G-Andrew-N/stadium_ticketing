@@ -4,7 +4,7 @@
 
 {% block content %}
 <style>
-    .profile-edit-section {
+    .container {
         max-width: 500px;
         margin: 2.5rem auto;
         background: #fff;
@@ -12,7 +12,7 @@
         border-radius: 10px;
         box-shadow: 0 2px 12px rgba(0,0,0,0.07);
     }
-    .profile-edit-section h2 {
+    .container h2 {
         color: #0052cc;
         margin-bottom: 1.5rem;
         text-align: center;
@@ -31,12 +31,12 @@
         font-size: 3rem;
         color: #007bff;
     }
-    .profile-edit-section form label {
+    .container form label {
         display: block;
         margin-top: 1rem;
         font-weight: 500;
     }
-    .profile-edit-section form input {
+    .container form input {
         width: 100%;
         padding: 0.7rem;
         margin-top: 0.3rem;
@@ -44,7 +44,7 @@
         border-radius: 5px;
         font-size: 1rem;
     }
-    .profile-edit-section form button {
+    .container form button {
         margin-top: 1.5rem;
         background: #007bff;
         color: #fff;
@@ -55,25 +55,38 @@
         cursor: pointer;
         width: 100%;
     }
-    .profile-edit-section form button:hover {
+    .container form button:hover {
         background: #0052cc;
     }
-    .profile-edit-section .links {
+    .container .links {
         margin-top: 1.5rem;
         text-align: center;
     }
-    .profile-edit-section .links a {
+    .container .links a {
         color: #007bff;
         text-decoration: underline;
         margin: 0 0.5rem;
     }
+    @media (max-width: 700px) {
+        .container {
+            margin: 1rem auto;
+            padding: 1.2rem;
+        }
+        .profile-photo-preview {
+            width: 88px;
+            height: 88px;
+        }
+        .container form input,
+        .container form button {
+            box-sizing: border-box;
+        }
+    }
 </style>
-<div class="profile-edit-section">
     <h2>Edit Profile</h2>
     {% if user.profile.photo %}
         <img id="currentPhoto" src="{{ user.profile.photo.url }}" alt="Profile Photo" class="profile-photo-preview">
     {% else %}
-        <div id="currentPhoto" class="profile-photo-preview" title="No profile photo">🙍‍♂️</div>
+        <img id="currentPhoto" src="{% static 'images/default-profile.svg' %}" alt="Default Profile Photo" class="profile-photo-preview">
     {% endif %}
     <form method="post" enctype="multipart/form-data" action="">
         {% csrf_token %}
@@ -103,7 +116,6 @@
     <div class="links">
         <a href="{% url 'profile' %}">Back to Profile</a>
     </div>
-</div>
 <script>
     // Optional: Preview new profile photo before upload
     document.addEventListener('DOMContentLoaded', function() {

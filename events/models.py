@@ -1,4 +1,6 @@
 from django.db import models
+from django.utils import timezone
+from datetime import datetime, time
 
 # Create your models here.
 
@@ -33,6 +35,8 @@ class Event(models.Model):
     ]
     name = models.CharField(max_length=200)
     date = models.DateTimeField()
+    start_time = models.TimeField(default=time(9, 0))
+    end_time = models.TimeField(default=time(17, 0))
     location = models.CharField(max_length=32, choices=LOCATION_CHOICES, default='ol_kalou')
     description = models.TextField(blank=True)
     thumbnail = models.ImageField(upload_to='event_thumbnails/', blank=True, null=True)
@@ -42,6 +46,17 @@ class Event(models.Model):
 
     def __str__(self):
         return self.name
+
+    @property
+    def end_datetime(self):
+        end_dt = datetime.combine(self.date.date(), self.end_time)
+        if timezone.is_naive(end_dt):
+            end_dt = timezone.make_aware(end_dt, timezone.get_current_timezone())
+        return end_dt
+
+    @property
+    def is_over(self):
+        return timezone.now() > self.end_datetime
 
     @property
     def tickets_sold(self):

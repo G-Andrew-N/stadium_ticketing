@@ -4,62 +4,56 @@
 
 {% block content %}
 <style>
-    .section {
+    .container {
         margin-top: 20px;
     }
     .card-list {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 2rem;
-        justify-content: flex-start;
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 1.5rem;
+        align-items: stretch;
     }
     .event-card {
-        background: linear-gradient(135deg, #ffffff 0%, #f8f9ff 100%);
-        border-radius: 20px;
-        box-shadow: 0 8px 25px rgba(0,123,255,0.12);
+        background: #ffffff;
+        border-radius: 0;
+        box-shadow: none;
         padding: 2rem 1.5rem;
-        width: 350px;
+        width: 100%;
         display: flex;
         flex-direction: column;
         align-items: stretch;
         font-family: 'Segoe UI', 'Roboto', Arial, sans-serif;
-        margin-bottom: 1.5rem;
-        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        margin-bottom: 0;
+        transition: none;
         position: relative;
-        overflow: hidden;
-        border: 1px solid rgba(0,123,255,0.08);
+        overflow: visible;
+        border: 1px solid #d8dce2;
+        min-height: 620px;
     }
     .event-card::before {
-        content: '';
-        position: absolute;
-        top: 0;
-        left: 0;
-        right: 0;
-        height: 4px;
-        background: linear-gradient(90deg, #007bff, #0052cc);
-        border-radius: 20px 20px 0 0;
+        content: none;
     }
     .event-card:hover {
-        box-shadow: 0 12px 40px rgba(0,123,255,0.20);
-        transform: translateY(-6px) scale(1.02);
-        border-color: rgba(0,123,255,0.15);
+        box-shadow: none;
+        transform: none;
+        border-color: #d8dce2;
     }
     .event-thumbnail {
         width: 100%;
-        max-width: 300px;
+        max-width: 100%;
         height: 180px;
         object-fit: cover;
-        border-radius: 15px;
-        box-shadow: 0 4px 15px rgba(0,0,0,0.12);
-        background: linear-gradient(135deg, #f4f4f4 0%, #e9ecef 100%);
+        border-radius: 0;
+        box-shadow: none;
+        background: #f4f4f4;
         margin-bottom: 1.2rem;
         align-self: center;
-        transition: all 0.3s ease;
-        border: 2px solid rgba(255,255,255,0.8);
+        transition: none;
+        border: 1px solid #d8dce2;
     }
     .event-thumbnail:hover {
-        transform: scale(1.05);
-        box-shadow: 0 6px 20px rgba(0,0,0,0.15);
+        transform: none;
+        box-shadow: none;
     }
     .event-title {
         font-size: 1.4rem;
@@ -86,7 +80,7 @@
         color: #333;
         font-size: 0.97rem;
         margin-bottom: 1.1rem;
-        min-height: 48px;
+        min-height: 66px;
         text-align: center;
         font-family: 'Segoe UI', 'Roboto', Arial, sans-serif;
     }
@@ -103,12 +97,12 @@
     }
     
     .ticket-info {
-        background: linear-gradient(135deg, #f8f9ff 0%, #e3f2fd 100%);
-        border-radius: 12px;
+        background: #f8f9ff;
+        border-radius: 0;
         padding: 1rem;
         margin: 1rem 0;
-        border: 1px solid rgba(0,123,255,0.1);
-        box-shadow: 0 2px 8px rgba(0,123,255,0.08);
+        border: 1px solid #d8dce2;
+        box-shadow: none;
     }
     .ticket-info h4 {
         color: #0052cc;
@@ -150,21 +144,21 @@
     }
     .cta {
         display: inline-block;
-        background: linear-gradient(90deg, #007bff 60%, #0052cc 100%);
+        background: #007bff;
         color: #fff;
-        border-radius: 7px;
+        border-radius: 0;
         padding: 0.6rem 1.4rem;
         text-decoration: none;
         font-weight: 600;
-        margin: 0.7rem auto 0.3rem auto;
+        margin: auto auto 0.3rem auto;
         text-align: center;
-        transition: background 0.18s, box-shadow 0.18s;
-        box-shadow: 0 2px 8px rgba(0,123,255,0.08);
+        transition: background 0.18s;
+        box-shadow: none;
         font-size: 1.05rem;
     }
     .cta:hover {
-        background: linear-gradient(90deg, #0052cc 60%, #007bff 100%);
-        box-shadow: 0 4px 16px rgba(0,123,255,0.13);
+        background: #0052cc;
+        box-shadow: none;
     }
     .event-actions {
         margin-top: 0.7rem;
@@ -196,9 +190,10 @@
         flex-wrap: wrap;
         align-items: center;
         background: #f4f8fb;
-        border-radius: 10px;
+        border-radius: 0;
         padding: 1rem 1.2rem;
-        box-shadow: 0 1px 6px rgba(0,123,255,0.06);
+        box-shadow: none;
+        border: 1px solid #d8dce2;
     }
     .search-bar input[type="text"], .search-bar select {
         padding: 0.5rem;
@@ -248,22 +243,18 @@
     /* Responsive styles */
     @media (max-width: 1100px) {
         .card-list {
-            gap: 1.5rem;
-        }
-        .event-card {
-            width: 45vw;
-            min-width: 280px;
-            max-width: 100%;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
         }
     }
     @media (max-width: 900px) {
         .card-list {
-            flex-direction: column;
+            grid-template-columns: 1fr;
             gap: 1.5rem;
         }
         .event-card {
             width: 100%;
             min-width: 0;
+            min-height: 0;
         }
     }
     @media (max-width: 700px) {
@@ -287,7 +278,7 @@
             min-width: 0;
             height: 140px;
             margin-bottom: 0.8rem;
-            border-radius: 10px;
+            border-radius: 0;
         }
         .event-title {
             font-size: 1.1rem;
@@ -332,9 +323,98 @@
             padding: 0.4rem 0.7rem;
         }
     }
-</style>
-<div class="section">
 
+    html[data-theme='dark'] .container > h2 {
+        color: #e5e7eb !important;
+    }
+    html[data-theme='dark'] .search-bar {
+        background: #111827;
+        border-color: #374151;
+    }
+    html[data-theme='dark'] .search-bar input[type="text"],
+    html[data-theme='dark'] .search-bar select {
+        background: #1f2937;
+        color: #f9fafb;
+        border-color: #4b5563;
+    }
+    html[data-theme='dark'] .search-bar input[type="text"]::placeholder {
+        color: #9ca3af;
+    }
+    html[data-theme='dark'] .search-bar button {
+        background: #2563eb;
+        color: #eff6ff;
+    }
+    html[data-theme='dark'] .search-bar button:hover {
+        background: #1d4ed8;
+    }
+    html[data-theme='dark'] .category-filter a,
+    html[data-theme='dark'] .category-filter span {
+        background: #111827;
+        color: #dbeafe;
+        border-color: #374151;
+    }
+    html[data-theme='dark'] .category-filter a.active,
+    html[data-theme='dark'] .category-filter span.active {
+        background: #2563eb;
+        color: #f8fafc;
+        border-color: #2563eb;
+    }
+    html[data-theme='dark'] .event-card {
+        background: #111827;
+        border-color: #374151;
+    }
+    html[data-theme='dark'] .event-thumbnail {
+        background: #1f2937;
+        border-color: #374151;
+    }
+    html[data-theme='dark'] .event-title {
+        color: #f3f4f6;
+        text-shadow: none;
+    }
+    html[data-theme='dark'] .event-date,
+    html[data-theme='dark'] .event-location,
+    html[data-theme='dark'] .event-description,
+    html[data-theme='dark'] .event-sport-type,
+    html[data-theme='dark'] .event-league {
+        color: #d1d5db;
+    }
+    html[data-theme='dark'] .event-sport-type .label,
+    html[data-theme='dark'] .event-league .label {
+        color: #93c5fd;
+    }
+    html[data-theme='dark'] .ticket-info {
+        background: #1f2937;
+        border-color: #374151;
+    }
+    html[data-theme='dark'] .ticket-info h4 {
+        color: #e5e7eb;
+    }
+    html[data-theme='dark'] .ticket-stat .label {
+        color: #cbd5e1;
+    }
+    html[data-theme='dark'] .ticket-stat.available .number {
+        color: #93c5fd;
+    }
+    html[data-theme='dark'] .ticket-stat.sold .number {
+        color: #fca5a5;
+    }
+    html[data-theme='dark'] .ticket-stat.remaining .number {
+        color: #86efac;
+    }
+    html[data-theme='dark'] .cta {
+        background: #2563eb;
+        color: #eff6ff;
+    }
+    html[data-theme='dark'] .cta:hover {
+        background: #1d4ed8;
+    }
+    html[data-theme='dark'] .event-actions a {
+        color: #93c5fd;
+    }
+    html[data-theme='dark'] .event-actions a.delete-link {
+        color: #fca5a5;
+    }
+</style>
     <form class="search-bar" method="get" action="">
         <input type="text" name="q" placeholder="Search events by name or location..." value="{{ q }}">
         <select name="type" id="event-type-select">
@@ -377,7 +457,7 @@
                         <img src="{% static 'images/default_event_thumb.png' %}" alt="No thumbnail" class="event-thumbnail">
                     {% endif %}
                     <strong class="event-title">{{ event.name }}</strong>
-                    <div class="event-date"><i class="fa fa-calendar"></i> {{ event.date|date:"F j, Y, g:i a" }}</div>
+                    <div class="event-date"><i class="fa fa-calendar"></i> {{ event.date|date:"F j, Y" }} | {{ event.start_time|time:"g:i a" }} - {{ event.end_time|time:"g:i a" }}</div>
                     <div class="event-location"><i class="fa fa-map-marker"></i> {{ event.location }}</div>
                     <div class="event-description">{{ event.description|linebreaksbr|truncatewords:30 }}</div>
                     {% if event.event_type == 'sports' %}
@@ -429,7 +509,6 @@
     {% empty %}
         <div>No events available at the moment. Please check back soon!</div>
     {% endfor %}
-</div>
 <script>
     // Show/hide sport type and league selects based on event type selection
     document.addEventListener('DOMContentLoaded', function() {

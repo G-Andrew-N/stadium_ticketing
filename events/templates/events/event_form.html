@@ -5,7 +5,7 @@
 
 {% block content %}
 <style>
-    .event-form-section {
+    .container {
         max-width: 650px;
         margin: 2.5rem auto;
         background: #fff;
@@ -13,19 +13,19 @@
         border-radius: 14px;
         box-shadow: 0 4px 24px rgba(0,123,255,0.10);
     }
-    .event-form-section h2 {
+    .container h2 {
         color: #0052cc;
         margin-bottom: 1.5rem;
         text-align: center;
     }
-    .event-form-section form label {
+    .container form label {
         display: block;
         margin-top: 1rem;
         font-weight: 500;
     }
-    .event-form-section form input,
-    .event-form-section form textarea,
-    .event-form-section form select {
+    .container form input,
+    .container form textarea,
+    .container form select {
         width: 100%;
         padding: 0.7rem;
         margin-top: 0.3rem;
@@ -33,11 +33,11 @@
         border-radius: 5px;
         font-size: 1rem;
     }
-    .event-form-section form textarea {
+    .container form textarea {
         min-height: 80px;
         resize: vertical;
     }
-    .event-form-section form button {
+    .container form button {
         margin-top: 1.5rem;
         background: #007bff;
         color: #fff;
@@ -48,10 +48,10 @@
         cursor: pointer;
         width: 100%;
     }
-    .event-form-section form button:hover {
+    .container form button:hover {
         background: #0052cc;
     }
-    .event-form-section .thumb-preview {
+    .container .thumb-preview {
         margin-bottom: 1rem;
         max-width: 220px;
         max-height: 140px;
@@ -82,18 +82,98 @@
     .ticket-type-row .disabled {
         opacity: 0.5;
     }
+    .form-actions {
+        margin-top: 1.2rem;
+    }
+    .form-actions .cancel-link {
+        margin-left: 1.5rem;
+    }
+    .ticket-types-title {
+        margin-top:2rem;
+    }
+
+    html[data-theme='dark'] .container {
+        background: #111827;
+        color: #e5e7eb;
+        box-shadow: none;
+        border: 1px solid #374151;
+    }
+    html[data-theme='dark'] .container h2,
+    html[data-theme='dark'] .ticket-types-title {
+        color: #e5e7eb;
+    }
+    html[data-theme='dark'] .container form label {
+        color: #d1d5db;
+    }
+    html[data-theme='dark'] .container form input,
+    html[data-theme='dark'] .container form textarea,
+    html[data-theme='dark'] .container form select {
+        background: #1f2937;
+        color: #f9fafb;
+        border-color: #4b5563;
+    }
+    html[data-theme='dark'] .container form input::placeholder,
+    html[data-theme='dark'] .container form textarea::placeholder {
+        color: #9ca3af;
+    }
+    html[data-theme='dark'] .container form button,
+    html[data-theme='dark'] .form-actions .cta {
+        background: #2563eb;
+        color: #eff6ff;
+    }
+    html[data-theme='dark'] .container form button:hover,
+    html[data-theme='dark'] .form-actions .cta:hover {
+        background: #1d4ed8;
+    }
+    html[data-theme='dark'] .form-actions .cancel-link {
+        color: #93c5fd;
+    }
+    html[data-theme='dark'] .ticket-type-row {
+        background: #1f2937;
+        border: 1px solid #374151;
+    }
+    html[data-theme='dark'] .ticket-type-row .disabled {
+        opacity: 0.6;
+    }
+    html[data-theme='dark'] .container .thumb-preview {
+        border: 1px solid #374151;
+    }
+
     @media (max-width: 700px) {
-        .event-form-section {
+        .container {
             padding: 1.2rem;
+            margin: 1rem auto;
+        }
+        .container form input,
+        .container form textarea,
+        .container form select,
+        .container form button {
+            box-sizing: border-box;
         }
         .ticket-type-row {
             flex-direction: column;
             align-items: flex-start;
             gap: 0.5rem;
         }
+        .ticket-type-row label {
+            min-width: 0;
+        }
+        .ticket-type-row input[type="number"] {
+            width: 100%;
+        }
+        .form-actions .cta,
+        .form-actions .cancel-link {
+            display: block;
+            width: 100%;
+            margin: 0.6rem 0 0 0;
+            text-align: center;
+            box-sizing: border-box;
+        }
+        .form-actions .cancel-link {
+            margin-left: 0;
+        }
     }
 </style>
-<div class="event-form-section">
     <h2>{% if event %}Edit Event{% else %}Create Event{% endif %}</h2>
     <form method="post" enctype="multipart/form-data">
         {% csrf_token %}
@@ -111,9 +191,17 @@
             {{ form.league }}
         </div>
 
-        <label for="id_date">Date & Time</label>
+        <label for="id_date">Date</label>
         {{ form.date.errors }}
         {{ form.date }}
+
+        <label for="id_start_time">Start Time</label>
+        {{ form.start_time.errors }}
+        {{ form.start_time }}
+
+        <label for="id_end_time">End Time</label>
+        {{ form.end_time.errors }}
+        {{ form.end_time }}
 
         <label for="id_location">Location</label>
         {{ form.location.errors }}
@@ -128,7 +216,7 @@
         {{ form.thumbnail }}
         <img id="thumbPreview" class="thumb-preview" style="display:none;" alt="Thumbnail preview">
 
-        <h3 style="margin-top:2rem;">Available Ticket Types & Pricing</h3>
+        <h3 class="ticket-types-title">Available Ticket Types & Pricing</h3>
         <div>
             {% for key, label in TICKET_TYPE_CHOICES %}
                 {% with saved=saved_ticket_types|get_item:key %}
@@ -149,10 +237,11 @@
                 {% endwith %}
             {% endfor %}
         </div>
-        <button type="submit" class="cta">{% if event %}Update Event{% else %}Create Event{% endif %}</button>
-        <a href="{% url 'event_list' %}" style="margin-left:1.5rem;">Cancel</a>
+        <div class="form-actions">
+            <button type="submit" class="cta">{% if event %}Update Event{% else %}Create Event{% endif %}</button>
+            <a href="{% url 'event_list' %}" class="cancel-link">Cancel</a>
+        </div>
     </form>
-</div>
 <script>
     // Mapping ticket type keys to distinct letters
     const ticketTypeLetters = {
