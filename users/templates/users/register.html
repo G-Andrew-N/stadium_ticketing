@@ -232,13 +232,7 @@
         {% csrf_token %}
 
         <div class="auth-grid">
-            <div class="auth-field full">
-                <label for="id_username">Username</label>
-                {{ form.username }}
-                {% for error in form.username.errors %}
-                    <div class="field-error">{{ error }}</div>
-                {% endfor %}
-            </div>
+
 
             <div class="auth-field full">
                 <label for="id_email">Email</label>
