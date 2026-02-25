@@ -242,10 +242,32 @@
 
             <div class="auth-field full">
                 <label for="id_email">Email</label>
-                {{ form.email }}
-                {% for error in form.email.errors %}
-                    <div class="field-error">{{ error }}</div>
-                {% endfor %}
+                                {{ form.email }}
+                                <div id="register-email-error" class="field-error" style="display:none;"></div>
+                                {% for error in form.email.errors %}
+                                        <div class="field-error">{{ error }}</div>
+                                {% endfor %}
+                                <script>
+                                document.addEventListener('DOMContentLoaded', function() {
+                                    var emailInput = document.getElementById('id_email');
+                                    if (emailInput) {
+                                        emailInput.addEventListener('input', function() {
+                                            const errorDiv = document.getElementById('register-email-error');
+                                            const value = emailInput.value;
+                                            const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                                            if (value && !emailPattern.test(value)) {
+                                                errorDiv.textContent = 'Please enter a valid email address.';
+                                                errorDiv.style.display = 'block';
+                                                emailInput.setCustomValidity('Invalid email address');
+                                            } else {
+                                                errorDiv.textContent = '';
+                                                errorDiv.style.display = 'none';
+                                                emailInput.setCustomValidity('');
+                                            }
+                                        });
+                                    }
+                                });
+                                </script>
             </div>
 
             <div class="auth-field">

@@ -188,10 +188,27 @@
     {% csrf_token %}
     <div class="auth-field">
         <label for="id_email">Email</label>
-        <input type="email" name="email" id="id_email" value="{{ form.email.value|default:'' }}" required autofocus>
+        <input type="email" name="email" id="id_email" value="{{ form.email.value|default:'' }}" required autofocus oninput="validateEmail(this)">
+        <div id="email-error" class="field-error" style="display:none;"></div>
         {% for error in form.email.errors %}
             <div class="field-error">{{ error }}</div>
         {% endfor %}
+        <script>
+        function validateEmail(input) {
+            const errorDiv = document.getElementById('email-error');
+            const value = input.value;
+            const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (value && !emailPattern.test(value)) {
+                errorDiv.textContent = 'Please enter a valid email address.';
+                errorDiv.style.display = 'block';
+                input.setCustomValidity('Invalid email address');
+            } else {
+                errorDiv.textContent = '';
+                errorDiv.style.display = 'none';
+                input.setCustomValidity('');
+            }
+        }
+        </script>
     </div>
 
     <div class="auth-field">
