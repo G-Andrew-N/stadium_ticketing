@@ -19,8 +19,28 @@ class ProfileEditForm(forms.ModelForm):
         fields = ['photo']
 
 def user_login(request):
+    class EmailAuthenticationForm(forms.Form):
+        email = forms.EmailField(label='Email', max_length=254)
+        password = forms.CharField(label='Password', widget=forms.PasswordInput)
+
+        def clean(self):
+            email = self.cleaned_data.get('email')
+            password = self.cleaned_data.get('password')
+            try:
+                user = User.objects.get(email=email)
+            except User.DoesNotExist:
+                raise forms.ValidationError('Invalid email or password.')
+            user = authenticate(username=user.username, password=password)
+            if user is None:
+                raise forms.ValidationError('Invalid email or password.')
+            self.user = user
+            return self.cleaned_data
+
+        def get_user(self):
+            return getattr(self, 'user', None)
+
     if request.method == 'POST':
-        form = AuthenticationForm(request, data=request.POST)
+        form = EmailAuthenticationForm(request.POST)
         if form.is_valid():
             user = form.get_user()
             login(request, user)
@@ -29,7 +49,7 @@ def user_login(request):
             else:
                 return redirect('user_dashboard')
     else:
-        form = AuthenticationForm()
+        form = EmailAuthenticationForm()
     return render(request, 'users/login.html', {'form': form})
 
 def user_register(request):
