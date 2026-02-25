@@ -12,6 +12,10 @@ class Profile(models.Model):
     def __str__(self):
         return f"{self.user.username}'s Profile"
 
+# Make email unique in User model at runtime
+from django.contrib.auth.models import User
+User._meta.get_field('email')._unique = True
+
 @receiver(post_save, sender=User)
 def create_user_profile(sender, instance, created, **kwargs):
     if created:
