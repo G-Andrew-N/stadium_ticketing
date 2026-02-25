@@ -519,10 +519,7 @@
          {% else %}
              <a href="{% url 'user_dashboard' %}">👤 User Dashboard</a>
          {% endif %}
-         {% if not user.is_authenticated %}
-             <a href="{% url 'login' %}">🔑 Login</a>
-             <a href="{% url 'register' %}">📝 Register</a>
-         {% endif %}
+         {# Login and Register menu options removed #}
          <div class="mobile-menu-utils">
              {% if user.is_authenticated %}
                  <div class="mobile-profile-row">
