@@ -63,8 +63,8 @@ def user_register(request):
                 profile, created = Profile.objects.get_or_create(user=user)
                 profile.photo = photo
                 profile.save()
-            login(request, user)
-            return redirect('home')
+            # Do not log in user, redirect to login page
+            return redirect('login')
     else:
         form = CustomUserCreationForm()
     return render(request, 'users/register.html', {'form': form})
