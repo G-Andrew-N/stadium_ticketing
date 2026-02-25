@@ -31,5 +31,5 @@ static/
 # Build scripts
 build.sh
 server.log
-.md
+render_deployment.md
 !README.md
