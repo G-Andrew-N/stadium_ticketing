@@ -213,10 +213,28 @@
 
     <div class="auth-field">
         <label for="id_password">Password</label>
-        <input type="password" name="password" id="id_password" required>
-        {% for error in form.password.errors %}
-            <div class="field-error">{{ error }}</div>
-        {% endfor %}
+                <div style="position:relative;">
+                    <input type="password" name="password" id="id_password" required style="padding-right:2.5rem;">
+                    <button type="button" onclick="togglePassword('id_password', this)" tabindex="-1" aria-label="Show password" style="position:absolute;top:50%;right:0.5rem;transform:translateY(-50%);background:none;border:none;cursor:pointer;padding:0;">
+                        <span id="eye-id_password" style="font-size:1.2rem;">👁️</span>
+                    </button>
+                </div>
+                {% for error in form.password.errors %}
+                        <div class="field-error">{{ error }}</div>
+                {% endfor %}
+                <script>
+                function togglePassword(fieldId, btn) {
+                    const input = document.getElementById(fieldId);
+                    const eye = document.getElementById('eye-' + fieldId);
+                    if (input.type === 'password') {
+                        input.type = 'text';
+                        eye.textContent = '🙈';
+                    } else {
+                        input.type = 'password';
+                        eye.textContent = '👁️';
+                    }
+                }
+                </script>
     </div>
 
     <button type="submit" class="auth-button">Sign In</button>

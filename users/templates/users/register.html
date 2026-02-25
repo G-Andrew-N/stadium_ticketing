@@ -289,21 +289,44 @@
                 {% endfor %}
             </div>
 
-            <div class="auth-field full">
-                <label for="id_password1">Password</label>
-                {{ form.password1 }}
-                {% for error in form.password1.errors %}
-                    <div class="field-error">{{ error }}</div>
-                {% endfor %}
-            </div>
+                        <div class="auth-field full">
+                                <label for="id_password1">Password</label>
+                                <div style="position:relative;">
+                                    {{ form.password1 }}
+                                    <button type="button" onclick="togglePassword('id_password1', this)" tabindex="-1" aria-label="Show password" style="position:absolute;top:50%;right:0.5rem;transform:translateY(-50%);background:none;border:none;cursor:pointer;padding:0;">
+                                        <span id="eye-id_password1" style="font-size:1.2rem;">👁️</span>
+                                    </button>
+                                </div>
+                                {% for error in form.password1.errors %}
+                                        <div class="field-error">{{ error }}</div>
+                                {% endfor %}
+                        </div>
 
-            <div class="auth-field full">
-                <label for="id_password2">Confirm Password</label>
-                {{ form.password2 }}
-                {% for error in form.password2.errors %}
-                    <div class="field-error">{{ error }}</div>
-                {% endfor %}
-            </div>
+                        <div class="auth-field full">
+                                <label for="id_password2">Confirm Password</label>
+                                <div style="position:relative;">
+                                    {{ form.password2 }}
+                                    <button type="button" onclick="togglePassword('id_password2', this)" tabindex="-1" aria-label="Show password" style="position:absolute;top:50%;right:0.5rem;transform:translateY(-50%);background:none;border:none;cursor:pointer;padding:0;">
+                                        <span id="eye-id_password2" style="font-size:1.2rem;">👁️</span>
+                                    </button>
+                                </div>
+                                {% for error in form.password2.errors %}
+                                        <div class="field-error">{{ error }}</div>
+                                {% endfor %}
+                        </div>
+                        <script>
+                        function togglePassword(fieldId, btn) {
+                            const input = document.getElementById(fieldId);
+                            const eye = document.getElementById('eye-' + fieldId);
+                            if (input.type === 'password') {
+                                input.type = 'text';
+                                eye.textContent = '🙈';
+                            } else {
+                                input.type = 'password';
+                                eye.textContent = '👁️';
+                            }
+                        }
+                        </script>
         </div>
 
         <button type="submit" class="auth-button">Create Account</button>
